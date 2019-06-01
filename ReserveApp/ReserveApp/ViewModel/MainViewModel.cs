@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Data.Entity;
+using ReserveApp.Model;
 
 namespace ReserveApp.ViewModel
 {
@@ -22,7 +23,9 @@ namespace ReserveApp.ViewModel
                 {
                     // тело команды
 
-                    MessageBox.Show("Test");
+                    var db = new ReserveClassroomDBEntities();
+
+                    MessageBox.Show(db.Lessons.FirstOrDefault(u => u.Id == 1).Lesson);
                     LabelTxt = "ok";
                 }, 
                 () => 

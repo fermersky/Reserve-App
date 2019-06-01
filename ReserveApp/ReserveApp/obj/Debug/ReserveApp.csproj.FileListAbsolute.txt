@@ -37,3 +37,4 @@ C:\Users\Данил\Desktop\Team-Project\ReserveApp\ReserveApp\obj\Debug\App.bam
 C:\Users\Данил\Desktop\Team-Project\ReserveApp\ReserveApp\bin\Debug\Microsoft.Expression.Interactions.dll
 C:\Users\Данил\Desktop\Team-Project\ReserveApp\ReserveApp\bin\Debug\Microsoft.Expression.Interactions.xml
 C:\Users\Данил\Desktop\Team-Project\ReserveApp\ReserveApp\bin\Debug\System.Windows.Interactivity.xml
+C:\Users\Данил\Desktop\Team-Project\ReserveApp\ReserveApp\obj\Debug\ReserveApp_Content.g.cs
