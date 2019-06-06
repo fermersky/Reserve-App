@@ -1,4 +1,5 @@
-﻿using ReserveApp.ViewModel;
+﻿using ReserveApp.Model;
+using ReserveApp.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,10 +22,11 @@ namespace ReserveApp
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        public MainWindow(Users user) // user is a param which sended from AuthViewModel [User or Admin]
         {
             InitializeComponent();
-            this.DataContext = new MainViewModel();
+            this.DataContext = new MainViewModel(user);
         }
+
     }
 }

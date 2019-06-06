@@ -38,3 +38,5 @@ C:\Users\Данил\Desktop\Team-Project\ReserveApp\ReserveApp\bin\Debug\Microso
 C:\Users\Данил\Desktop\Team-Project\ReserveApp\ReserveApp\bin\Debug\Microsoft.Expression.Interactions.xml
 C:\Users\Данил\Desktop\Team-Project\ReserveApp\ReserveApp\bin\Debug\System.Windows.Interactivity.xml
 C:\Users\Данил\Desktop\Team-Project\ReserveApp\ReserveApp\obj\Debug\ReserveApp_Content.g.cs
+C:\Users\Данил\Desktop\Team-Project\ReserveApp\ReserveApp\obj\Debug\View\AuthWindow.g.cs
+C:\Users\Данил\Desktop\Team-Project\ReserveApp\ReserveApp\obj\Debug\View\AuthWindow.baml

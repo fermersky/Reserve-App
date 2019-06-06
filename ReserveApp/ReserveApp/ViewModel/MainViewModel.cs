@@ -47,7 +47,7 @@ namespace ReserveApp.ViewModel
             // метод Set устанавливает новое значение и вызывает PropertyChanged
         }
 
-        public MainViewModel()
+        public MainViewModel(Users user)
         {
             labelTxt = "click btn before";
         }
