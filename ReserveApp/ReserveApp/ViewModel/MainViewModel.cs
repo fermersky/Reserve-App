@@ -50,6 +50,7 @@ namespace ReserveApp.ViewModel
         public MainViewModel(Users user)
         {
             labelTxt = "click btn before";
+            
         }
     }
 }

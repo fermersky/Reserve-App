@@ -7,17 +7,11 @@
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="300" Width="500">
     <Grid>
-        <StackPanel VerticalAlignment="Center">
-            <Label Content="{Binding LabelTxt}" HorizontalAlignment="Center"></Label>
-            <Button
-                Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                Width="100"
-                Content="Click me"
-                Command="{Binding ClickCommand}"
-                ToolTip="Resource name: MaterialDesignRaisedAccentButton">
-            </Button>
+        <StackPanel VerticalAlignment="Top">
+            <Label Content="Бронирование аудиторий" HorizontalAlignment="Center"></Label>
+            <Label Content="{Binding }"></Label>
         </StackPanel>
     </Grid>
 </Window>
