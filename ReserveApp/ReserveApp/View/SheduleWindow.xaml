@@ -10,5 +10,6 @@
         Title="SheduleWindow" Height="450" Width="800">
     <Grid>
         <Button Width="100">Click</Button>
+        <Button Width="50">Click</Button>
     </Grid>
 </Window>
