@@ -9,6 +9,6 @@
         mc:Ignorable="d"
         Title="SheduleWindow" Height="450" Width="800">
     <Grid>
-        
+        <Button Width="100">Click</Button>
     </Grid>
 </Window>

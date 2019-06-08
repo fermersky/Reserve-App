@@ -22,6 +22,7 @@ namespace ReserveApp.View
         public SheduleWindow()
         {
             InitializeComponent();
+            this.DataContext = new SheduleViewModel();
         }
     }
 }
