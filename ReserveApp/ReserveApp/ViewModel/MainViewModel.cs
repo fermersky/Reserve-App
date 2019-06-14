@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Data.Entity;
 using ReserveApp.Model;
+using ReserveApp.View;
 
 namespace ReserveApp.ViewModel
 {
@@ -47,9 +48,16 @@ namespace ReserveApp.ViewModel
             // метод Set устанавливает новое значение и вызывает PropertyChanged
         }
 
+        public MainViewModel()
+        {
+            new AdminAccepting().Show();
+        }
+
         public MainViewModel(Users user)
         {
             labelTxt = "click btn before";
+
+            
         }
     }
 }

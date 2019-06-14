@@ -28,5 +28,10 @@ namespace ReserveApp
             this.DataContext = new MainViewModel(user);
         }
 
+        public MainWindow()
+        {
+            InitializeComponent();
+            this.DataContext = new MainViewModel();
+        }
     }
 }
