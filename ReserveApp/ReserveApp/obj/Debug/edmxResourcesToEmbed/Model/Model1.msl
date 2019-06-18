@@ -11,6 +11,7 @@
           <ScalarProperty Name="LessonNumber" ColumnName="LessonNumber" />
           <ScalarProperty Name="StudentsCount" ColumnName="StudentsCount" />
           <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+          <ScalarProperty Name="StatusId" ColumnName="StatusId" />
           <ScalarProperty Name="Lesson" ColumnName="Lesson" />
           <ScalarProperty Name="Comment" ColumnName="Comment" />
         </MappingFragment>
@@ -30,22 +31,15 @@
         <MappingFragment StoreEntitySet="Groups">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="StudentsCount" ColumnName="StudentsCount" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Lessons">
-      <EntityTypeMapping TypeName="ReserveClassroomDBModel.Lessons">
-        <MappingFragment StoreEntitySet="Lessons">
+    <EntitySetMapping Name="Status">
+      <EntityTypeMapping TypeName="ReserveClassroomDBModel.Status">
+        <MappingFragment StoreEntitySet="Status">
           <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="ClassroomId" ColumnName="ClassroomId" />
-          <ScalarProperty Name="UserId" ColumnName="UserId" />
-          <ScalarProperty Name="Date" ColumnName="Date" />
-          <ScalarProperty Name="LessonNumber" ColumnName="LessonNumber" />
-          <ScalarProperty Name="StudentsCount" ColumnName="StudentsCount" />
-          <ScalarProperty Name="GroupId" ColumnName="GroupId" />
-          <ScalarProperty Name="Lesson" ColumnName="Lesson" />
-          <ScalarProperty Name="Comment" ColumnName="Comment" />
-          <ScalarProperty Name="IsSheduled" ColumnName="IsSheduled" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

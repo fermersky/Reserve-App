@@ -25,7 +25,7 @@ namespace ReserveApp.ViewModel
 
                     var db = new ReserveClassroomDBEntities();
 
-                    MessageBox.Show(db.Lessons.FirstOrDefault(u => u.Id == 1).Lesson);
+                    MessageBox.Show(db.Applications.FirstOrDefault(u => u.Id == 1).Lesson);
                     LabelTxt = "ok";
                 }, 
                 () => 

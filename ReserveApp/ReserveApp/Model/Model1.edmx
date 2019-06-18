@@ -16,8 +16,9 @@
           <Property Name="LessonNumber" Type="int" Nullable="false" />
           <Property Name="StudentsCount" Type="int" />
           <Property Name="GroupId" Type="int" Nullable="false" />
-          <Property Name="Lesson" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="Comment" Type="varchar" MaxLength="255" />
+          <Property Name="StatusId" Type="int" Nullable="false" />
+          <Property Name="Lesson" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Comment" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="Classrooms">
           <Key>
@@ -32,34 +33,27 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="225" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="225" Nullable="false" />
+          <Property Name="StudentsCount" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="Lessons">
+        <EntityType Name="Status">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ClassroomId" Type="int" Nullable="false" />
-          <Property Name="UserId" Type="int" Nullable="false" />
-          <Property Name="Date" Type="date" Nullable="false" />
-          <Property Name="LessonNumber" Type="int" Nullable="false" />
-          <Property Name="StudentsCount" Type="int" />
-          <Property Name="GroupId" Type="int" Nullable="false" />
-          <Property Name="Lesson" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="Comment" Type="varchar" MaxLength="255" />
-          <Property Name="IsSheduled" Type="bit" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="30" Nullable="false" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Login" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="Password" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="Role" Type="varchar" MaxLength="25" Nullable="false" />
-          <Property Name="Fullname" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Login" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Role" Type="nvarchar" MaxLength="25" Nullable="false" />
+          <Property Name="Fullname" Type="nvarchar" MaxLength="255" Nullable="false" />
         </EntityType>
-        <Association Name="FK__Applicati__Class__2B3F6F97">
+        <Association Name="FK__Applicati__Class__182C9B23">
           <End Role="Classrooms" Type="Self.Classrooms" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -73,7 +67,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Applicati__Group__2D27B809">
+        <Association Name="FK__Applicati__Group__1A14E395">
           <End Role="Groups" Type="Self.Groups" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -87,7 +81,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Applicati__UserI__2C3393D0">
+        <Association Name="FK__Applicati__Statu__1B0907CE">
+          <End Role="Status" Type="Self.Status" Multiplicity="1" />
+          <End Role="Applications" Type="Self.Applications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Applications">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Applicati__UserI__1920BF5C">
           <End Role="Users" Type="Self.Users" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -97,48 +103,6 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Applications">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Lessons__Classro__36B12243">
-          <End Role="Classrooms" Type="Self.Classrooms" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Lessons" Type="Self.Lessons" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Classrooms">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Lessons">
-              <PropertyRef Name="ClassroomId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Lessons__GroupId__38996AB5">
-          <End Role="Groups" Type="Self.Groups" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Lessons" Type="Self.Lessons" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Groups">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Lessons">
-              <PropertyRef Name="GroupId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Lessons__UserId__37A5467C">
-          <End Role="Users" Type="Self.Users" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Lessons" Type="Self.Lessons" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Lessons">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
@@ -147,31 +111,23 @@
           <EntitySet Name="Applications" EntityType="Self.Applications" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Classrooms" EntityType="Self.Classrooms" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Groups" EntityType="Self.Groups" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Lessons" EntityType="Self.Lessons" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Status" EntityType="Self.Status" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Applicati__Class__2B3F6F97" Association="Self.FK__Applicati__Class__2B3F6F97">
+          <AssociationSet Name="FK__Applicati__Class__182C9B23" Association="Self.FK__Applicati__Class__182C9B23">
             <End Role="Classrooms" EntitySet="Classrooms" />
             <End Role="Applications" EntitySet="Applications" />
           </AssociationSet>
-          <AssociationSet Name="FK__Applicati__Group__2D27B809" Association="Self.FK__Applicati__Group__2D27B809">
+          <AssociationSet Name="FK__Applicati__Group__1A14E395" Association="Self.FK__Applicati__Group__1A14E395">
             <End Role="Groups" EntitySet="Groups" />
             <End Role="Applications" EntitySet="Applications" />
           </AssociationSet>
-          <AssociationSet Name="FK__Applicati__UserI__2C3393D0" Association="Self.FK__Applicati__UserI__2C3393D0">
-            <End Role="Users" EntitySet="Users" />
+          <AssociationSet Name="FK__Applicati__Statu__1B0907CE" Association="Self.FK__Applicati__Statu__1B0907CE">
+            <End Role="Status" EntitySet="Status" />
             <End Role="Applications" EntitySet="Applications" />
           </AssociationSet>
-          <AssociationSet Name="FK__Lessons__Classro__36B12243" Association="Self.FK__Lessons__Classro__36B12243">
-            <End Role="Classrooms" EntitySet="Classrooms" />
-            <End Role="Lessons" EntitySet="Lessons" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Lessons__GroupId__38996AB5" Association="Self.FK__Lessons__GroupId__38996AB5">
-            <End Role="Groups" EntitySet="Groups" />
-            <End Role="Lessons" EntitySet="Lessons" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Lessons__UserId__37A5467C" Association="Self.FK__Lessons__UserId__37A5467C">
+          <AssociationSet Name="FK__Applicati__UserI__1920BF5C" Association="Self.FK__Applicati__UserI__1920BF5C">
             <End Role="Users" EntitySet="Users" />
-            <End Role="Lessons" EntitySet="Lessons" />
+            <End Role="Applications" EntitySet="Applications" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -190,11 +146,13 @@
           <Property Name="LessonNumber" Type="Int32" Nullable="false" />
           <Property Name="StudentsCount" Type="Int32" />
           <Property Name="GroupId" Type="Int32" Nullable="false" />
-          <Property Name="Lesson" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Comment" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Classrooms" Relationship="Self.FK__Applicati__Class__2B3F6F97" FromRole="Applications" ToRole="Classrooms" />
-          <NavigationProperty Name="Groups" Relationship="Self.FK__Applicati__Group__2D27B809" FromRole="Applications" ToRole="Groups" />
-          <NavigationProperty Name="Users" Relationship="Self.FK__Applicati__UserI__2C3393D0" FromRole="Applications" ToRole="Users" />
+          <Property Name="StatusId" Type="Int32" Nullable="false" />
+          <Property Name="Lesson" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Comment" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Classrooms" Relationship="Self.FK__Applicati__Class__182C9B23" FromRole="Applications" ToRole="Classrooms" />
+          <NavigationProperty Name="Groups" Relationship="Self.FK__Applicati__Group__1A14E395" FromRole="Applications" ToRole="Groups" />
+          <NavigationProperty Name="Status" Relationship="Self.FK__Applicati__Statu__1B0907CE" FromRole="Applications" ToRole="Status" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__Applicati__UserI__1920BF5C" FromRole="Applications" ToRole="Users" />
         </EntityType>
         <EntityType Name="Classrooms">
           <Key>
@@ -203,49 +161,37 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Number" Type="Int32" Nullable="false" />
           <Property Name="MaxPersonCount" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Applications" Relationship="Self.FK__Applicati__Class__2B3F6F97" FromRole="Classrooms" ToRole="Applications" />
-          <NavigationProperty Name="Lessons" Relationship="Self.FK__Lessons__Classro__36B12243" FromRole="Classrooms" ToRole="Lessons" />
+          <NavigationProperty Name="Applications" Relationship="Self.FK__Applicati__Class__182C9B23" FromRole="Classrooms" ToRole="Applications" />
         </EntityType>
         <EntityType Name="Groups">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="225" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Applications" Relationship="Self.FK__Applicati__Group__2D27B809" FromRole="Groups" ToRole="Applications" />
-          <NavigationProperty Name="Lessons" Relationship="Self.FK__Lessons__GroupId__38996AB5" FromRole="Groups" ToRole="Lessons" />
+          <Property Name="Name" Type="String" MaxLength="225" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StudentsCount" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Applications" Relationship="Self.FK__Applicati__Group__1A14E395" FromRole="Groups" ToRole="Applications" />
         </EntityType>
-        <EntityType Name="Lessons">
+        <EntityType Name="Status">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ClassroomId" Type="Int32" Nullable="false" />
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="LessonNumber" Type="Int32" Nullable="false" />
-          <Property Name="StudentsCount" Type="Int32" />
-          <Property Name="GroupId" Type="Int32" Nullable="false" />
-          <Property Name="Lesson" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Comment" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="IsSheduled" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Classrooms" Relationship="Self.FK__Lessons__Classro__36B12243" FromRole="Lessons" ToRole="Classrooms" />
-          <NavigationProperty Name="Groups" Relationship="Self.FK__Lessons__GroupId__38996AB5" FromRole="Lessons" ToRole="Groups" />
-          <NavigationProperty Name="Users" Relationship="Self.FK__Lessons__UserId__37A5467C" FromRole="Lessons" ToRole="Users" />
+          <Property Name="Type" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Applications" Relationship="Self.FK__Applicati__Statu__1B0907CE" FromRole="Status" ToRole="Applications" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Login" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Password" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Role" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Fullname" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Applications" Relationship="Self.FK__Applicati__UserI__2C3393D0" FromRole="Users" ToRole="Applications" />
-          <NavigationProperty Name="Lessons" Relationship="Self.FK__Lessons__UserId__37A5467C" FromRole="Users" ToRole="Lessons" />
+          <Property Name="Login" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Role" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Fullname" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Applications" Relationship="Self.FK__Applicati__UserI__1920BF5C" FromRole="Users" ToRole="Applications" />
         </EntityType>
-        <Association Name="FK__Applicati__Class__2B3F6F97">
+        <Association Name="FK__Applicati__Class__182C9B23">
           <End Role="Classrooms" Type="Self.Classrooms" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -259,7 +205,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Applicati__Group__2D27B809">
+        <Association Name="FK__Applicati__Group__1A14E395">
           <End Role="Groups" Type="Self.Groups" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -273,7 +219,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Applicati__UserI__2C3393D0">
+        <Association Name="FK__Applicati__Statu__1B0907CE">
+          <End Role="Status" Type="Self.Status" Multiplicity="1" />
+          <End Role="Applications" Type="Self.Applications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Applications">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Applicati__UserI__1920BF5C">
           <End Role="Users" Type="Self.Users" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -283,48 +241,6 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Applications">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Lessons__Classro__36B12243">
-          <End Role="Classrooms" Type="Self.Classrooms" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Lessons" Type="Self.Lessons" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Classrooms">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Lessons">
-              <PropertyRef Name="ClassroomId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Lessons__GroupId__38996AB5">
-          <End Role="Groups" Type="Self.Groups" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Lessons" Type="Self.Lessons" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Groups">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Lessons">
-              <PropertyRef Name="GroupId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Lessons__UserId__37A5467C">
-          <End Role="Users" Type="Self.Users" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Lessons" Type="Self.Lessons" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Lessons">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
@@ -333,31 +249,23 @@
           <EntitySet Name="Applications" EntityType="Self.Applications" />
           <EntitySet Name="Classrooms" EntityType="Self.Classrooms" />
           <EntitySet Name="Groups" EntityType="Self.Groups" />
-          <EntitySet Name="Lessons" EntityType="Self.Lessons" />
+          <EntitySet Name="Status" EntityType="Self.Status" />
           <EntitySet Name="Users" EntityType="Self.Users" />
-          <AssociationSet Name="FK__Applicati__Class__2B3F6F97" Association="Self.FK__Applicati__Class__2B3F6F97">
+          <AssociationSet Name="FK__Applicati__Class__182C9B23" Association="Self.FK__Applicati__Class__182C9B23">
             <End Role="Classrooms" EntitySet="Classrooms" />
             <End Role="Applications" EntitySet="Applications" />
           </AssociationSet>
-          <AssociationSet Name="FK__Applicati__Group__2D27B809" Association="Self.FK__Applicati__Group__2D27B809">
+          <AssociationSet Name="FK__Applicati__Group__1A14E395" Association="Self.FK__Applicati__Group__1A14E395">
             <End Role="Groups" EntitySet="Groups" />
             <End Role="Applications" EntitySet="Applications" />
           </AssociationSet>
-          <AssociationSet Name="FK__Applicati__UserI__2C3393D0" Association="Self.FK__Applicati__UserI__2C3393D0">
-            <End Role="Users" EntitySet="Users" />
+          <AssociationSet Name="FK__Applicati__Statu__1B0907CE" Association="Self.FK__Applicati__Statu__1B0907CE">
+            <End Role="Status" EntitySet="Status" />
             <End Role="Applications" EntitySet="Applications" />
           </AssociationSet>
-          <AssociationSet Name="FK__Lessons__Classro__36B12243" Association="Self.FK__Lessons__Classro__36B12243">
-            <End Role="Classrooms" EntitySet="Classrooms" />
-            <End Role="Lessons" EntitySet="Lessons" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Lessons__GroupId__38996AB5" Association="Self.FK__Lessons__GroupId__38996AB5">
-            <End Role="Groups" EntitySet="Groups" />
-            <End Role="Lessons" EntitySet="Lessons" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Lessons__UserId__37A5467C" Association="Self.FK__Lessons__UserId__37A5467C">
+          <AssociationSet Name="FK__Applicati__UserI__1920BF5C" Association="Self.FK__Applicati__UserI__1920BF5C">
             <End Role="Users" EntitySet="Users" />
-            <End Role="Lessons" EntitySet="Lessons" />
+            <End Role="Applications" EntitySet="Applications" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -376,6 +284,7 @@
                 <ScalarProperty Name="LessonNumber" ColumnName="LessonNumber" />
                 <ScalarProperty Name="StudentsCount" ColumnName="StudentsCount" />
                 <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
                 <ScalarProperty Name="Lesson" ColumnName="Lesson" />
                 <ScalarProperty Name="Comment" ColumnName="Comment" />
               </MappingFragment>
@@ -395,22 +304,15 @@
               <MappingFragment StoreEntitySet="Groups">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="StudentsCount" ColumnName="StudentsCount" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Lessons">
-            <EntityTypeMapping TypeName="ReserveClassroomDBModel.Lessons">
-              <MappingFragment StoreEntitySet="Lessons">
+          <EntitySetMapping Name="Status">
+            <EntityTypeMapping TypeName="ReserveClassroomDBModel.Status">
+              <MappingFragment StoreEntitySet="Status">
                 <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="ClassroomId" ColumnName="ClassroomId" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="LessonNumber" ColumnName="LessonNumber" />
-                <ScalarProperty Name="StudentsCount" ColumnName="StudentsCount" />
-                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
-                <ScalarProperty Name="Lesson" ColumnName="Lesson" />
-                <ScalarProperty Name="Comment" ColumnName="Comment" />
-                <ScalarProperty Name="IsSheduled" ColumnName="IsSheduled" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
