@@ -43,16 +43,15 @@ namespace ReserveApp.ViewModel
             }
         }
 
-        private RelayCommand acceptApplicationCommand;
+        private RelayCommand<object> acceptApplicationCommand;
 
-        public RelayCommand AcceptApplicationCommand
+        public RelayCommand<object> AcceptApplicationCommand
         {
             get
             {
-                return acceptApplicationCommand ?? (acceptApplicationCommand = new RelayCommand(() =>
+                return acceptApplicationCommand ?? (acceptApplicationCommand = new RelayCommand<object>((obj) =>
                 {
-                    MessageBox.Show(SelectedApplication.Lesson);
-
+                    MessageBox.Show(obj.ToString());
                 }));
             }
         }

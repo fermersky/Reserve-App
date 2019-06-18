@@ -15,6 +15,7 @@
                     <WrapPanel>
                         <StackPanel>
                             <StackPanel>
+                                <Label x:Name="ApplicationId" Content="{Binding Id}"></Label>
                                 <Label Content="{Binding Comment}"></Label>
                                 <Label Content="{Binding Lesson}"></Label>
                                 <Label Content="{Binding Users.Fullname}"></Label>
@@ -22,7 +23,7 @@
 
                             <StackPanel Orientation="Horizontal">
                                 <Button Command="{Binding RelativeSource={RelativeSource FindAncestor, 
-                                AncestorType={x:Type Window}}, Path=DataContext.AcceptApplicationCommand}">Принять</Button>
+                                AncestorType={x:Type Window}}, Path=DataContext.AcceptApplicationCommand}" CommandParameter="{Binding ElementName=ApplicationId, Path=Content}">Принять</Button>
                                 <Button>Отклонить</Button>
                             </StackPanel>
                         </StackPanel>

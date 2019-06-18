@@ -1,4 +1,5 @@
 ﻿using ReserveApp.Model;
+using ReserveApp.View;
 using ReserveApp.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,7 @@ namespace ReserveApp
         {
             InitializeComponent();
             this.DataContext = new MainViewModel();
+            new AdminAccepting().Show();
         }
     }
 }
