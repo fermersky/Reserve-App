@@ -26,7 +26,17 @@ namespace ReserveApp
         {
             InitializeComponent();
             this.DataContext = new MainViewModel(user);
+            DateTime dateFirst = DateTime.Now;
+            DateTime buf = dateFirst;
+            DateTime dateLast = DateTime.Now.AddDays(31);
+            int j = 0;
+            for (int i = 0; i < 31; i++)
+            {
+                Button btn = new Button();
+                btn.Content = buf.ToString("dd.MM");
+                stackPanel1.Children.Add(btn);
+                buf = buf.AddDays(1);
+            }
         }
-
-    }
+        }
 }

@@ -1,0 +1,107 @@
+﻿<Window x:Class="ReserveApp.View.ReserveWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ReserveApp.View"
+        mc:Ignorable="d"
+        Title="ReserveWindow" Height="400" Width="400">
+    <Window.Resources>
+        <Style x:Key="headerStyleRight" TargetType="{x:Type Label}">
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="0 0 5 0"/>
+        </Style>
+        <Style x:Key="headerStyleLeft" TargetType="{x:Type Label}">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="5 0 0 0"/>
+        </Style>
+        <Style x:Key="bodyStyleLeft" TargetType="{x:Type Label}">
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="0 0 5 0"/>
+        </Style>
+        <Style x:Key="bodyStyleRight" TargetType="{x:Type TextBox}">
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="5 5 8 3"/>
+        </Style>
+        <Style x:Key="bodyStyleRightCB" TargetType="{x:Type ComboBox}">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="5 5 8 3"/>
+        </Style>
+        <Style x:Key="bodyStyleChBox" TargetType="{x:Type CheckBox}">
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="5 5 8 3"/>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1.25*"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="0.3*"></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="0.7*"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.ColumnSpan="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="1.5*"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="0.75*"></ColumnDefinition>
+                <ColumnDefinition Width="1.5*"></ColumnDefinition>
+                <ColumnDefinition Width="0.75*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Label Style="{StaticResource headerStyleRight}">Дата:</Label>
+            <Label Grid.Column="1" Style="{StaticResource headerStyleLeft}">13.03.2019</Label>
+            <Label Grid.Column="2" Style="{StaticResource headerStyleRight}">Пара:</Label>
+            <Label Grid.Column="3" Style="{StaticResource headerStyleLeft}">8</Label>
+            <Label Grid.Column="4" Style="{StaticResource headerStyleRight}">Аудитория:</Label>
+            <Label Grid.Column="5" Style="{StaticResource headerStyleLeft}">13</Label>
+        </Grid>
+        <Label Grid.Row="2" Style="{StaticResource bodyStyleLeft}">Преподаватель:</Label>
+        <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource bodyStyleRight}"></TextBox>
+        <!--<ComboBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource bodyStyleRightCB}"></ComboBox>-->
+
+        <Label Grid.Row="3" Style="{StaticResource bodyStyleLeft}">Предмет:</Label>
+        <TextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource bodyStyleRight}"></TextBox>
+
+        <Label Grid.Row="4" Style="{StaticResource bodyStyleLeft}">Группа:</Label>
+        <ComboBox Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource bodyStyleRightCB}"></ComboBox>
+
+        <Label Grid.Row="5" Style="{StaticResource bodyStyleLeft}">Кол-во студентов:</Label>
+        <TextBox Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource bodyStyleRight}"></TextBox>
+
+        <Label Grid.Row="6" Style="{StaticResource bodyStyleLeft}">Комментарий:</Label>
+        <TextBox Grid.Row="6" Grid.RowSpan="2" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource bodyStyleRight}"></TextBox>
+
+        <CheckBox Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource bodyStyleChBox}">По расписанию</CheckBox>
+
+        <Grid Grid.Row="9" Grid.ColumnSpan="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Button Margin="5 5 5 5">Сохранить</Button>
+            <Button Grid.Column="1" Margin="5 5 5 5">Отменить</Button>
+        </Grid>
+    </Grid>
+</Window>
