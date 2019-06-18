@@ -21,11 +21,13 @@ namespace ReserveApp.Model
         public int LessonNumber { get; set; }
         public Nullable<int> StudentsCount { get; set; }
         public int GroupId { get; set; }
+        public int StatusId { get; set; }
         public string Lesson { get; set; }
         public string Comment { get; set; }
     
         public virtual Classrooms Classrooms { get; set; }
         public virtual Groups Groups { get; set; }
+        public virtual Status Status { get; set; }
         public virtual Users Users { get; set; }
     }
 }

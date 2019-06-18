@@ -4,18 +4,16 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="3e22e7cf94a5448bb491c84a740d7ca8" Name="Diagram1">
-        <EntityTypeShape EntityType="ReserveClassroomDBModel.Applications" Width="1.5" PointX="3" PointY="3.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="ReserveClassroomDBModel.Classrooms" Width="1.5" PointX="0.75" PointY="4.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="ReserveClassroomDBModel.Groups" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ReserveClassroomDBModel.Lessons" Width="1.5" PointX="6" PointY="3.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="ReserveClassroomDBModel.Users" Width="1.5" PointX="0.75" PointY="7.25" IsExpanded="true" />
-        <AssociationConnector Association="ReserveClassroomDBModel.FK__Applicati__Class__2B3F6F97" ManuallyRouted="false" />
-        <AssociationConnector Association="ReserveClassroomDBModel.FK__Applicati__Group__2D27B809" ManuallyRouted="false" />
-        <AssociationConnector Association="ReserveClassroomDBModel.FK__Applicati__UserI__2C3393D0" ManuallyRouted="false" />
-        <AssociationConnector Association="ReserveClassroomDBModel.FK__Lessons__Classro__36B12243" ManuallyRouted="false" />
-        <AssociationConnector Association="ReserveClassroomDBModel.FK__Lessons__GroupId__38996AB5" ManuallyRouted="false" />
-        <AssociationConnector Association="ReserveClassroomDBModel.FK__Lessons__UserId__37A5467C" ManuallyRouted="false" />
+      <Diagram DiagramId="d6e6449e9df04362ba3e8a0f7bcd7100" Name="Diagram1">
+        <EntityTypeShape EntityType="ReserveClassroomDBModel.Applications" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="ReserveClassroomDBModel.Classrooms" Width="1.5" PointX="0.75" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="ReserveClassroomDBModel.Groups" Width="1.5" PointX="0.75" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ReserveClassroomDBModel.Status" Width="1.5" PointX="0.75" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="ReserveClassroomDBModel.Users" Width="1.5" PointX="0.75" PointY="10.25" IsExpanded="true" />
+        <AssociationConnector Association="ReserveClassroomDBModel.FK__Applicati__Class__182C9B23" ManuallyRouted="false" />
+        <AssociationConnector Association="ReserveClassroomDBModel.FK__Applicati__Group__1A14E395" ManuallyRouted="false" />
+        <AssociationConnector Association="ReserveClassroomDBModel.FK__Applicati__Statu__1B0907CE" ManuallyRouted="false" />
+        <AssociationConnector Association="ReserveClassroomDBModel.FK__Applicati__UserI__1920BF5C" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

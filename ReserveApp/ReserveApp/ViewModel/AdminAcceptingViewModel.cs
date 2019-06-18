@@ -62,27 +62,9 @@ namespace ReserveApp.ViewModel
         {
             using (var db = new ReserveClassroomDBEntities())
             {
-                
 
-                //db.Applications.Add(new Model.Applications()
-                //{
-                //    ClassroomId = 2,
-                //    UserId = 2,
-                //    Date = DateTime.Now,
-                //    LessonNumber = 3,
-                //    StudentsCount = 13,
-                //    GroupId = 3,
-                //    Lesson = "sdf",
-                //    Comment = "lohhhh"
-                //});
-
-                db.SaveChanges();
-
-                var apps = db.Applications
-                    .Include("Users")
-                    .ToList();
-
-                applications = apps;
+                applications = db.Applications.Include("Users").Include("Classrooms").Include("Groups")
+                    .Where(a => a.Status.Type == "InProgress").ToList();
             }
         }
     }

@@ -33,7 +33,6 @@ namespace ReserveApp
         {
             InitializeComponent();
             this.DataContext = new MainViewModel();
-            new AdminAccepting().Show();
         }
     }
 }
