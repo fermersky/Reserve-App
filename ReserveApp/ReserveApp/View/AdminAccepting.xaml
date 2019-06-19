@@ -7,9 +7,34 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         mc:Ignorable="d"
-        Title="Заявки" Height="700" Width="780">
+        Title="Заявки" Height="700" Width="400">
     <Grid>
-        <ListView x:Name="ApplicationsList" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70"></RowDefinition>
+            <RowDefinition Height="120"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <Label Grid.Row="0" Margin="10 10 0 0" FontSize="25">Заявки</Label>
+        <Button Grid.Row="0" Margin="0 60 0 0" VerticalAlignment="Top" Height="2"></Button>
+
+        <StackPanel Orientation="Vertical" Grid.Row="1">
+            <StackPanel Orientation="Horizontal">
+                <Label FontSize="20">Дата:</Label>
+                <Label FontSize="20" FontWeight="Bold" Content="{Binding CurrentDate}"></Label>
+                <Label FontSize="20">Пара:</Label>
+                <Label FontSize="20" FontWeight="Bold" Content="{Binding LessonNumber}"></Label>
+                <Label FontSize="20">Аудитория:</Label>
+                <Label FontSize="20" FontWeight="Bold" Content="{Binding ClassroomNumber}"></Label>
+                
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label FontSize="20">Свободных мест в аудитории:</Label>
+                <Label FontSize="20" FontWeight="Bold" Content="{Binding AvaliableSeatCount, UpdateSourceTrigger=PropertyChanged}"></Label>
+            </StackPanel>
+        </StackPanel>
+
+        <ListView ItemsSource="{Binding ApplicationView, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" x:Name="ApplicationsList" Margin="0,105,0,0" Grid.RowSpan="2">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <WrapPanel>
@@ -40,19 +65,44 @@
                                         <Label Content="{Binding Classrooms.Number}" FontSize="14" FontWeight="Bold"></Label>
                                     </StackPanel>
                                     <StackPanel Margin="0 -5 0 0" Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="Door" Margin="0 8 0 0" />
+                                        <Label FontSize="14">Пара:</Label>
+                                        <Label Content="{Binding LessonNumber}" FontSize="14" FontWeight="Bold"></Label>
+                                    </StackPanel>
+                                    <StackPanel Margin="0 -5 0 0" Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="Door" Margin="0 8 0 0" />
+                                        <Label FontSize="14">К-во мест:</Label>
+                                        <Label Content="{Binding StudentsCount}" FontSize="14" FontWeight="Bold"></Label>
+                                    </StackPanel>
+                                    <StackPanel Margin="0 -5 0 0" Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="Door" Margin="0 8 0 0" />
+                                        <Label FontSize="14">Статус:</Label>
+                                        <Label Content="{Binding Status.Type}" FontSize="14" FontWeight="Bold"></Label>
+                                    </StackPanel>
+                                    <StackPanel Margin="0 -5 0 0" Orientation="Horizontal">
                                         <materialDesign:PackIcon Kind="CommentProcessing" Margin="0 8 0 0" />
                                         <Label FontSize="14" Content="Lorem ipsum dolor sit amet."></Label>
                                     </StackPanel>
+                                    
                                 </StackPanel>
 
                                 <StackPanel Margin="0 20 0 0" Orientation="Horizontal">
-                                    <Button Command="{Binding RelativeSource={RelativeSource FindAncestor, 
-                                        AncestorType={x:Type Window}}, Path=DataContext.AcceptApplicationCommand}" CommandParameter="{Binding ElementName=ApplicationId, Path=Content}">Принять</Button>
-                                    <Button Margin="100 0 0 0">Отклонить</Button>
+                                    <Button
+                                        
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.AcceptApplicationCommand}" 
+                                        CommandParameter="{Binding ElementName=ApplicationId, Path=Content}" 
+                                        Content="Принять">
+                                    </Button>
+                                    <Button 
+                                        Margin="100 0 0 0"
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.DeleteApplicationCommand}" 
+                                        CommandParameter="{Binding ElementName=ApplicationId, Path=Content}" 
+                                        Content="Удалить">
+                                    </Button>
                                 </StackPanel>
                             </StackPanel>
                         </materialDesign:Card>
-                        
+
                     </WrapPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
@@ -62,7 +112,6 @@
                                ScrollViewer.HorizontalScrollBarVisibility="Disabled"></WrapPanel>
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
-
         </ListView>
     </Grid>
 </Window>

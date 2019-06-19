@@ -23,10 +23,9 @@ namespace ReserveApp.View
         public AdminAccepting()
         {
             InitializeComponent();
-            this.DataContext = new AdminAcceptingViewModel(DateTime.Now, 1);
+            this.DataContext = new AdminAcceptingViewModel(date: new DateTime(2019, 6, 19), classroomNumber: 4, lessonNumber: 4);
 
-            ApplicationsList.ItemsSource = (this.DataContext as AdminAcceptingViewModel).Applications;
-            ApplicationsList.SelectedItem = (this.DataContext as AdminAcceptingViewModel).SelectedApplication;
+            // ApplicationsList.ItemsSource = (this.DataContext as AdminAcceptingViewModel).ApplicationView;
         }
     }
 }
