@@ -34,6 +34,10 @@ namespace ReserveApp
             {
                 Button btn = new Button();
                 btn.Content = buf.ToString("dd.MM");
+                btn.FontSize = 9;
+                btn.Width = 54;
+                btn.Margin = new Thickness(3.5, 0, 2, 0);
+                btn.Height = 30;
                 stackPanel1.Children.Add(btn);
                 buf = buf.AddDays(1);
             }

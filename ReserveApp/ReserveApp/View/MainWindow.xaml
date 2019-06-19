@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-        Title="MainWindow" Height="680" Width="1520">
+        Title="MainWindow" Height="1080" Width="1920">
     <Window.Resources>
         <!--<Style x:Key="dateStyle" TargetType="{x:Type Button}">
             <Setter Property="Margin" Value="1"/>
@@ -108,7 +108,7 @@
         </Grid.RowDefinitions>
 
         <!--Кнопки ДАТЫ - НАЧАЛО--> 
-        <StackPanel Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="19" Orientation="Horizontal" HorizontalAlignment="Left" Name="stackPanel1" VerticalAlignment="Stretch" Margin="0" Width="1420"></StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="19" Orientation="Horizontal" HorizontalAlignment="Left" Name="stackPanel1" VerticalAlignment="Stretch" Margin="0" Width="auto"></StackPanel>
         
         <!--Кнопки ДАТЫ - КОНЕЦ-->
 
