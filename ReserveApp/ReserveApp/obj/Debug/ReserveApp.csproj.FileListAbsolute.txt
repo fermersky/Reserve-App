@@ -84,3 +84,4 @@ C:\Users\student\Desktop\проект\Team-Project\ReserveApp\ReserveApp\obj\Deb
 C:\Users\student\Desktop\проект\Team-Project\ReserveApp\ReserveApp\obj\Debug\ReserveApp.pdb
 C:\Users\Данил\Desktop\Team-Project\ReserveApp\ReserveApp\obj\Debug\View\AdminAccepting.g.cs
 C:\Users\Данил\Desktop\Team-Project\ReserveApp\ReserveApp\obj\Debug\View\AdminAccepting.baml
+C:\Users\Данил\Desktop\Team-Project\ReserveApp\ReserveApp\obj\Debug\GeneratedInternalTypeHelper.g.cs

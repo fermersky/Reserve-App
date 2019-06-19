@@ -37,7 +37,8 @@ namespace ReserveApp.ViewModel
                         {
                             currentApp.StatusId = 2;
 
-                            db.Applications.AddOrUpdate(currentApp); // update record in Application db table
+                            // update record in Application db table
+                            db.Applications.AddOrUpdate(currentApp); 
                             db.SaveChanges();
 
                             // then refresh local collection Applications which binded
@@ -51,9 +52,7 @@ namespace ReserveApp.ViewModel
                         }
 
                         else
-                        {
                             MessageBox.Show("Люди не влезут!");
-                        }
                     } 
                 })); 
             }

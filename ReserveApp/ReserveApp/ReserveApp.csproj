@@ -104,6 +104,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Helpers\EnablingAcceptButtonConverter.cs" />
     <Compile Include="Model\Applications.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>

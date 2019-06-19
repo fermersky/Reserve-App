@@ -6,8 +6,12 @@
         xmlns:local="clr-namespace:ReserveApp.View"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:local1="clr-namespace:ReserveApp.Helpers"
         mc:Ignorable="d"
         Title="Заявки" Height="700" Width="400">
+    <Window.Resources>
+        <local1:EnablingAcceptButtonConverter x:Key="EnablingAcceptButtonConverter"></local1:EnablingAcceptButtonConverter>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="70"></RowDefinition>
@@ -88,7 +92,7 @@
 
                                 <StackPanel Margin="0 20 0 0" Orientation="Horizontal">
                                     <Button
-                                        
+                                        IsEnabled="{Binding Mode=OneWay, ElementName=ApplicationId, Path=Content, Converter={StaticResource EnablingAcceptButtonConverter}}"
                                         Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.AcceptApplicationCommand}" 
                                         CommandParameter="{Binding ElementName=ApplicationId, Path=Content}" 
                                         Content="Принять">
