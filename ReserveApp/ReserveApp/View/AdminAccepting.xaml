@@ -8,7 +8,7 @@
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:local1="clr-namespace:ReserveApp.Helpers"
         mc:Ignorable="d"
-        Title="Заявки" Height="700" Width="400">
+        Title="Заявки" Height="568" Width="771">
     <Window.Resources>
         <local1:EnablingAcceptButtonConverter x:Key="EnablingAcceptButtonConverter"></local1:EnablingAcceptButtonConverter>
     </Window.Resources>
@@ -19,22 +19,22 @@
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
         
-        <Label Grid.Row="0" Margin="10 10 0 0" FontSize="25">Заявки</Label>
+        <Label Grid.Row="0" Margin="10 10 0 0" FontWeight="Bold" HorizontalAlignment="Center" FontSize="25">Заявки</Label>
         <Button Grid.Row="0" Margin="0 60 0 0" VerticalAlignment="Top" Height="2"></Button>
 
-        <StackPanel Orientation="Vertical" Grid.Row="1">
+        <StackPanel  HorizontalAlignment="Center" Orientation="Vertical" Grid.Row="1">
             <StackPanel Orientation="Horizontal">
                 <Label FontSize="20">Дата:</Label>
-                <Label FontSize="20" FontWeight="Bold" Content="{Binding CurrentDate}"></Label>
+                <Label FontSize="20" Foreground="#673ab7" FontWeight="Bold" Content="{Binding CurrentDate}"></Label>
                 <Label FontSize="20">Пара:</Label>
-                <Label FontSize="20" FontWeight="Bold" Content="{Binding LessonNumber}"></Label>
+                <Label FontSize="20" Foreground="#673ab7" FontWeight="Bold" Content="{Binding LessonNumber}"></Label>
                 <Label FontSize="20">Аудитория:</Label>
-                <Label FontSize="20" FontWeight="Bold" Content="{Binding ClassroomNumber}"></Label>
+                <Label  FontSize="20" Foreground="#673ab7" FontWeight="Bold" Content="{Binding ClassroomNumber}"></Label>
                 
             </StackPanel>
-            <StackPanel Orientation="Horizontal">
+            <StackPanel HorizontalAlignment="Center"  Orientation="Horizontal">
                 <Label FontSize="20">Свободных мест в аудитории:</Label>
-                <Label FontSize="20" FontWeight="Bold" Content="{Binding AvaliableSeatCount, UpdateSourceTrigger=PropertyChanged}"></Label>
+                <Label  FontSize="20"  Foreground="#673ab7" FontWeight="Bold" Content="{Binding AvaliableSeatCount, UpdateSourceTrigger=PropertyChanged}"></Label>
             </StackPanel>
         </StackPanel>
 
@@ -64,35 +64,30 @@
                                         <Label Content="{Binding Users.Fullname}" FontSize="14" FontWeight="Bold"></Label>
                                     </StackPanel>
                                     <StackPanel Margin="0 -5 0 0" Orientation="Horizontal">
-                                        <materialDesign:PackIcon Kind="Door" Margin="0 8 0 0" />
-                                        <Label FontSize="14">Аудитория:</Label>
-                                        <Label Content="{Binding Classrooms.Number}" FontSize="14" FontWeight="Bold"></Label>
+                                        <materialDesign:PackIcon Kind="BookOpenVariant" Margin="0 8 0 0" />
+                                        <Label FontSize="14">Предмет:</Label>
+                                        <Label Content="{Binding Lesson}" FontSize="14" FontWeight="Bold"></Label>
                                     </StackPanel>
                                     <StackPanel Margin="0 -5 0 0" Orientation="Horizontal">
-                                        <materialDesign:PackIcon Kind="Door" Margin="0 8 0 0" />
-                                        <Label FontSize="14">Пара:</Label>
-                                        <Label Content="{Binding LessonNumber}" FontSize="14" FontWeight="Bold"></Label>
-                                    </StackPanel>
-                                    <StackPanel Margin="0 -5 0 0" Orientation="Horizontal">
-                                        <materialDesign:PackIcon Kind="Door" Margin="0 8 0 0" />
-                                        <Label FontSize="14">К-во мест:</Label>
+                                        <materialDesign:PackIcon Kind="AccountGroupOutline" Margin="0 8 0 0" />
+                                        <Label FontSize="14">К-во студентов:</Label>
                                         <Label Content="{Binding StudentsCount}" FontSize="14" FontWeight="Bold"></Label>
                                     </StackPanel>
                                     <StackPanel Margin="0 -5 0 0" Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="Comment" Margin="0 8 0 0" />
+                                        <Label FontSize="14">Комментарий:</Label>
+                                        <Label Content="{Binding Comment}" FontSize="14" FontWeight="Bold"></Label>
+                                    </StackPanel>
+                                    <StackPanel Visibility="Hidden" Margin="0 -5 0 0" Orientation="Horizontal">
                                         <materialDesign:PackIcon Kind="Door" Margin="0 8 0 0" />
                                         <Label FontSize="14">Статус:</Label>
-                                        <Label Content="{Binding Status.Type}" FontSize="14" FontWeight="Bold"></Label>
+                                        <Label x:Name="ApplicationsStatus" Content="{Binding Status.Type}" FontSize="14" FontWeight="Bold"></Label>
                                     </StackPanel>
-                                    <StackPanel Margin="0 -5 0 0" Orientation="Horizontal">
-                                        <materialDesign:PackIcon Kind="CommentProcessing" Margin="0 8 0 0" />
-                                        <Label FontSize="14" Content="Lorem ipsum dolor sit amet."></Label>
-                                    </StackPanel>
-                                    
                                 </StackPanel>
 
                                 <StackPanel Margin="0 20 0 0" Orientation="Horizontal">
                                     <Button
-                                        IsEnabled="{Binding Mode=OneWay, ElementName=ApplicationId, Path=Content, Converter={StaticResource EnablingAcceptButtonConverter}}"
+                                        IsEnabled="{Binding Mode=OneWay, ElementName=ApplicationsStatus, Path=Content, Converter={StaticResource EnablingAcceptButtonConverter}}"
                                         Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.AcceptApplicationCommand}" 
                                         CommandParameter="{Binding ElementName=ApplicationId, Path=Content}" 
                                         Content="Принять">
