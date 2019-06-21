@@ -17,6 +17,7 @@
             <RowDefinition Height="70"></RowDefinition>
             <RowDefinition Height="120"></RowDefinition>
             <RowDefinition></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
         </Grid.RowDefinitions>
         
         <Label Grid.Row="0" Margin="10 10 0 0" FontWeight="Bold" HorizontalAlignment="Center" FontSize="25">Заявки</Label>
@@ -95,6 +96,7 @@
                                         Content="Принять">
                                     </Button>
                                     <Button 
+                                        Background="#f44336"
                                         Margin="100 0 0 0"
                                         Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.DeleteApplicationCommand}" 
                                         CommandParameter="{Binding ElementName=ApplicationId, Path=Content}" 
@@ -114,5 +116,6 @@
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
+        <TextBlock Margin="0 70 0 0" Grid.Row="3" Width="300"  Padding="0 8 0 0" x:Name="errorTb"  Height="30" Background="#F5D0D5" Foreground="#671322" FontWeight="Bold" TextAlignment="Center">An error</TextBlock>
     </Grid>
 </Window>

@@ -21,27 +21,48 @@ namespace ReserveApp.View
     /// </summary>
     public partial class AdminAccepting : Window
     {
+        private Color ErrorBackgroundColor = Color.FromRgb(245, 208, 213);
+        private Color ErrorForegroundColor = Color.FromRgb(103, 19, 34);
+        private Color SuccessBackgroundColor = Color.FromRgb(198, 227, 253);
+        private Color SuccessForegroundColor = Color.FromRgb(7, 61, 120);
+
         public AdminAccepting()
         {
             InitializeComponent();
             this.DataContext = new AdminAcceptingViewModel(date: new DateTime(2019, 6, 19), classroomNumber: 4, lessonNumber: 4);
             var dc = this.DataContext as AdminAcceptingViewModel;
-            dc.HideApplication += this.HideApplication;
-            // ApplicationsList.ItemsSource = (this.DataContext as AdminAcceptingViewModel).ApplicationView;
+            dc.ShowErrorMsg += ShowErrorMsg;
+            dc.ShowSuccessMsg += ShowSuccessMsg;
         }
 
-        public void HideApplication()
+        public void ShowErrorMsg(string msg) // maniulates with error msg label
         {
             var anim = new ThicknessAnimationUsingKeyFrames();
 
-            var listViewItem = ApplicationsList.SelectedItem as ListViewItem;
+            errorTb.Text = msg;
+            errorTb.Background = new SolidColorBrush(ErrorBackgroundColor);
+            errorTb.Foreground = new SolidColorBrush(ErrorForegroundColor);
 
-            anim.KeyFrames.Add(new LinearThicknessKeyFrame(new Thickness(0, -18, 0, 0), KeyTime.FromPercent(0.30)));
-            anim.KeyFrames.Add(new LinearThicknessKeyFrame(new Thickness(0, -20, 0, 0), KeyTime.FromPercent(1.00)));
-            anim.Duration = TimeSpan.FromSeconds(1);
+            anim.KeyFrames.Add(new LinearThicknessKeyFrame(new Thickness(0, 8, 0, 0), KeyTime.FromPercent(0.4)));
+            anim.Duration = TimeSpan.FromSeconds(0.8);
             anim.AutoReverse = true;
 
-            listViewItem.BeginAnimation(TextBlock.MarginProperty, anim);
+            errorTb.BeginAnimation(TextBlock.MarginProperty, anim);
+        }
+
+        public void ShowSuccessMsg(string msg) 
+        {
+            var anim = new ThicknessAnimationUsingKeyFrames();
+
+            errorTb.Text = msg;
+            errorTb.Background = new SolidColorBrush(SuccessBackgroundColor);
+            errorTb.Foreground = new SolidColorBrush(SuccessForegroundColor);
+
+            anim.KeyFrames.Add(new LinearThicknessKeyFrame(new Thickness(0, 0, 0, 0), KeyTime.FromPercent(0.4)));
+            anim.Duration = TimeSpan.FromSeconds(0.8);
+            anim.AutoReverse = true;
+
+            errorTb.BeginAnimation(TextBlock.MarginProperty, anim);
         }
     }
 }

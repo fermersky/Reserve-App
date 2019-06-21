@@ -38,24 +38,24 @@ namespace ReserveApp.ViewModel
                             currentApp.StatusId = 2;
 
                             // update record in Application db table
-                            db.Applications.AddOrUpdate(currentApp); 
+                            db.Applications.AddOrUpdate(currentApp);
                             await db.SaveChangesAsync();
 
                             // then refresh local collection Applications which binded
                             Applications = db.Applications.Include("Users").Include("Classrooms").Include("Groups").ToList();
-                                
+
                             ApplicationView = CollectionViewSource.GetDefaultView(Applications);
                             ApplicationView.Filter = ApplicationRefresh;
 
                             // update property after accepting application
                             AvaliableSeatCount = getAvaliableSeatCount();
 
-                            MessageBox.Show("Заявка одобрена!");
+                            ShowSuccessMsg("Заявка одобрена!");
 
                         }
 
                         else
-                            MessageBox.Show("Люди не влезут!");
+                            ShowErrorMsg("Люди не влезут");
                     } 
                 })); 
             }
@@ -92,7 +92,7 @@ namespace ReserveApp.ViewModel
                         // update property after accepting application
                         AvaliableSeatCount = getAvaliableSeatCount();
 
-                        // HideApplication?.Invoke();
+                        ShowSuccessMsg("Заявка удалена");
                     }
                 }));
             }
@@ -225,6 +225,9 @@ namespace ReserveApp.ViewModel
             get { return applicationView; }
         }
 
-        public Action HideApplication { get; internal set; }
+        //
+
+        public Action<string> ShowErrorMsg { get; internal set; }
+        public Action<string> ShowSuccessMsg { get; internal set; }
     }
 }
