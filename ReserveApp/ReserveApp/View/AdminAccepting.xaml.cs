@@ -39,30 +39,37 @@ namespace ReserveApp.View
         {
             var anim = new ThicknessAnimationUsingKeyFrames();
 
-            errorTb.Text = msg;
-            errorTb.Background = new SolidColorBrush(ErrorBackgroundColor);
-            errorTb.Foreground = new SolidColorBrush(ErrorForegroundColor);
+            if (errorTb.Margin == (new Thickness(0, 70, 0, 0)))
+            {
 
-            anim.KeyFrames.Add(new LinearThicknessKeyFrame(new Thickness(0, 8, 0, 0), KeyTime.FromPercent(0.4)));
-            anim.Duration = TimeSpan.FromSeconds(0.8);
-            anim.AutoReverse = true;
+                errorTb.Text = msg;
+                errorTb.Background = new SolidColorBrush(ErrorBackgroundColor);
+                errorTb.Foreground = new SolidColorBrush(ErrorForegroundColor);
 
-            errorTb.BeginAnimation(TextBlock.MarginProperty, anim);
+                anim.KeyFrames.Add(new LinearThicknessKeyFrame(new Thickness(0, 8, 0, 0), KeyTime.FromPercent(0.4)));
+                anim.Duration = TimeSpan.FromSeconds(0.8);
+                anim.AutoReverse = true;
+
+                errorTb.BeginAnimation(TextBlock.MarginProperty, anim);
+            }
         }
 
         public void ShowSuccessMsg(string msg) 
         {
-            var anim = new ThicknessAnimationUsingKeyFrames();
+            if (errorTb.Margin == (new Thickness(0, 70, 0, 0)))
+            {
+                var anim = new ThicknessAnimationUsingKeyFrames();
 
-            errorTb.Text = msg;
-            errorTb.Background = new SolidColorBrush(SuccessBackgroundColor);
-            errorTb.Foreground = new SolidColorBrush(SuccessForegroundColor);
+                errorTb.Text = msg;
+                errorTb.Background = new SolidColorBrush(SuccessBackgroundColor);
+                errorTb.Foreground = new SolidColorBrush(SuccessForegroundColor);
 
-            anim.KeyFrames.Add(new LinearThicknessKeyFrame(new Thickness(0, 0, 0, 0), KeyTime.FromPercent(0.4)));
-            anim.Duration = TimeSpan.FromSeconds(0.8);
-            anim.AutoReverse = true;
+                anim.KeyFrames.Add(new LinearThicknessKeyFrame(new Thickness(0, 0, 0, 0), KeyTime.FromPercent(0.4)));
+                anim.Duration = TimeSpan.FromSeconds(0.8);
+                anim.AutoReverse = true;
 
-            errorTb.BeginAnimation(TextBlock.MarginProperty, anim);
+                errorTb.BeginAnimation(TextBlock.MarginProperty, anim);
+            }
         }
     }
 }
