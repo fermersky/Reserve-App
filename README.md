@@ -23,3 +23,6 @@
 ```$ git reset HEAD <file>``` - отменить индексацию файла<br>
 ```$ git checkout -- <file>``` - откатить изменения в файле к тому виду, в котором он выглядел в последнем комиите<br>
 ```$ git revert HEAD --no-edit``` - отменить последний коммит (глобальный ctrl-z ко всему проекту ^-^) <br> 
+  
+ git checkout dev
+ git checkout -b newbranch
