@@ -23,7 +23,7 @@ namespace ReserveApp.ViewModel
         {
             get
             {
-                return acceptApplicationCommand ?? (acceptApplicationCommand = new RelayCommand<object>((obj) =>
+                return acceptApplicationCommand ?? (acceptApplicationCommand = new RelayCommand<object>(async (obj) =>
                 {
                     var applicationId = (int)obj; // get id of application was clicked
 
@@ -39,7 +39,7 @@ namespace ReserveApp.ViewModel
 
                             // update record in Application db table
                             db.Applications.AddOrUpdate(currentApp); 
-                            db.SaveChanges();
+                            await db.SaveChangesAsync();
 
                             // then refresh local collection Applications which binded
                             Applications = db.Applications.Include("Users").Include("Classrooms").Include("Groups").ToList();
@@ -49,6 +49,9 @@ namespace ReserveApp.ViewModel
 
                             // update property after accepting application
                             AvaliableSeatCount = getAvaliableSeatCount();
+
+                            MessageBox.Show("Заявка одобрена!");
+
                         }
 
                         else
@@ -58,7 +61,42 @@ namespace ReserveApp.ViewModel
             }
         }
 
-        
+        //
+
+        private RelayCommand<object> deleteApplicationCommand;
+
+        public RelayCommand<object> DeleteApplicationCommand
+        {
+            get
+            {
+                return deleteApplicationCommand ?? (deleteApplicationCommand = new RelayCommand<object>(async (obj) =>
+                {
+                    var applicationId = (int)obj; // get id of application was clicked
+
+                    // MessageBox.Show(applicationId.ToString());
+
+                    using (var db = new ReserveClassroomDBEntities())
+                    {
+                        var appForRemove = db.Applications.FirstOrDefault(a => a.Id == applicationId);
+
+                        // MessageBox.Show(listViewSelectedIndex.ToString());
+
+                        db.Applications.Remove(appForRemove);
+                        await db.SaveChangesAsync();
+
+                        Applications = db.Applications.Include("Users").Include("Classrooms").Include("Groups").ToList();
+
+                        ApplicationView = CollectionViewSource.GetDefaultView(Applications);
+                        ApplicationView.Filter = ApplicationRefresh;
+
+                        // update property after accepting application
+                        AvaliableSeatCount = getAvaliableSeatCount();
+
+                        // HideApplication?.Invoke();
+                    }
+                }));
+            }
+        }
 
         public AdminAcceptingViewModel(DateTime date, int classroomNumber, int lessonNumber)
         {
@@ -166,6 +204,17 @@ namespace ReserveApp.ViewModel
             set { Set(ref avaliableSeatCount, value); }
         }
 
+        //
+
+        private int listViewSelectedIndex;
+
+        public int ListViewSelectedIndex
+        {
+            get { return listViewSelectedIndex; }
+            set { Set(ref listViewSelectedIndex, value); }
+        }
+
+
         private ICollectionView applicationView;
         public ICollectionView ApplicationView
         {
@@ -175,5 +224,7 @@ namespace ReserveApp.ViewModel
             }
             get { return applicationView; }
         }
+
+        public Action HideApplication { get; internal set; }
     }
 }

@@ -38,7 +38,7 @@
             </StackPanel>
         </StackPanel>
 
-        <ListView ItemsSource="{Binding ApplicationView, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" x:Name="ApplicationsList" Margin="0,105,0,0" Grid.RowSpan="2">
+        <ListView SelectedIndex="{Binding ListViewSelectedIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding ApplicationView, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" x:Name="ApplicationsList" Margin="0,105,0,0" Grid.RowSpan="2">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <WrapPanel>
@@ -75,8 +75,10 @@
                                     </StackPanel>
                                     <StackPanel Margin="0 -5 0 0" Orientation="Horizontal">
                                         <materialDesign:PackIcon Kind="Comment" Margin="0 8 0 0" />
-                                        <Label FontSize="14">Комментарий:</Label>
-                                        <Label Content="{Binding Comment}" FontSize="14" FontWeight="Bold"></Label>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label FontSize="14">Комментарий:</Label>
+                                            <TextBlock Margin="0 5 0 0" Width="200" TextWrapping="Wrap" Text="{Binding Comment}" FontSize="14" FontWeight="Bold"></TextBlock>
+                                        </StackPanel>
                                     </StackPanel>
                                     <StackPanel Visibility="Hidden" Margin="0 -5 0 0" Orientation="Horizontal">
                                         <materialDesign:PackIcon Kind="Door" Margin="0 8 0 0" />

@@ -1,20 +1,21 @@
-create database ReserveClassroomDB
+create database ReserveClassroomDB2
 
 create table [Groups](
 	[Id] int primary key identity,
-	[Name] nvarchar(225) not null
+	[Name] nvarchar(225) not null,
+	[StudentsCount] int not null
 );
 
 insert into Groups values 
-(N'СТ/РПО/17/5 (18:00)'),
-(N'СТ/РПО/17/2 (18:00)'),
-(N'ПС/РПО/16/5'),
-(N'ПС/РПО/16/2'),
-(N'СТ/КГиД/17/2 (18:00)'),
-(N'СТ/СиКБ/16/5 (18:00)'),
-(N'ПС/КГиД/17/5')
+(N'СТ/РПО/17/5 (18:00)', 15),
+(N'СТ/РПО/17/2 (18:00)', 15),
+(N'ПС/РПО/16/5', 15),
+(N'ПС/РПО/16/2', 15),
+(N'СТ/КГиД/17/2 (18:00)', 15),
+(N'СТ/КГиД/16/5 (18:00)', 15),
+(N'СТ/СиКБ/17/5', 15)
 
-create table [Users]( -- преподы + админы
+create table [Users]( -- пользователи
 	[Id] int primary key identity,
 	[Login] nvarchar(255) not null,
 	[Password] nvarchar(255) not null,
@@ -23,11 +24,10 @@ create table [Users]( -- преподы + админы
 );
 
 insert into Users values
-('ruban123', 'rubanan', 'User', N'Рубан Сергей Анатольевич'),
-('marchenko321', 'tolyan', 'User', N'Марченко Анатолий Сергеевич'),
-('gmurmil', '123', 'Admin', N'Мурмиль Галина Александровна')
+('admin', 'admin', 'admin', N'admin'),
+('user', 'user', 'user', N'user')
 
-create table [Classrooms]( -- аудитории
+create table [Classrooms]( -- аудиториии
 	[Id] int primary key identity,
 	[Number] int not null,
 	[MaxPersonCount] int not null
@@ -38,55 +38,40 @@ insert into Classrooms values
 (6, 15), (7, 15), (8, 15), (9, 15), (10, 15),
 (11, 15), (12, 15), (13, 15), (14, 15), (15, 15)
 
+create table [Status]
+(
+	[Id] int primary key identity,
+	[Type] nvarchar(30) not null -- Sheduled, Accepted, InProgress (на рассмотрении, все созданные заявки юзером будут получать этот статус)
+)
+insert into [Status] values
+('Sheduled'), ('Accepted'), ('InProgress')
 
-create table [Applications]( -- заявки на консультации
+create table [Applications]( -- таблица-оливье
 	[Id] int primary key identity,
 	[ClassroomId] int foreign key references [Classrooms]([Id]) on delete cascade not null,
-	[UserId] int foreign key references Users([Id]) on delete cascade not null, -- преподователь
+	[UserId] int foreign key references Users([Id]) on delete cascade not null, 
 	[Date] date not null,
-	[LessonNumber] int not null, -- номер пары [1-8]
+	[LessonNumber] int not null, --[1-8]
 	[StudentsCount] int,
 	[GroupId] int foreign key references Groups([Id]) on delete cascade not null,
-	[Lesson] nvarchar(255) not null, -- предмет
+	[StatusId] int foreign key references [Status]([Id]) default 3 not null,
+	[Lesson] nvarchar(255) not null, --
 	[Comment] nvarchar(255)
 );
 
-create table [Lessons]( -- пары по расписанию + утвержденные заявки
-	[Id] int primary key identity not null,
-	[ClassroomId] int foreign key references [Classrooms]([Id]) on delete cascade not null,
-	[UserId] int foreign key references Users([Id]) on delete cascade not null,
-	[Date] date not null,
-	[LessonNumber] int not null, -- номер пары [1-8]
-	[StudentsCount] int,
-	[GroupId] int foreign key references Groups([Id]) on delete cascade not null,
-	[Lesson] nvarchar(255) not null, -- предмет
-	[Comment] nvarchar(255),
-	[IsSheduled] bit not null -- это пара по распианию или консультация
-);
-
-select * from Lessons
-
-
-
-insert into Lessons values 
--- аудитория, препод, дата, номер пары [1-8], к-во студентов, группа, предмет, коммент, по расписанию или нет
-(6, 1, '20190303', 7, 15, 1, N'Net programming', N'Comment', 1),
-(6, 1, '20190303', 8, 15, 1, N'Net programming', N'Comment', 1),
-(3, 2, '20190303', 7, 15, 2, N'WPF', N'Comment', 1),
-(3, 2, '20190303', 8, 15, 2, N'WPF', N'Comment', 1),
-(4, 2, '20190304', 7, 15, 1, N'WPF', N'Comment', 1),
-(4, 2, '20190304', 8, 15, 1, N'WPF', N'Comment', 1),
-(7, 1, '20190304', 1, 15, 2, N'WPF', N'Comment', 1),
-(7, 1, '20190304', 2, 15, 2, N'WPF', N'Comment', 1),
-(4, 2, '20190305', 7, 15, 2, N'WPF', N'Comment', 1),
-(4, 2, '20190305', 8, 15, 2, N'WPF', N'Comment', 1),
-(4, 2, '20190305', 7, 15, 2, N'WPF', N'Comment', 1),
-(4, 2, '20190305', 8, 15, 2, N'WPF', N'Comment', 1)
-
-
-
-
-
+insert into [Applications] values 
+(6, 1, '20190303', 7, 15, 1, 1, N'Net programming', N'Comment'),
+(6, 1, '20190303', 8, 15, 1, 1, N'Net programming', N'Comment'),
+(3, 2, '20190303', 7, 15, 2, 1, N'WPF', N'Comment'),
+(3, 2, '20190303', 8, 15, 2, 1, N'WPF', N'Comment'),
+(4, 2, '20190304', 7, 15, 1, 1, N'WPF', N'Comment'),
+(4, 2, '20190304', 8, 15, 1, 1, N'WPF', N'Comment'),
+(7, 1, '20190304', 1, 15, 2, 1, N'WPF', N'Comment'),
+(7, 1, '20190304', 2, 15, 2, 1, N'WPF', N'Comment'),
+(4, 2, '20190305', 7, 15, 2, 1, N'WPF', N'Comment'),
+(4, 2, '20190305', 8, 15, 2, 1, N'WPF', N'Comment'),
+(4, 2, '20190305', 7, 15, 2, 1, N'WPF', N'Comment'),
+(4, 2, '20190305', 8, 15, 2, 1, N'WPF', N'Comment')
 
 
 
