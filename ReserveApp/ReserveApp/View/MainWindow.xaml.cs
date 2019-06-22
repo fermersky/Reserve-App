@@ -14,6 +14,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Data.Entity;
+using System.Collections.ObjectModel;
+using GalaSoft.MvvmLight;
+using System.Globalization;
 
 namespace ReserveApp
 {
@@ -25,18 +29,20 @@ namespace ReserveApp
         public MainWindow(Users user) // user is a param which sended from AuthViewModel [User or Admin]
         {
             InitializeComponent();
-            this.DataContext = new MainViewModel(user);
-            DateTime dateFirst = DateTime.Now;
-            DateTime buf = dateFirst;
-            DateTime dateLast = DateTime.Now.AddDays(31);
-            int j = 0;
+            this.DataContext = new MainViewModel(user, this);
+
+            DatesDictionary = new List<DateSelector>();
+            DateTime dateFirst = DateTime.Now; /*new DateTime(2019, 06, 01)*/
+            listApps = new ReserveClassroomDBEntities().Applications.ToList();
             for (int i = 0; i < 31; i++)
             {
-                Button btn = new Button();
-                btn.Content = buf.ToString("dd.MM");
-                stackPanel1.Children.Add(btn);
-                buf = buf.AddDays(1);
+                DateSelector dateSelector = new DateSelector(user, listApps) { Date = dateFirst, IsChanged = false }; /*, ColorBrush = new SolidColorBrush(Color.FromRgb(103, 58, 183)) */
+                DatesDictionary.Add(dateSelector);
+                dateFirst = dateFirst.AddDays(1);
             }
+            dates.ItemsSource = DatesDictionary;
         }
-        }
+        List<DateSelector> DatesDictionary;
+        List<Applications> listApps;
+    }
 }

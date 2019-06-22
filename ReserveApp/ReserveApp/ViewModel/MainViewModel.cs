@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Data.Entity;
 using ReserveApp.Model;
+using System.Windows.Media;
+using System.Collections.ObjectModel;
+using System.Windows.Controls;
 
 namespace ReserveApp.ViewModel
 {
@@ -27,8 +30,8 @@ namespace ReserveApp.ViewModel
 
                     MessageBox.Show(db.Applications.FirstOrDefault(u => u.Id == 1).Lesson);
                     LabelTxt = "ok";
-                }, 
-                () => 
+                },
+                () =>
                 {
                     // условие выполнения команды
 
@@ -47,9 +50,19 @@ namespace ReserveApp.ViewModel
             // метод Set устанавливает новое значение и вызывает PropertyChanged
         }
 
-        public MainViewModel(Users user)
+        public List<Applications> listApps;
+        public List<Classrooms> listClassrooms;
+
+        MainWindow window;
+
+        public MainViewModel(Users user, MainWindow oldWindow)
         {
             labelTxt = "click btn before";
+            this.window = oldWindow;
+            listApps = new ReserveClassroomDBEntities().Applications.ToList();
+            listClassrooms = new ReserveClassroomDBEntities().Classrooms.ToList(); 
+            window.classRoomNumber.ItemsSource = listClassrooms;
         }
+
     }
 }

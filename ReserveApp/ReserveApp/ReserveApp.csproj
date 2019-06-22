@@ -88,6 +88,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DateSelector.cs" />
     <Compile Include="Model\Applications.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>

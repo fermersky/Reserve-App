@@ -7,14 +7,8 @@
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-        Title="MainWindow" Height="680" Width="1520">
+        Title="MainWindow" Height="1080" Width="1920">
     <Window.Resources>
-        <!--<Style x:Key="dateStyle" TargetType="{x:Type Button}">
-            <Setter Property="Margin" Value="1"/>
-            <Setter Property="Height" Value="33"/>
-            <Setter Property="Padding" Value="0"/>
-            <Setter Property="Background" Value="GhostWhite"/>
-        </Style>-->
         <Style x:Key="titlesStyle" TargetType="{x:Type TextBlock}">
             <Setter Property="TextAlignment" Value="Justify"/>
             <Setter Property="FontSize" Value="20"/>
@@ -60,28 +54,14 @@
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
+
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.2*"></ColumnDefinition>
             <ColumnDefinition Width="0.4*"></ColumnDefinition>
-            <ColumnDefinition Width="0"></ColumnDefinition>
             <ColumnDefinition Width="0.5*"></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="14*"></ColumnDefinition>
             <ColumnDefinition Width="0.2*"></ColumnDefinition>
             <ColumnDefinition Width="0.2*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
@@ -90,7 +70,6 @@
             <RowDefinition Height="0.7*"></RowDefinition>
             <RowDefinition Height="0.1*"></RowDefinition>
             <RowDefinition Height="0.6*"></RowDefinition>
-            <RowDefinition Height="0*"></RowDefinition>
             <RowDefinition Height="0.7*"></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
@@ -107,21 +86,52 @@
             <RowDefinition Height="0.25*"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <!--Кнопки ДАТЫ - НАЧАЛО--> 
-        <StackPanel Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="19" Orientation="Horizontal" HorizontalAlignment="Left" Name="stackPanel1" VerticalAlignment="Stretch" Margin="0" Width="1420"></StackPanel>
-        
-        <!--Кнопки ДАТЫ - КОНЕЦ-->
 
-        <TextBlock Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="16" Style="{StaticResource titleStyle}">А У Д И Т О Р И Я</TextBlock>
-        <TextBlock Grid.Row="11" Grid.RowSpan="2" Grid.Column="1" Grid.ColumnSpan="5" Style="{StaticResource titlesStyle}">
+        <!--Кнопки ТЕКСТ вокруг сетки - НАЧАЛО-->
+        <TextBlock Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="16" Style="{StaticResource titleStyle}">А У Д И Т О Р И Я</TextBlock>
+        <TextBlock Grid.Row="10" Grid.RowSpan="2" Grid.Column="1" Grid.ColumnSpan="5" Style="{StaticResource titlesStyle}">
             <TextBlock.RenderTransform>
                 <RotateTransform Angle="-90"/>
             </TextBlock.RenderTransform>П А Р А
         </TextBlock>
+        <!--Кнопки ТЕКСТ вокруг сетки - НАЧАЛО-->
+
+        <!--Кнопки ДАТЫ - НАЧАЛО-->
+        <ItemsControl Padding="0" Margin="0" Name="dates" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" >
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Height="30" Width="38" FontSize="12" Margin="1" Padding="0" ContentStringFormat="{}{0:dd.MM}" Content="{Binding Path=Date}">
+                            <!--Background="{Binding Path=ColorBrush}"-->
+                            <Button.Resources>
+                                <Style TargetType="Button">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsChanged}" Value="True">
+                                            <Setter Property="Background" Value="LightYellow"/>
+                                            <Setter Property="Foreground" Value="Gray"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsChanged}" Value="False">
+                                            <Setter Property="Background" Value="#673AB7"/>
+                                            <Setter Property="Foreground" Value="White"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+        <!--Кнопки ДАТЫ - КОНЕЦ-->
 
         <!--ЛЕГЕНДА - НАЧАЛО -->
 
-        <Grid Grid.Column="4" Grid.Row="16" Grid.ColumnSpan="15">
+        <Grid Grid.Column="2" Grid.Row="15" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
@@ -186,468 +196,94 @@
         <!--ЛЕГЕНДА - КОНЕЦ -->
 
         <!--Пары и Аудитории рамка - НАЧАЛО -->
+        <!--Вертикаль-->
+        <TextBlock Grid.Row="5" Grid.Column="2" Style="{StaticResource numbersTextStyle}">1</TextBlock>
+        <TextBlock Grid.Row="6" Grid.Column="2" Style="{StaticResource numbersTextStyle}">2</TextBlock>
+        <TextBlock Grid.Row="7" Grid.Column="2" Style="{StaticResource numbersTextStyle}">3</TextBlock>
+        <TextBlock Grid.Row="8" Grid.Column="2" Style="{StaticResource numbersTextStyle}">4</TextBlock>
+        <TextBlock Grid.Row="9" Grid.Column="2" Style="{StaticResource numbersTextStyle}">5</TextBlock>
+        <TextBlock Grid.Row="10" Grid.Column="2" Style="{StaticResource numbersTextStyle}">6</TextBlock>
+        <TextBlock Grid.Row="11" Grid.Column="2" Style="{StaticResource numbersTextStyle}">7</TextBlock>
+        <TextBlock Grid.Row="12" Grid.Column="2" Style="{StaticResource numbersTextStyle}">8</TextBlock>
 
-        <Border Grid.Row="6" Grid.Column="3" Style="{StaticResource numbersBorderStyle}">
-            <TextBlock Style="{StaticResource numbersTextStyle}">1</TextBlock>
-        </Border>
-        <Border Grid.Row="7" Grid.Column="3" Style="{StaticResource numbersBorderStyle}">
-            <TextBlock Style="{StaticResource numbersTextStyle}">2</TextBlock>
-        </Border>
-        <Border Grid.Row="8" Grid.Column="3" Style="{StaticResource numbersBorderStyle}">
-            <TextBlock Style="{StaticResource numbersTextStyle}">3</TextBlock>
-        </Border>
-        <Border Grid.Row="9" Grid.Column="3" Style="{StaticResource numbersBorderStyle}">
-            <TextBlock Style="{StaticResource numbersTextStyle}">4</TextBlock>
-        </Border>
-        <Border Grid.Row="10" Grid.Column="3" Style="{StaticResource numbersBorderStyle}">
-            <TextBlock Style="{StaticResource numbersTextStyle}">5</TextBlock>
-        </Border>
-        <Border Grid.Row="11" Grid.Column="3" Style="{StaticResource numbersBorderStyle}">
-            <TextBlock Style="{StaticResource numbersTextStyle}">6</TextBlock>
-        </Border>
-        <Border Grid.Row="12" Grid.Column="3" Style="{StaticResource numbersBorderStyle}">
-            <TextBlock Style="{StaticResource numbersTextStyle}">7</TextBlock>
-        </Border>
-        <Border Grid.Row="13" Grid.Column="3" Style="{StaticResource numbersBorderStyle}">
-            <TextBlock Style="{StaticResource numbersTextStyle}">8</TextBlock>
-        </Border>
-        <Border Grid.Row="5" Grid.Column="4" Style="{StaticResource numbersBorderStyle}">
-            <TextBlock Style="{StaticResource numbersTextStyle}">1</TextBlock>
-        </Border>
-        <Border Grid.Row="5" Grid.Column="5" Style="{StaticResource numbersBorderStyle}">
-            <TextBlock Style="{StaticResource numbersTextStyle}">2</TextBlock>
-        </Border>
-        <Border Grid.Row="5" Grid.Column="6" Style="{StaticResource numbersBorderStyle}">
-            <TextBlock Style="{StaticResource numbersTextStyle}">3</TextBlock>
-        </Border>
-        <Border Grid.Row="5" Grid.Column="7" Style="{StaticResource numbersBorderStyle}">
-            <TextBlock Style="{StaticResource numbersTextStyle}">4</TextBlock>
-        </Border>
-        <Border Grid.Row="5" Grid.Column="8" Style="{StaticResource numbersBorderStyle}">
-            <TextBlock Style="{StaticResource numbersTextStyle}">5</TextBlock>
-        </Border>
-        <Border Grid.Row="5" Grid.Column="9" Style="{StaticResource numbersBorderStyle}">
-            <TextBlock Style="{StaticResource numbersTextStyle}">6</TextBlock>
-        </Border>
-        <Border Grid.Row="5" Grid.Column="10" Style="{StaticResource numbersBorderStyle}">
-            <TextBlock Style="{StaticResource numbersTextStyle}">7</TextBlock>
-        </Border>
-        <Border Grid.Row="5" Grid.Column="11" Style="{StaticResource numbersBorderStyle}">
-            <TextBlock Style="{StaticResource numbersTextStyle}">8</TextBlock>
-        </Border>
-        <Border Grid.Row="5" Grid.Column="12" Style="{StaticResource numbersBorderStyle}">
-            <TextBlock Style="{StaticResource numbersTextStyle}">9</TextBlock>
-        </Border>
-        <Border Grid.Row="5" Grid.Column="13" Style="{StaticResource numbersBorderStyle}">
-            <TextBlock Style="{StaticResource numbersTextStyle}">10</TextBlock>
-        </Border>
-        <Border Grid.Row="5" Grid.Column="14" Style="{StaticResource numbersBorderStyle}">
-            <TextBlock Style="{StaticResource numbersTextStyle}">11</TextBlock>
-        </Border>
-        <Border Grid.Row="5" Grid.Column="15" Style="{StaticResource numbersBorderStyle}">
-            <TextBlock Style="{StaticResource numbersTextStyle}">12</TextBlock>
-        </Border>
-        <Border Grid.Row="5" Grid.Column="16" Style="{StaticResource numbersBorderStyle}">
-            <TextBlock Style="{StaticResource numbersTextStyle}">13</TextBlock>
-        </Border>
-        <Border Grid.Row="5" Grid.Column="17" Style="{StaticResource numbersBorderStyle}">
-            <TextBlock Style="{StaticResource numbersTextStyle}">14</TextBlock>
-        </Border>
-        <Border Grid.Row="5" Grid.Column="18" Style="{StaticResource numbersBorderStyle}">
-            <TextBlock Style="{StaticResource numbersTextStyle}">15</TextBlock>
-        </Border>
-
+        <!--Горизонталь-->
+        <!--text blocks Разметка количество аудиторий - НАЧАЛО-->
+        <ItemsControl Padding="0" Margin="0" Name="classRoomNumber" Grid.Row="4" Grid.Column="3">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock TextAlignment="Center" Width="75" Foreground="Gray" FontSize="20" Text="{Binding Path=Number}" Padding="0 15 0 0"></TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+        
+        <!--text blocks Разметка количество аудиторий - КОНЕЦ-->
         <!--Пары и Аудитории рамка - КОНЕЦ -->
 
         <!--Кнопки ПАРА 1 - НАЧАЛО -->
 
-        <Button Grid.Row="6" Grid.Column="4" Tag="1.1" Style="{StaticResource buttonsHeader}">12</Button>
-        <TextBlock Grid.Row="6" Grid.Column="4" Tag="1.1.1" Style="{StaticResource numberOfApplications}">4</TextBlock>
-
-        <Button Grid.Row="6" Grid.Column="5" Tag="1.2" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="6" Grid.Column="5" Tag="1.2.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="6" Grid.Column="6" Tag="1.3" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="6" Grid.Column="6" Tag="1.3.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="6" Grid.Column="7" Tag="1.4" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="6" Grid.Column="7" Tag="1.4.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="6" Grid.Column="8" Tag="1.5" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="6" Grid.Column="8" Tag="1.5.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="6" Grid.Column="9" Tag="1.6" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="6" Grid.Column="9" Tag="1.6.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="6" Grid.Column="10" Tag="1.7" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="6" Grid.Column="10" Tag="1.7.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="6" Grid.Column="11" Tag="1.8" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="6" Grid.Column="11" Tag="1.8.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="6" Grid.Column="12" Tag="1.9" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="6" Grid.Column="12" Tag="1.9.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="6" Grid.Column="13" Tag="1.10" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="6" Grid.Column="13" Tag="1.10.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="6" Grid.Column="14" Tag="1.11" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="6" Grid.Column="14" Tag="1.11.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="6" Grid.Column="15" Tag="1.12" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="6" Grid.Column="15" Tag="1.12.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="6" Grid.Column="16" Tag="1.13" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="6" Grid.Column="16" Tag="1.13.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="6" Grid.Column="17" Tag="1.14" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="6" Grid.Column="17" Tag="1.14.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="6" Grid.Column="18" Tag="1.15" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="6" Grid.Column="18" Tag="1.15.1" Style="{StaticResource numberOfApplications}"></TextBlock>
+        <ItemsControl Padding="0" Margin="0" Name="class1Rooms" Grid.Row="5" Grid.Column="3">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Width="75" Foreground="Gray" FontSize="11" Text="{Binding Path=Number}" Padding="55 0 0 0"></TextBlock>                          <!--заявки-->
+                        <TextBlock TextAlignment="Center" Width="75" Foreground="Gray" FontSize="15" Text="{Binding Path=Number}" Padding="55 0 0 0"></TextBlock>   <!--кол-во мест в аудитории-->
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
 
         <!--Кнопки ПАРА 1 - КОНЕЦ -->
 
         <!--Кнопки ПАРА 2 - НАЧАЛО -->
 
-        <Button Grid.Row="7" Grid.Column="4" Tag="2.1" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="7" Grid.Column="4" Tag="2.1.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="7" Grid.Column="5" Tag="2.2" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="7" Grid.Column="5" Tag="2.2.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="7" Grid.Column="6" Tag="2.3" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="7" Grid.Column="6" Tag="2.3.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="7" Grid.Column="7" Tag="2.4" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="7" Grid.Column="7" Tag="2.4.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="7" Grid.Column="8" Tag="2.5" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="7" Grid.Column="8" Tag="2.5.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="7" Grid.Column="9" Tag="2.6" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="7" Grid.Column="9" Tag="2.6.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="7" Grid.Column="10" Tag="2.7" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="7" Grid.Column="10" Tag="2.7.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="7" Grid.Column="11" Tag="2.8" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="7" Grid.Column="11" Tag="2.8.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="7" Grid.Column="12" Tag="2.9" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="7" Grid.Column="12" Tag="2.9.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="7" Grid.Column="13" Tag="2.10" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="7" Grid.Column="13" Tag="2.10.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="7" Grid.Column="14" Tag="2.11" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="7" Grid.Column="14" Tag="2.11.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="7" Grid.Column="15" Tag="2.12" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="7" Grid.Column="15" Tag="2.12.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="7" Grid.Column="16" Tag="2.13" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="7" Grid.Column="16" Tag="2.13.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="7" Grid.Column="17" Tag="2.14" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="7" Grid.Column="17" Tag="2.14.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="7" Grid.Column="18" Tag="2.15" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="7" Grid.Column="18" Tag="2.15.1" Style="{StaticResource numberOfApplications}"></TextBlock>
+        
 
         <!--Кнопки ПАРА 2 - КОНЕЦ -->
 
         <!--Кнопки ПАРА 3 - НАЧАЛО -->
 
-        <Button Grid.Row="8" Grid.Column="4" Tag="3.1" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="8" Grid.Column="4" Tag="3.1.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="8" Grid.Column="5" Tag="3.2" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="8" Grid.Column="5" Tag="3.2.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="8" Grid.Column="6" Tag="3.3" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="8" Grid.Column="6" Tag="3.3.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="8" Grid.Column="7" Tag="3.4" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="8" Grid.Column="7" Tag="3.4.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="8" Grid.Column="8" Tag="3.5" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="8" Grid.Column="8" Tag="3.5.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="8" Grid.Column="9" Tag="3.6" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="8" Grid.Column="9" Tag="3.6.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="8" Grid.Column="10" Tag="3.7" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="8" Grid.Column="10" Tag="3.7.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="8" Grid.Column="11" Tag="3.8" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="8" Grid.Column="11" Tag="3.8.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="8" Grid.Column="12" Tag="3.9" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="8" Grid.Column="12" Tag="3.9.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="8" Grid.Column="13" Tag="3.10" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="8" Grid.Column="13" Tag="3.10.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="8" Grid.Column="14" Tag="3.11" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="8" Grid.Column="14" Tag="3.11.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="8" Grid.Column="15" Tag="3.12" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="8" Grid.Column="15" Tag="3.12.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="8" Grid.Column="16" Tag="3.13" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="8" Grid.Column="16" Tag="3.13.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="8" Grid.Column="17" Tag="3.14" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="8" Grid.Column="17" Tag="3.14.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="8" Grid.Column="18" Tag="3.15" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="8" Grid.Column="18" Tag="3.15.1" Style="{StaticResource numberOfApplications}"></TextBlock>
+        
 
         <!--Кнопки ПАРА 3 - КОНЕЦ -->
 
         <!--Кнопки ПАРА 4 - НАЧАЛО -->
 
-        <Button Grid.Row="9" Grid.Column="4" Tag="4.1" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="9" Grid.Column="4" Tag="4.1.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="9" Grid.Column="5" Tag="4.2" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="9" Grid.Column="5" Tag="4.2.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="9" Grid.Column="6" Tag="4.3" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="9" Grid.Column="6" Tag="4.3.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="9" Grid.Column="7" Tag="4.4" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="9" Grid.Column="7" Tag="4.4.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="9" Grid.Column="8" Tag="4.5" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="9" Grid.Column="8" Tag="4.5.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="9" Grid.Column="9" Tag="4.6" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="9" Grid.Column="9" Tag="4.6.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="9" Grid.Column="10" Tag="4.7" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="9" Grid.Column="10" Tag="4.7.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="9" Grid.Column="11" Tag="4.8" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="9" Grid.Column="11" Tag="4.8.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="9" Grid.Column="12" Tag="4.9" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="9" Grid.Column="12" Tag="4.9.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="9" Grid.Column="13" Tag="4.10" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="9" Grid.Column="13" Tag="4.10.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="9" Grid.Column="14" Tag="4.11" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="9" Grid.Column="14" Tag="4.11.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="9" Grid.Column="15" Tag="4.12" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="9" Grid.Column="15" Tag="4.12.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="9" Grid.Column="16" Tag="4.13" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="9" Grid.Column="16" Tag="4.13.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="9" Grid.Column="17" Tag="4.14" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="9" Grid.Column="17" Tag="4.14.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="9" Grid.Column="18" Tag="4.15" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="9" Grid.Column="18" Tag="4.15.1" Style="{StaticResource numberOfApplications}"></TextBlock>
 
         <!--Кнопки ПАРА 4 - КОНЕЦ -->
 
         <!--Кнопки ПАРА 5 - НАЧАЛО -->
 
-        <Button Grid.Row="10" Grid.Column="4" Tag="5.1" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="10" Grid.Column="4" Tag="5.1.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="10" Grid.Column="5" Tag="5.2" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="10" Grid.Column="5" Tag="5.2.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="10" Grid.Column="6" Tag="5.3" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="10" Grid.Column="6" Tag="5.3.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="10" Grid.Column="7" Tag="5.4" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="10" Grid.Column="7" Tag="5.4.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="10" Grid.Column="8" Tag="5.5" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="10" Grid.Column="8" Tag="5.5.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="10" Grid.Column="9" Tag="5.6" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="10" Grid.Column="9" Tag="5.6.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="10" Grid.Column="10" Tag="5.7" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="10" Grid.Column="10" Tag="5.7.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="10" Grid.Column="11" Tag="5.8" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="10" Grid.Column="11" Tag="5.8.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="10" Grid.Column="12" Tag="5.9" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="10" Grid.Column="12" Tag="5.9.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="10" Grid.Column="13" Tag="5.10" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="10" Grid.Column="13" Tag="5.10.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="10" Grid.Column="14" Tag="5.11" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="10" Grid.Column="14" Tag="5.11.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="10" Grid.Column="15" Tag="5.12" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="10" Grid.Column="15" Tag="5.12.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="10" Grid.Column="16" Tag="5.13" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="10" Grid.Column="16" Tag="5.13.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="10" Grid.Column="17" Tag="5.14" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="10" Grid.Column="17" Tag="5.14.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="10" Grid.Column="18" Tag="5.15" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="10" Grid.Column="18" Tag="5.15.1" Style="{StaticResource numberOfApplications}"></TextBlock>
+       
 
         <!--Кнопки ПАРА 5 - КОНЕЦ -->
 
         <!--Кнопки ПАРА 6 - НАЧАЛО -->
 
-        <Button Grid.Row="11" Grid.Column="4" Tag="6.1" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="11" Grid.Column="4" Tag="6.1.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="11" Grid.Column="5" Tag="6.2" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="11" Grid.Column="5" Tag="6.2.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="11" Grid.Column="6" Tag="6.3" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="11" Grid.Column="6" Tag="6.3.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="11" Grid.Column="7" Tag="6.4" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="11" Grid.Column="7" Tag="6.4.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="11" Grid.Column="8" Tag="6.5" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="11" Grid.Column="8" Tag="6.5.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="11" Grid.Column="9" Tag="6.6" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="11" Grid.Column="9" Tag="6.6.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="11" Grid.Column="10" Tag="6.7" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="11" Grid.Column="10" Tag="6.7.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="11" Grid.Column="11" Tag="6.8" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="11" Grid.Column="11" Tag="6.8.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="11" Grid.Column="12" Tag="6.9" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="11" Grid.Column="12" Tag="6.9.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="11" Grid.Column="13" Tag="6.10" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="11" Grid.Column="13" Tag="6.10.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="11" Grid.Column="14" Tag="6.11" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="11" Grid.Column="14" Tag="6.11.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="11" Grid.Column="15" Tag="6.12" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="11" Grid.Column="15" Tag="6.12.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="11" Grid.Column="16" Tag="6.13" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="11" Grid.Column="16" Tag="6.13.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="11" Grid.Column="17" Tag="6.14" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="11" Grid.Column="17" Tag="6.14.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="11" Grid.Column="18" Tag="6.15" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="11" Grid.Column="18" Tag="6.15.1" Style="{StaticResource numberOfApplications}"></TextBlock>
+        
 
         <!--Кнопки ПАРА 6 - КОНЕЦ -->
 
         <!--Кнопки ПАРА 7 - НАЧАЛО -->
 
-        <Button Grid.Row="12" Grid.Column="4" Tag="7.1" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="12" Grid.Column="4" Tag="7.1.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="12" Grid.Column="5" Tag="7.2" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="12" Grid.Column="5" Tag="7.2.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="12" Grid.Column="6" Tag="7.3" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="12" Grid.Column="6" Tag="7.3.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="12" Grid.Column="7" Tag="7.4" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="12" Grid.Column="7" Tag="7.4.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="12" Grid.Column="8" Tag="7.5" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="12" Grid.Column="8" Tag="7.5.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="12" Grid.Column="9" Tag="7.6" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="12" Grid.Column="9" Tag="7.6.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="12" Grid.Column="10" Tag="7.7" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="12" Grid.Column="10" Tag="7.7.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="12" Grid.Column="11" Tag="7.8" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="12" Grid.Column="11" Tag="7.8.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="12" Grid.Column="12" Tag="7.9" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="12" Grid.Column="12" Tag="7.9.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="12" Grid.Column="13" Tag="7.10" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="12" Grid.Column="13" Tag="7.10.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="12" Grid.Column="14" Tag="7.11" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="12" Grid.Column="14" Tag="7.11.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="12" Grid.Column="15" Tag="7.12" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="12" Grid.Column="15" Tag="7.12.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="12" Grid.Column="16" Tag="7.13" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="12" Grid.Column="16" Tag="7.13.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="12" Grid.Column="17" Tag="7.14" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="12" Grid.Column="17" Tag="7.14.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="12" Grid.Column="18" Tag="7.15" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="12" Grid.Column="18" Tag="7.15.1" Style="{StaticResource numberOfApplications}"></TextBlock>
+     
 
         <!--Кнопки ПАРА 7 - КОНЕЦ -->
 
         <!--Кнопки ПАРА 8 - НАЧАЛО -->
 
-        <Button Grid.Row="13" Grid.Column="4" Tag="8.1" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="13" Grid.Column="4" Tag="8.1.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="13" Grid.Column="5" Tag="8.2" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="13" Grid.Column="5" Tag="8.2.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="13" Grid.Column="6" Tag="8.3" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="13" Grid.Column="6" Tag="8.3.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="13" Grid.Column="7" Tag="8.4" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="13" Grid.Column="7" Tag="8.4.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="13" Grid.Column="8" Tag="8.5" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="13" Grid.Column="8" Tag="8.5.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="13" Grid.Column="9" Tag="8.6" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="13" Grid.Column="9" Tag="8.6.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="13" Grid.Column="10" Tag="8.7" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="13" Grid.Column="10" Tag="8.7.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="13" Grid.Column="11" Tag="8.8" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="13" Grid.Column="11" Tag="8.8.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="13" Grid.Column="12" Tag="8.9" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="13" Grid.Column="12" Tag="8.9.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="13" Grid.Column="13" Tag="8.10" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="13" Grid.Column="13" Tag="8.10.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="13" Grid.Column="14" Tag="8.11" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="13" Grid.Column="14" Tag="8.11.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="13" Grid.Column="15" Tag="8.12" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="13" Grid.Column="15" Tag="8.12.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="13" Grid.Column="16" Tag="8.13" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="13" Grid.Column="16" Tag="8.13.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="13" Grid.Column="17" Tag="8.14" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="13" Grid.Column="17" Tag="8.14.1" Style="{StaticResource numberOfApplications}"></TextBlock>
-
-        <Button Grid.Row="13" Grid.Column="18" Tag="8.15" Style="{StaticResource buttonsHeader}"></Button>
-        <TextBlock Grid.Row="13" Grid.Column="18" Tag="8.15.1" Style="{StaticResource numberOfApplications}"></TextBlock>
+       
 
         <!--Кнопки ПАРА 8 - КОНЕЦ -->
     </Grid>

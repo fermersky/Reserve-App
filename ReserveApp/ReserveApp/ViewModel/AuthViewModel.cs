@@ -43,7 +43,12 @@ namespace ReserveApp.ViewModel
                             else
                             {
                                 if (user.Password == userPwd) // success login
-                                    new MainWindow(user).Show(); 
+                                {
+                                    var mainWindow = new MainWindow(user);
+                                    mainWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                                    mainWindow.Show();
+                                }
+
                                 else
                                     ShowErrorMsg?.Invoke($"Uncorrect password for login \"{userLgn}\"");
                             }
