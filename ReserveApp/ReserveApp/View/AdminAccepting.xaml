@@ -39,7 +39,7 @@
             </StackPanel>
         </StackPanel>
 
-        <ListView SelectedIndex="{Binding ListViewSelectedIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding ApplicationView, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" x:Name="ApplicationsList" Margin="0,105,0,0" Grid.RowSpan="2">
+        <ListView ItemsSource="{Binding ApplicationView, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" x:Name="ApplicationsList" Margin="0,105,0,0" Grid.RowSpan="2">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <WrapPanel>
@@ -118,4 +118,9 @@
         </ListView>
         <TextBlock Margin="0 70 0 0" Grid.Row="3" Width="300"  Padding="0 8 0 0" x:Name="errorTb"  Height="30" Background="#F5D0D5" Foreground="#671322" FontWeight="Bold" TextAlignment="Center">An error</TextBlock>
     </Grid>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closed">
+            <i:InvokeCommandAction Command="{Binding SaveChangesCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
 </Window>

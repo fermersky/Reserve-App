@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Data.Entity.Migrations;
+using System.Windows.Threading;
 
 namespace ReserveApp.ViewModel
 {
@@ -29,25 +30,33 @@ namespace ReserveApp.ViewModel
 
                     // MessageBox.Show(applicationId.ToString());
 
+
                     using (var db = new ReserveClassroomDBEntities())
                     {
-                        var currentApp = applications.Where(a => a.Id == applicationId).First();
+                        var currentApp = applications.Where(a => a.Id == applicationId).FirstOrDefault();
 
-                        if (currentApp.StudentsCount < AvaliableSeatCount)
+                        if (currentApp.StudentsCount <= AvaliableSeatCount)
                         {
                             currentApp.StatusId = 2;
 
-                            // update record in Application db table
-                            db.Applications.AddOrUpdate(currentApp);
-                            await db.SaveChangesAsync();
+                            // update record in Applications db table
+
+                            try
+                            {
+                                db.Applications.AddOrUpdate(currentApp);
+                                await db.SaveChangesAsync();
+                            }
+                            catch { ShowErrorMsg("Что-то не так ;("); }
 
                             // then refresh local collection Applications which binded
-                            Applications = db.Applications.Include("Users").Include("Classrooms").Include("Groups").ToList();
-
-                            ApplicationView = CollectionViewSource.GetDefaultView(Applications);
-                            ApplicationView.Filter = ApplicationRefresh;
+                            Applications = db.Applications.Include("Users").Include("Classrooms").Include("Groups")
+                                .Where(a => (a.Status.Type == "InProgress" || a.Status.Type == "Accepted")
+                                    && (a.Date == CurrentDate
+                                    && a.Classrooms.Number == ClassroomNumber
+                                    && a.LessonNumber == LessonNumber)).ToList();
 
                             // update property after accepting application
+                            ApplicationView = CollectionViewSource.GetDefaultView(Applications);
                             AvaliableSeatCount = getAvaliableSeatCount();
 
                             ShowSuccessMsg("Заявка одобрена!");
@@ -80,16 +89,21 @@ namespace ReserveApp.ViewModel
                         var appForRemove = db.Applications.FirstOrDefault(a => a.Id == applicationId);
 
                         // MessageBox.Show(listViewSelectedIndex.ToString());
+                        try
+                        {
+                            db.Applications.Remove(appForRemove);
+                            await db.SaveChangesAsync();
+                        }
+                        catch { ShowErrorMsg("Что-то не так ;("); }
 
-                        db.Applications.Remove(appForRemove);
-                        await db.SaveChangesAsync();
+                        Applications = db.Applications.Include("Users").Include("Classrooms").Include("Groups")
+                            .Where(a => (a.Status.Type == "InProgress" || a.Status.Type == "Accepted")
+                                && (a.Date == CurrentDate
+                                && a.Classrooms.Number == ClassroomNumber
+                                && a.LessonNumber == LessonNumber)).ToList();
 
-                        Applications = db.Applications.Include("Users").Include("Classrooms").Include("Groups").ToList();
-
+                        // update property after deleting application
                         ApplicationView = CollectionViewSource.GetDefaultView(Applications);
-                        ApplicationView.Filter = ApplicationRefresh;
-
-                        // update property after accepting application
                         AvaliableSeatCount = getAvaliableSeatCount();
 
                         ShowSuccessMsg("Заявка удалена");
@@ -102,26 +116,33 @@ namespace ReserveApp.ViewModel
         {
             using (var db = new ReserveClassroomDBEntities())
             {
-                CurrentDate = date;
-                LessonNumber = lessonNumber;
-                ClassroomNumber = classroomNumber;
 
-                // Load applications from db
-                Applications = db.Applications.Include("Users").Include("Classrooms").Include("Groups").ToList();
-                ApplicationView = CollectionViewSource.GetDefaultView(Applications);
+                try
+                {
+                    CurrentDate = date;
+                    LessonNumber = lessonNumber;
+                    ClassroomNumber = classroomNumber;
 
-                // select Accepted and OnProcess applications according to CurrentDate, LessonNumber and ClassroomNumber
-                ApplicationView.Filter = ApplicationRefresh;
+                    // Load applications from db
+                    Applications = db.Applications.Include("Users").Include("Classrooms").Include("Groups")
+                        .Where(a => (a.Status.Type == "InProgress" || a.Status.Type == "Accepted")
+                            && (a.Date == CurrentDate
+                            && a.Classrooms.Number == ClassroomNumber
+                            && a.LessonNumber == LessonNumber)).ToList();
 
-                // calculating count of free places in classroom
-                AvaliableSeatCount = getAvaliableSeatCount();
+                    ApplicationView = CollectionViewSource.GetDefaultView(Applications);
+                    AvaliableSeatCount = getAvaliableSeatCount();
+                }
+                catch { }
             }
         }
 
+
+
         // Properties and Methods Helpers
 
-        public int? TakenSeatCount { get; private set; }
-        public int FreeSeatCount { get; private set; }
+        public int? TakenSeatCount { get; private set; } = 0;
+        public int FreeSeatCount { get; private set; } = 0;
 
         private int? getTakenSeatCount()
         {
@@ -132,29 +153,25 @@ namespace ReserveApp.ViewModel
         private int getFreeSeatCount()
         {
             return Applications // take max capbility of classroom
-                    .First(a => a.Classrooms.Number == ClassroomNumber).Classrooms.MaxPersonCount;
+                    .FirstOrDefault(a => a.Classrooms.Number == ClassroomNumber).Classrooms.MaxPersonCount;
         }
 
         private int getAvaliableSeatCount()
         {
-            var TakenSeatCount = getTakenSeatCount();
-            var FreeSeatCount = getFreeSeatCount();
+            if (Applications.Count > 0) // if local Applications collection is not empty
+            {
+                var TakenSeatCount = getTakenSeatCount();
+                var FreeSeatCount = getFreeSeatCount();
 
-            // TakenSeatCount may be null if we don't have Accepted applications
-            return (TakenSeatCount != null) ? FreeSeatCount - (int)TakenSeatCount : FreeSeatCount;
-        }
-
-        private bool ApplicationRefresh(object obj) // predicate for ApplicationView which bind to listview
-        {
-            var a = obj as Applications;
-
-            return (a.Status.Type == "InProgress" || a.Status.Type == "Accepted")
-                        && (a.Date == CurrentDate
-                        && a.Classrooms.Number == ClassroomNumber
-                        && a.LessonNumber == LessonNumber);
+                // TakenSeatCount may be null if we don't have Accepted applications
+                return (TakenSeatCount != null) ? FreeSeatCount - (int)TakenSeatCount : FreeSeatCount;
+            }
+            else
+                return 0;
         }
 
 
+   
 
         // Properties to Bind
 
@@ -196,7 +213,7 @@ namespace ReserveApp.ViewModel
 
         // 
 
-        private int avaliableSeatCount;
+        private int avaliableSeatCount = 0;
 
         public int AvaliableSeatCount
         {
