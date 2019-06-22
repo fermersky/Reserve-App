@@ -42,13 +42,12 @@ namespace ReserveApp.ViewModel
                                 ShowErrorMsg?.Invoke($"User with login \"{userLgn}\" not found!");
                             else
                             {
-                                if (user.Password == userPwd) // success login
-                                {
-                                    var mainWindow = new MainWindow(user);
-                                    mainWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-                                    mainWindow.Show();
+                                if (user.Password == userPwd)
+                                { // success login
+                                    var mp = new MainWindow(user);
+                                    mp.WindowStartupLocation = WindowStartupLocation.CenterOwner; //MainWindow startup Location = Center
+                                    mp.Show();
                                 }
-
                                 else
                                     ShowErrorMsg?.Invoke($"Uncorrect password for login \"{userLgn}\"");
                             }
