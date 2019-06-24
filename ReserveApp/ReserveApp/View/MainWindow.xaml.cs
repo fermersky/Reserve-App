@@ -26,23 +26,13 @@ namespace ReserveApp
     /// </summary>
     public partial class MainWindow : Window
     {
+        //internal static Users userWindow;
+
         public MainWindow(Users user) // user is a param which sended from AuthViewModel [User or Admin]
         {
             InitializeComponent();
+            //userWindow = user;
             this.DataContext = new MainViewModel(user, this);
-
-            DatesDictionary = new List<DateSelector>();
-            DateTime dateFirst = DateTime.Now; /*new DateTime(2019, 06, 01)*/
-            listApps = new ReserveClassroomDBEntities().Applications.ToList();
-            for (int i = 0; i < 31; i++)
-            {
-                DateSelector dateSelector = new DateSelector(user, listApps) { Date = dateFirst, IsChanged = false }; /*, ColorBrush = new SolidColorBrush(Color.FromRgb(103, 58, 183)) */
-                DatesDictionary.Add(dateSelector);
-                dateFirst = dateFirst.AddDays(1);
-            }
-            dates.ItemsSource = DatesDictionary;
         }
-        List<DateSelector> DatesDictionary;
-        List<Applications> listApps;
     }
 }

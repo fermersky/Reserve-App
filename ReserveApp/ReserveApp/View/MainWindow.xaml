@@ -9,8 +9,16 @@
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         Title="MainWindow" Height="1080" Width="1920">
     <Window.Resources>
+        <!--xmlns:databinding="clr-namespace:ReserveApp.ViewModel"-->
+        <!--<databinding:DateTimeToColorConverter x:Key="ColorConverter"></databinding:DateTimeToColorConverter>-->
         <Style x:Key="titlesStyle" TargetType="{x:Type TextBlock}">
             <Setter Property="TextAlignment" Value="Justify"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Foreground" Value="MediumVioletRed"/>
+        </Style>
+        <Style x:Key="titleStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="FontSize" Value="20"/>
             <Setter Property="Foreground" Value="MediumVioletRed"/>
         </Style>
@@ -27,27 +35,11 @@
             <Setter Property="FontSize" Value="15"/>
             <Setter Property="Padding" Value="0 0 5 0"/>
             <Setter Property="Background" Value="Transparent"/>
-        </Style>
-        <Style x:Key="titleStyle" TargetType="{x:Type TextBlock}">
-            <Setter Property="HorizontalAlignment" Value="Center"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="FontSize" Value="20"/>
-            <Setter Property="Foreground" Value="MediumVioletRed"/>
-        </Style>
-        <Style x:Key="buttonsHeader" TargetType="{x:Type Button}">
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="VerticalAlignment" Value="Stretch"/>
-            <Setter Property="HorizontalAlignment" Value="Stretch"/>
-            <Setter Property="FontSize" Value="17"/>
-        </Style>
+        </Style> 
         <Style x:Key="BorderStyle" TargetType="{x:Type Border}">
             <Setter Property="BorderBrush" Value="Gray"/>
             <Setter Property="BorderThickness" Value="0.5"/>
-        </Style>
-        <Style x:Key="numbersBorderStyle" TargetType="{x:Type Border}">
-            <Setter Property="BorderBrush" Value="white"/>
-            <Setter Property="BorderThickness" Value="0.5"/>
-        </Style>
+        </Style> 
         <Style x:Key="numbersTextStyle" TargetType="{x:Type TextBlock}">
             <Setter Property="FontSize" Value="20"/>
             <Setter Property="Foreground" Value="Gray"/>
@@ -100,16 +92,16 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <Button Height="30" Width="38" FontSize="12" Margin="1" Padding="0" ContentStringFormat="{}{0:dd.MM}" Content="{Binding Path=Date}">
-                            <!--Background="{Binding Path=ColorBrush}"-->
+                        <Button Height="30" Width="38" FontSize="12" Margin="1" Padding="0" ContentStringFormat="{}{0:dd.MM}" Content="{Binding Path=Key, UpdateSourceTrigger=PropertyChanged}">
+                            <!--Background="{Binding Key, Converter={StaticResource ColorConverter}}"-->
                             <Button.Resources>
                                 <Style TargetType="Button">
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsChanged}" Value="True">
+                                        <DataTrigger Binding="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}" Value="True">
                                             <Setter Property="Background" Value="LightYellow"/>
                                             <Setter Property="Foreground" Value="Gray"/>
                                         </DataTrigger>
-                                        <DataTrigger Binding="{Binding IsChanged}" Value="False">
+                                        <DataTrigger Binding="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}" Value="False">
                                             <Setter Property="Background" Value="#673AB7"/>
                                             <Setter Property="Foreground" Value="White"/>
                                         </DataTrigger>
@@ -231,8 +223,8 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Width="75" Foreground="Gray" FontSize="11" Text="{Binding Path=Number}" Padding="55 0 0 0"></TextBlock>                          <!--заявки-->
-                        <TextBlock TextAlignment="Center" Width="75" Foreground="Gray" FontSize="15" Text="{Binding Path=Number}" Padding="55 0 0 0"></TextBlock>   <!--кол-во мест в аудитории-->
+                        <TextBlock Width="75" Foreground="Gray" FontSize="11" Text="14" Padding="55 0 0 0"></TextBlock>                          <!--заявки  {Binding Path=Number}"-->
+                        <TextBlock TextAlignment="Center" Width="75" Foreground="Gray" FontSize="15" Text="35" Padding="55 0 0 0"></TextBlock>   <!--кол-во мест в аудитории-->
                     </StackPanel>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
