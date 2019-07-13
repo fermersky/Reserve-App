@@ -16,8 +16,6 @@ namespace ReserveApp.ViewModel
 {
     public class AdminAcceptingViewModel : ViewModelBase
     {
-
-
         private RelayCommand<object> acceptApplicationCommand;
 
         public RelayCommand<object> AcceptApplicationCommand
@@ -26,10 +24,8 @@ namespace ReserveApp.ViewModel
             {
                 return acceptApplicationCommand ?? (acceptApplicationCommand = new RelayCommand<object>(async (obj) =>
                 {
-                    var applicationId = (int)obj; // get id of application was clicked
-
-                    // MessageBox.Show(applicationId.ToString());
-
+                    // get id of application was clicked
+                    var applicationId = (int)obj; 
 
                     using (var db = new ReserveClassroomDBEntities())
                     {
@@ -48,23 +44,23 @@ namespace ReserveApp.ViewModel
                             }
                             catch { ShowErrorMsg("Что-то не так ;("); }
 
-                            // then refresh local collection Applications which binded
-                            Applications = db.Applications.Include("Users").Include("Classrooms").Include("Groups")
-                                .Where(a => (a.Status.Type == "InProgress" || a.Status.Type == "Accepted")
-                                    && (a.Date == CurrentDate
-                                    && a.Classrooms.Number == ClassroomNumber
-                                    && a.LessonNumber == LessonNumber)).ToList();
+                            // then refresh local Applications collection which binded
+                            this.Applications = db.Applications.Include("Users").Include("Classrooms").Include("Groups")
+                             .Where(a => a.Date == CurrentDate
+                                 && a.Classrooms.Number == ClassroomNumber
+                                 && a.LessonNumber == LessonNumber).ToList();
 
-                            // update property after accepting application
-                            ApplicationView = CollectionViewSource.GetDefaultView(Applications);
-                            AvaliableSeatCount = getAvaliableSeatCount();
+                            // update property after deleting application
+                            this.ApplicationView = CollectionViewSource.GetDefaultView(Applications
+                                .Where(a => (a.Status.Type == "InProgress" || a.Status.Type == "Accepted")).ToList());
+                            this.AvaliableSeatCount = getAvaliableSeatCount();
 
                             ShowSuccessMsg("Заявка одобрена!");
 
                         }
 
                         else
-                            ShowErrorMsg("Люди не влезут");
+                            ShowErrorMsg("Люди не влезут!");
                     } 
                 })); 
             }
@@ -82,13 +78,10 @@ namespace ReserveApp.ViewModel
                 {
                     var applicationId = (int)obj; // get id of application was clicked
 
-                    // MessageBox.Show(applicationId.ToString());
-
                     using (var db = new ReserveClassroomDBEntities())
                     {
                         var appForRemove = db.Applications.FirstOrDefault(a => a.Id == applicationId);
 
-                        // MessageBox.Show(listViewSelectedIndex.ToString());
                         try
                         {
                             db.Applications.Remove(appForRemove);
@@ -96,15 +89,15 @@ namespace ReserveApp.ViewModel
                         }
                         catch { ShowErrorMsg("Что-то не так ;("); }
 
-                        Applications = db.Applications.Include("Users").Include("Classrooms").Include("Groups")
-                            .Where(a => (a.Status.Type == "InProgress" || a.Status.Type == "Accepted")
-                                && (a.Date == CurrentDate
+                        this.Applications = db.Applications.Include("Users").Include("Classrooms").Include("Groups")
+                            .Where(a => a.Date == CurrentDate
                                 && a.Classrooms.Number == ClassroomNumber
-                                && a.LessonNumber == LessonNumber)).ToList();
+                                && a.LessonNumber == LessonNumber).ToList();
 
-                        // update property after deleting application
-                        ApplicationView = CollectionViewSource.GetDefaultView(Applications);
-                        AvaliableSeatCount = getAvaliableSeatCount();
+                        // update properties after deleting application
+                        this.ApplicationView = CollectionViewSource.GetDefaultView(Applications
+                            .Where(a => (a.Status.Type == "InProgress" || a.Status.Type == "Accepted")).ToList());
+                        this.AvaliableSeatCount = getAvaliableSeatCount();
 
                         ShowSuccessMsg("Заявка удалена");
                     }
@@ -116,21 +109,21 @@ namespace ReserveApp.ViewModel
         {
             using (var db = new ReserveClassroomDBEntities())
             {
-
                 try
                 {
-                    CurrentDate = date;
-                    LessonNumber = lessonNumber;
-                    ClassroomNumber = classroomNumber;
+                    this.CurrentDate = date;
+                    this.LessonNumber = lessonNumber;
+                    this.ClassroomNumber = classroomNumber;
 
                     // Load applications from db
                     Applications = db.Applications.Include("Users").Include("Classrooms").Include("Groups")
-                        .Where(a => (a.Status.Type == "InProgress" || a.Status.Type == "Accepted")
-                            && (a.Date == CurrentDate
+                        .Where(a => a.Date == CurrentDate
                             && a.Classrooms.Number == ClassroomNumber
-                            && a.LessonNumber == LessonNumber)).ToList();
+                            && a.LessonNumber == LessonNumber).ToList();
 
-                    ApplicationView = CollectionViewSource.GetDefaultView(Applications);
+                    // Display only "Accepted" and "InProgress" Applications
+                    ApplicationView = CollectionViewSource.GetDefaultView(Applications
+                        .Where(a => a.Status.Type == "InProgress" || a.Status.Type == "Accepted").ToList()); 
                     AvaliableSeatCount = getAvaliableSeatCount();
                 }
                 catch { }
@@ -146,14 +139,17 @@ namespace ReserveApp.ViewModel
 
         private int? getTakenSeatCount()
         {
-            return Applications // we take only accepted applications
-                    .Where(a => a.LessonNumber == LessonNumber && a.Status.Type == "Accepted").Sum(a => a.StudentsCount);
+             // take "Accepted" applications and "Sheduled" lessons             
+             return Applications.Where(a => a.LessonNumber == this.LessonNumber &&
+                        (a.Status.Type == "Accepted" || a.Status.Type == "Sheduled"))
+                    .Sum(a => a.StudentsCount);
         }
 
         private int getFreeSeatCount()
         {
-            return Applications // take max capbility of classroom
-                    .FirstOrDefault(a => a.Classrooms.Number == ClassroomNumber).Classrooms.MaxPersonCount;
+            // take max capbility of classroom
+            using (var db = new ReserveClassroomDBEntities())
+                return db.Classrooms.FirstOrDefault(g => g.Number == this.ClassroomNumber).MaxPersonCount;
         }
 
         private int getAvaliableSeatCount()
@@ -167,7 +163,7 @@ namespace ReserveApp.ViewModel
                 return (TakenSeatCount != null) ? FreeSeatCount - (int)TakenSeatCount : FreeSeatCount;
             }
             else
-                return 0;
+                return getFreeSeatCount();
         }
 
 

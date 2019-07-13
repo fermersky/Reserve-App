@@ -128,3 +128,5 @@ D:\Daniel\Team-Project\ReserveApp\ReserveApp\obj\Debug\ReserveApp.Properties.Res
 D:\Daniel\Team-Project\ReserveApp\ReserveApp\obj\Debug\ReserveApp.csproj.GenerateResource.Cache
 D:\Daniel\Team-Project\ReserveApp\ReserveApp\obj\Debug\ReserveApp.exe
 D:\Daniel\Team-Project\ReserveApp\ReserveApp\obj\Debug\ReserveApp.pdb
+C:\Users\Данил\Desktop\Team-Project\ReserveApp\ReserveApp\obj\Debug\View\ReserveWindow.g.cs
+C:\Users\Данил\Desktop\Team-Project\ReserveApp\ReserveApp\obj\Debug\View\ReserveWindow.baml

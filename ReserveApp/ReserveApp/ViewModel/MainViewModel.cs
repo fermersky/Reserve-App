@@ -50,13 +50,12 @@ namespace ReserveApp.ViewModel
         public MainViewModel()
         {
             new AdminAccepting().Show();
+            //new ReserveWindow().Show();
         }
 
         public MainViewModel(Users user)
         {
             labelTxt = "click btn before";
-
-            
         }
     }
 }
