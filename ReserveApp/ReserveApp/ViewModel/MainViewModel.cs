@@ -25,7 +25,10 @@ namespace ReserveApp.ViewModel
         List<Classrooms> listClassrooms;
 
         Dictionary<DateTime, bool> DatesDictionary { set; get; } = new Dictionary<DateTime, bool>();
-        private DateTime date { set; get; } = DateTime.Today; /*new DateTime(2019, 06, 01);*/
+        //private DateTime date { set; get; } = DateTime.Today; /*new DateTime(2019, 06, 01);*/
+        private DateTime date { set; get; } = new DateTime(2019, 06, 19); 
+
+
 
         //private bool isChanged;
         //public bool IsChanged
@@ -100,6 +103,16 @@ namespace ReserveApp.ViewModel
             window.dates.ItemsSource = DatesDictionary;
         }
 
+        private List<Applications> applications;
+
+        public List<Applications> Applications
+        {
+            get { return applications; }
+            set { Set(ref applications, value); }
+        }
+
+
+
         public MainViewModel(Users user, MainWindow oldWindow)
         {
             //labelTxt = "click btn before";
@@ -110,7 +123,10 @@ namespace ReserveApp.ViewModel
             window.classRoomNumber.ItemsSource = listClassrooms;
             if (DatesDictionary.Count == 0)
                 DateButtonsSet();
+
+           
         }
+       
     }
     //public class DateTimeToColorConverter : IValueConverter
     //{
@@ -130,4 +146,5 @@ namespace ReserveApp.ViewModel
     //        return (Brush)bc.ConvertFrom("#673AB7");
     //    }
     //}
+
 }

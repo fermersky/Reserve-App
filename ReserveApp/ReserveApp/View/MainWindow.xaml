@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ReserveApp"
         mc:Ignorable="d"
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         Title="MainWindow" Height="1080" Width="1920">
     <Window.Resources>
@@ -149,7 +148,7 @@
             <TextBlock Background="Blue"></TextBlock>
             <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource TextBlockLegend}">Пара по расписанию</TextBlock>
 
-            <TextBlock Grid.Column="3" Background="Yellow"></TextBlock>
+            <TextBlock Grid.Column="3" Background="#FFE400"></TextBlock>
             <!--Для сетки Админа-->
             <TextBlock Grid.Column="4" Grid.ColumnSpan="2" Style="{StaticResource TextBlockLegend}">Есть новые заявки</TextBlock>
             <!--Для сетки юзера-->
@@ -203,7 +202,7 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock TextAlignment="Center" Width="75" Foreground="Gray" FontSize="20" Text="{Binding Path=Number}" Padding="0 15 0 0"></TextBlock>
+                        <TextBlock Margin="0 0 5 0" TextAlignment="Center" Width="75" Foreground="Gray" FontSize="20" Text="{Binding Path=Number}" Padding="0 15 0 0"></TextBlock>
                     </StackPanel>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
@@ -219,13 +218,14 @@
 
         <!--Кнопки ПАРА 1 - НАЧАЛО -->
 
-        <ItemsControl Padding="0" Margin="0" Name="class1Rooms" Grid.Row="5" Grid.Column="3">
+        <ItemsControl ItemsSource="{Binding Applications}" Padding="0" Margin="0" Name="class1Rooms" >
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Width="75" Foreground="Gray" FontSize="11" Text="14" Padding="55 0 0 0"></TextBlock>                          <!--заявки  {Binding Path=Number}"-->
-                        <TextBlock TextAlignment="Center" Width="75" Foreground="Gray" FontSize="15" Text="35" Padding="55 0 0 0"></TextBlock>   <!--кол-во мест в аудитории-->
-                    </StackPanel>
+                    <!--<StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding ClassroomId}" Width="75" Foreground="Gray" FontSize="11"  Padding="55 0 0 0"></TextBlock>    --><!--заявки  {Binding Path=Number}"--><!--
+                        <TextBlock TextAlignment="Center" Width="75" Foreground="Gray" FontSize="15" Text="35" Padding="55 0 0 0"></TextBlock>   --><!--кол-во мест в аудитории--><!--
+                    </StackPanel>-->
+                    
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
             <ItemsControl.ItemsPanel>
@@ -235,47 +235,11 @@
             </ItemsControl.ItemsPanel>
         </ItemsControl>
 
-        <!--Кнопки ПАРА 1 - КОНЕЦ -->
+        <WrapPanel HorizontalAlignment="Left" Orientation="Horizontal" x:Name="WrapApplicationsPanel" 
+                   Grid.Row="5" Grid.RowSpan="8" Grid.Column="3" Width="1220">
 
-        <!--Кнопки ПАРА 2 - НАЧАЛО -->
-
-        
-
-        <!--Кнопки ПАРА 2 - КОНЕЦ -->
-
-        <!--Кнопки ПАРА 3 - НАЧАЛО -->
-
-        
-
-        <!--Кнопки ПАРА 3 - КОНЕЦ -->
-
-        <!--Кнопки ПАРА 4 - НАЧАЛО -->
+        </WrapPanel>
 
 
-        <!--Кнопки ПАРА 4 - КОНЕЦ -->
-
-        <!--Кнопки ПАРА 5 - НАЧАЛО -->
-
-       
-
-        <!--Кнопки ПАРА 5 - КОНЕЦ -->
-
-        <!--Кнопки ПАРА 6 - НАЧАЛО -->
-
-        
-
-        <!--Кнопки ПАРА 6 - КОНЕЦ -->
-
-        <!--Кнопки ПАРА 7 - НАЧАЛО -->
-
-     
-
-        <!--Кнопки ПАРА 7 - КОНЕЦ -->
-
-        <!--Кнопки ПАРА 8 - НАЧАЛО -->
-
-       
-
-        <!--Кнопки ПАРА 8 - КОНЕЦ -->
     </Grid>
 </Window>
