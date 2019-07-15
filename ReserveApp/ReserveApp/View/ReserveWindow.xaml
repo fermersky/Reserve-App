@@ -4,104 +4,129 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ReserveApp.View"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="ReserveWindow" Height="400" Width="400">
-    <Window.Resources>
-        <Style x:Key="headerStyleRight" TargetType="{x:Type Label}">
-            <Setter Property="HorizontalAlignment" Value="Right"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Margin" Value="0 0 5 0"/>
-        </Style>
-        <Style x:Key="headerStyleLeft" TargetType="{x:Type Label}">
-            <Setter Property="HorizontalAlignment" Value="Left"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Margin" Value="5 0 0 0"/>
-        </Style>
-        <Style x:Key="bodyStyleLeft" TargetType="{x:Type Label}">
-            <Setter Property="HorizontalAlignment" Value="Right"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Margin" Value="0 0 5 0"/>
-        </Style>
-        <Style x:Key="bodyStyleRight" TargetType="{x:Type TextBox}">
-            <Setter Property="HorizontalContentAlignment" Value="Left"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Margin" Value="5 5 8 3"/>
-        </Style>
-        <Style x:Key="bodyStyleRightCB" TargetType="{x:Type ComboBox}">
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Margin" Value="5 5 8 3"/>
-        </Style>
-        <Style x:Key="bodyStyleChBox" TargetType="{x:Type CheckBox}">
-            <Setter Property="HorizontalContentAlignment" Value="Left"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Margin" Value="5 5 8 3"/>
-        </Style>
-    </Window.Resources>
+        ResizeMode="NoResize"
+        Title="ReserveWindow" Height="666" Width="504.648">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1.25*"></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition Height="0.3*"></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition Height="0.7*"></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="70"></RowDefinition>
+            <RowDefinition Height="70"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
         </Grid.RowDefinitions>
-        <Grid Grid.ColumnSpan="3">
+
+        <Label Grid.Row="0" Margin="150,10,84,0" FontWeight="Bold" HorizontalAlignment="Center" FontSize="25" Width="265">Бронирование</Label>
+        <Button Grid.Row="0" Margin="0 60 0 0" VerticalAlignment="Top" Height="2" Grid.ColumnSpan="2"></Button>
+
+        <StackPanel  HorizontalAlignment="Center" Orientation="Vertical" Margin="60,67,-30,3" Grid.RowSpan="2" Width="469">
+            <StackPanel Orientation="Horizontal">
+                <Label FontSize="20">Дата:</Label>
+                <Label FontSize="20" Foreground="#673ab7" FontWeight="Bold" Content="{Binding CurrentDate}"></Label>
+                <Label FontSize="20">Пара:</Label>
+                <Label FontSize="20" Foreground="#673ab7" FontWeight="Bold" Content="{Binding LessonNumber}"></Label>
+                <Label FontSize="20">Аудитория:</Label>
+                <Label FontSize="20" Foreground="#673ab7" FontWeight="Bold" Content="{Binding ClassroomNumber}"></Label>
+            </StackPanel>
+        </StackPanel>
+
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition Width="1.5*"></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition Width="0.75*"></ColumnDefinition>
-                <ColumnDefinition Width="1.5*"></ColumnDefinition>
-                <ColumnDefinition Width="0.75*"></ColumnDefinition>
+                <ColumnDefinition Width="175*"></ColumnDefinition>
+                <ColumnDefinition Width="324*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Label Style="{StaticResource headerStyleRight}">Дата:</Label>
-            <Label Grid.Column="1" Style="{StaticResource headerStyleLeft}">13.03.2019</Label>
-            <Label Grid.Column="2" Style="{StaticResource headerStyleRight}">Пара:</Label>
-            <Label Grid.Column="3" Style="{StaticResource headerStyleLeft}">8</Label>
-            <Label Grid.Column="4" Style="{StaticResource headerStyleRight}">Аудитория:</Label>
-            <Label Grid.Column="5" Style="{StaticResource headerStyleLeft}">13</Label>
+
+            <StackPanel Grid.Column="0" Margin="0,0,0,32">
+                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="Account" Margin="0 8 0 0" />
+                    <Label FontSize="17" Content="Преподаватель" />
+                </StackPanel>
+
+                <StackPanel Margin="0 10 0 0" HorizontalAlignment="Right" Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="BookOpenVariant" Margin="0 10 0 0" />
+                    <Label FontSize="17" Content="Предмет"/>
+                </StackPanel>
+
+                <StackPanel Margin="0 10 0 0" HorizontalAlignment="Right" Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="AccountMultiple" Margin="0 10 0 0" />
+                    <Label FontSize="17" Content="Группа"/>
+                </StackPanel>
+
+                <StackPanel Margin="0 10 0 0" HorizontalAlignment="Right" Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="AccountGroupOutline" Margin="0 10 0 0" />
+                    <Label FontSize="17" Content="К-во студентов"/>
+                </StackPanel>
+
+                <StackPanel  Margin="0 40 0 0" HorizontalAlignment="Right" Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="Comment" Margin="0 10 0 0" />
+                    <Label FontSize="17" Content="Комментарий"/>
+                </StackPanel>
+
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Margin="0,0,0,32">
+                <StackPanel Orientation="Vertical">
+                    <ComboBox FontSize="17" Width="300" 
+                              ItemsSource="{Binding Users}"
+                              SelectedValue="{Binding SelectedUser, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              DisplayMemberPath="Fullname" 
+                              materialDesign:ComboBoxAssist.ClassicMode="True"
+                              IsEnabled="{Binding isCheckBoxActive}"
+                              materialDesign:HintAssist.Hint="{Binding SelectedUser.Fullname}">
+                    </ComboBox>
+
+                    <TextBox Text="{Binding Lesson, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  FontSize="17" 
+                             Width="300" Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+
+                    <ComboBox Margin="0 10 0 0" x:Name="GroupsCombo" FontSize="17" Width="300" 
+                              ItemsSource="{Binding Groups}"
+                              SelectedItem="{Binding SelectedGroup}"
+                              DisplayMemberPath="Name" 
+                              materialDesign:ComboBoxAssist.ClassicMode="True"
+                              SelectedValuePath="Id">
+                    </ComboBox>
+
+                    <TextBox x:Name="StudentsCountField" FontSize="17" Width="300" 
+                             Text="{Binding ElementName=GroupsCombo, Path=SelectedItem.StudentsCount}" 
+                             Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+
+                    <TextBox
+                        Text="{Binding Comment}"
+                        Margin="0 40 0 0"
+                        Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"
+                        VerticalAlignment="Top"
+                        Width="300"
+                        Height="100"
+                        AcceptsReturn="True"
+                        TextWrapping="Wrap"
+                        FontSize="17"
+                        VerticalScrollBarVisibility="Auto"
+                        IsEnabled="{Binding IsChecked, ElementName=MaterialDesignOutlinedTextFieldTextBoxEnabledComboBox}" 
+                    />
+                    <CheckBox Margin="10 10 0 0" FontSize="17" IsChecked="{Binding isSheduled}" IsEnabled="{Binding isCheckBoxActive}" Content="По расписанию"/>
+
+                </StackPanel>
+            </StackPanel>
+
+            <StackPanel Grid.ColumnSpan="2" Margin="10,357,0,10" Orientation="Horizontal">
+                <Button
+                    Margin="20 0 0 0"
+                    HorizontalAlignment="Left"
+                    Command="{Binding AddApplicationCommand}"
+                    CommandParameter="{Binding Text, ElementName=StudentsCountField}"
+                    Content="Добавить"/>
+                <Button 
+                    Margin="250 0 0 0"
+                    Background="#f44336"
+                    Content="Отменить"/>
+            </StackPanel>
         </Grid>
-        <Label Grid.Row="2" Style="{StaticResource bodyStyleLeft}">Преподаватель:</Label>
-        <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource bodyStyleRight}"></TextBox>
-        <!--<ComboBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource bodyStyleRightCB}"></ComboBox>-->
 
-        <Label Grid.Row="3" Style="{StaticResource bodyStyleLeft}">Предмет:</Label>
-        <TextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource bodyStyleRight}"></TextBox>
-
-        <Label Grid.Row="4" Style="{StaticResource bodyStyleLeft}">Группа:</Label>
-        <ComboBox Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource bodyStyleRightCB}"></ComboBox>
-
-        <Label Grid.Row="5" Style="{StaticResource bodyStyleLeft}">Кол-во студентов:</Label>
-        <TextBox Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource bodyStyleRight}"></TextBox>
-
-        <Label Grid.Row="6" Style="{StaticResource bodyStyleLeft}">Комментарий:</Label>
-        <TextBox Grid.Row="6" Grid.RowSpan="2" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource bodyStyleRight}"></TextBox>
-
-        <CheckBox Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource bodyStyleChBox}">По расписанию</CheckBox>
-
-        <Grid Grid.Row="9" Grid.ColumnSpan="3">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <Button Margin="5 5 5 5">Сохранить</Button>
-            <Button Grid.Column="1" Margin="5 5 5 5">Отменить</Button>
-        </Grid>
+        <TextBlock Margin="0 70 0 0" Grid.Row="3" Width="300"  
+             Padding="0 8 0 0" x:Name="errorTb"  Height="30" 
+             Background="#F5D0D5" Foreground="#671322" FontWeight="Bold" 
+             Text="Что-то пошло не так :("
+             TextAlignment="Center">
+        </TextBlock>
     </Grid>
 </Window>

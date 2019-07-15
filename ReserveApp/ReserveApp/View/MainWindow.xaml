@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:ReserveApp"
         mc:Ignorable="d"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        Activated="Window_Activated"
         Title="MainWindow" Height="1080" Width="1920">
     <Window.Resources>
         <!--xmlns:databinding="clr-namespace:ReserveApp.ViewModel"-->

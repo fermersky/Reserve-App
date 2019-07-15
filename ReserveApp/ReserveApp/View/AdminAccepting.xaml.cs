@@ -1,5 +1,4 @@
-﻿using ReserveApp.Model;
-using ReserveApp.ViewModel;
+﻿using ReserveApp.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,33 +17,22 @@ using System.Windows.Shapes;
 namespace ReserveApp.View
 {
     /// <summary>
-    /// Interaction logic for ReserveWindow.xaml
+    /// Interaction logic for AdminAccepting.xaml
     /// </summary>
-    public partial class ReserveWindow : Window
+    public partial class AdminAccepting : Window
     {
-        // Color theme for Success and Error message
         private Color ErrorBackgroundColor = Color.FromRgb(245, 208, 213);
         private Color ErrorForegroundColor = Color.FromRgb(103, 19, 34);
         private Color SuccessBackgroundColor = Color.FromRgb(198, 227, 253);
         private Color SuccessForegroundColor = Color.FromRgb(7, 61, 120);
 
-
-        public ReserveWindow()
+        public AdminAccepting()
         {
             InitializeComponent();
-
-            this.DataContext = new ReserveViewModel(date: new DateTime(2019, 6, 19), 
-                classroomNumber: 4, lessonNumber: 4, 
-                user: new ReserveClassroomDBEntities().Users.FirstOrDefault(u => u.Id == 2));
-
-            var dc = this.DataContext as ReserveViewModel;
-            dc.CloseWindow += CloseWindow;
+            this.DataContext = new AdminAcceptingViewModel(date: new DateTime(2019, 6, 19), classroomNumber: 4, lessonNumber: 4);
+            var dc = this.DataContext as AdminAcceptingViewModel;
             dc.ShowErrorMsg += ShowErrorMsg;
-        }
-
-        public void CloseWindow()
-        {
-            this.Close();
+            dc.ShowSuccessMsg += ShowSuccessMsg;
         }
 
         public void ShowErrorMsg(string msg) // maniulates with error msg label
@@ -59,6 +47,24 @@ namespace ReserveApp.View
                 errorTb.Foreground = new SolidColorBrush(ErrorForegroundColor);
 
                 anim.KeyFrames.Add(new LinearThicknessKeyFrame(new Thickness(0, 8, 0, 0), KeyTime.FromPercent(0.4)));
+                anim.Duration = TimeSpan.FromSeconds(0.8);
+                anim.AutoReverse = true;
+
+                errorTb.BeginAnimation(TextBlock.MarginProperty, anim);
+            }
+        }
+
+        public void ShowSuccessMsg(string msg) 
+        {
+            if (errorTb.Margin == (new Thickness(0, 70, 0, 0)))
+            {
+                var anim = new ThicknessAnimationUsingKeyFrames();
+
+                errorTb.Text = msg;
+                errorTb.Background = new SolidColorBrush(SuccessBackgroundColor);
+                errorTb.Foreground = new SolidColorBrush(SuccessForegroundColor);
+
+                anim.KeyFrames.Add(new LinearThicknessKeyFrame(new Thickness(0, 0, 0, 0), KeyTime.FromPercent(0.4)));
                 anim.Duration = TimeSpan.FromSeconds(0.8);
                 anim.AutoReverse = true;
 

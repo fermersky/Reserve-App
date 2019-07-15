@@ -18,6 +18,7 @@ using System.Data.Entity;
 using System.Collections.ObjectModel;
 using GalaSoft.MvvmLight;
 using System.Globalization;
+using ReserveApp.View;
 
 namespace ReserveApp
 {
@@ -26,10 +27,11 @@ namespace ReserveApp
     /// </summary>
     public partial class MainWindow : Window
     {
+        public Users User { get; set; }
+        public DateTime CurrentDate { get; set; } = new DateTime(2019, 06, 19);
+        public int ClassroomsCount { get; private set; }
 
-        public DateTime Today { get; set; } = new DateTime(2019, 06, 19);
-
-        public Brush GetBackgroundAccordingToStatus(Applications app)
+        public Brush GetBackgroundAccordingToStatus(Applications app, int? freeSeats)
         {
             Color color;
 
@@ -41,6 +43,9 @@ namespace ReserveApp
 
                 default: color = Colors.White; break;
             }
+
+            if ((app.Status.Type == "Accepted" || app.Status.Type == "InProgress") && freeSeats == 0)
+                color = Colors.Red;
 
             return new SolidColorBrush(color);
         }
@@ -62,64 +67,75 @@ namespace ReserveApp
         public MainWindow(Users user) // user is a param which sended from AuthViewModel [User or Admin]
         {
             InitializeComponent();
-            //userWindow = user;
+
             this.DataContext = new MainViewModel(user, this);
+            this.User = user;
+            using (var db = new ReserveClassroomDBEntities())
+            {
+                this.ClassroomsCount = db.Classrooms.ToList().Count();
+            };
 
+            GenerateWindowBody();
+        }
 
+        private void GenerateWindowBody()
+        {
+            WrapApplicationsPanel.Children.Clear();
 
             using (var db = new ReserveClassroomDBEntities())
             {
-                var localApps = db.Applications.Where(a => a.Date == this.Today).ToList();
+                var localApps = db.Applications.Where(a => a.Date == this.CurrentDate).ToList();
 
-                for (int lessonNumber = 1; lessonNumber <= 8; lessonNumber++) // всего у нас 8 рядов (8 пар)
+                // Всего у нас 8 рядов (8 пар)
+                for (int lessonNumber = 1; lessonNumber <= 8; lessonNumber++) 
                 {
-                    var applications = localApps.Where(a => a.LessonNumber == lessonNumber).ToList(); // выбираем заявки или пары по каждой из 8 пар 
+                    // Выбираем заявки или пары по каждой из 8 пар 
+                    var applications = localApps.Where(a => a.LessonNumber == lessonNumber).ToList();
 
-                    if (applications.Count > 0) // если есть записи с такой парой
+                    // Если есть записи с такой парой
+                    if (applications.Count > 0) 
                     {
-                        for (int classrooomNumber = 1; classrooomNumber <= 15; classrooomNumber++) // проверяем каждую аудитрию
+                        // Проверяем каждую аудитрию
+                        for (int classroomNumber = 1; classroomNumber <= this.ClassroomsCount; classroomNumber++) 
                         {
-                            var app = applications.FirstOrDefault(a => a.Classrooms.Number == classrooomNumber);
+                            var app = applications.FirstOrDefault(a => a.Classrooms.Number == classroomNumber);
 
+                            // Если есть заявка на текщую итерируемую аудиторию
                             if (app != null)
                             {
-                                // уродский linq, чтоб вытянуть количество заявок на одну ячейку пара-аудитория
-                                var countOfApplications = 
-                                    from a in applications
-                                    where a.Classrooms.Number == classrooomNumber
-                                    group a by new { a.ClassroomId, a.LessonNumber } into a
-                                    select new { Count = a.Count() }; // вот его и берем
+                                // Количество заявок на одну пару + аудиторию
+                                var countOfApplications = GetApplicationsCountForLesson(applications, classroomNumber);
 
-                                var countOfStudents = applications
-                                    .Where(a => a.Classrooms.Number == classrooomNumber)
-                                    .ToList()
-                                    .Sum(a => a.StudentsCount);
+                                // Считаем количество занятых мест с учетом пар по расписанию и утвежденных заявок
+                                var countOfStudents = GetTakenSeatsForLesson(applications, classroomNumber);
 
+                                // Считаем количество свободных мест
                                 var freeSeats = app.Classrooms.MaxPersonCount - countOfStudents;
+
 
                                 var btn = new Button()
                                 {
-                                    Content = freeSeats, // к-во свободных мест
+                                    Content = freeSeats, // К-во свободных мест
                                     Width = 80,
                                     Height = 71,
-                                    //Background = new SolidColorBrush(Color.FromRgb(255, 255, 255)),
-                                    Background = GetBackgroundAccordingToStatus(app), // уставнавливаем bg в зависимости от статуса
-                                    Tag = "loh",
+                                    Tag = $"{classroomNumber}||{lessonNumber}",
+
+                                    // Уставнавливаем bg в зависимости от статуса и количества свободных мест
+                                    Background = GetBackgroundAccordingToStatus(app, freeSeats),
                                 };
 
-                                btn.Click += (sender, e) => 
-                                {
-                                    MessageBox.Show((sender as Button).Tag.ToString());
-                                };
+                                // Подписали метод на событие кнопки
+                                btn.Click += BtnClickedCallback;
 
                                 var label = new Label()
                                 {
-                                    Content = countOfApplications.FirstOrDefault().Count, // к-во заявок
+                                    Content = countOfApplications, // К-во заявок
                                     Foreground = new SolidColorBrush(Colors.White),
                                     Margin = new Thickness(-20, -5, 0, 0),
                                     FontSize = 15,
                                 };
 
+                                // Добавили компоненты в MainWindow
                                 WrapApplicationsPanel.Children.Add(btn);
                                 WrapApplicationsPanel.Children.Add(label);
                             }
@@ -127,12 +143,70 @@ namespace ReserveApp
                                 SetEmptyButton();
                         }
                     }
-                    else // если нет записей - ряд из пустых кнопкок
-                        for (int i = 1; i <= 15; i++)
+                    else // Если нет записей - ряд из пустых кнопкок
+                        for (int i = 1; i <= this.ClassroomsCount; i++)
                             SetEmptyButton();
                 }
             }
         }
 
+        // Method calculate count of taken seats for a one ceil
+        private int? GetTakenSeatsForLesson(List<Applications> applications, int classroomNumber)
+        {
+            return applications
+                    .Where(a => a.Classrooms.Number == classroomNumber 
+                        && (a.Status.Type == "Accepted" 
+                        || a.Status.Type == "Sheduled"))
+                    .ToList()
+                    .Sum(a => a.StudentsCount);
+        }
+
+        // Method calculate count of applications for a one ceil
+        private int GetApplicationsCountForLesson(List<Applications> applications, int classrooomNumber)
+        {
+            // ugly linq, to get count of applications on one ceil lesson-classroom
+            var app = from a in applications
+                        where a.Classrooms.Number == classrooomNumber
+                        group a by new { a.ClassroomId, a.LessonNumber } into a
+                        select new { Count = a.Count() };
+
+            return app.FirstOrDefault().Count;
+        }
+
+        // Method called by the click on ceil button with applications
+        private void BtnClickedCallback(object sender, RoutedEventArgs e)
+        {
+            if (User.Role == "admin")
+            {
+                // Button tag has a string with format "classroomNumber||lessonNumber"
+                string[] arr = (sender as Button).Tag.ToString()
+                    .Split(new string[] { "||" }, StringSplitOptions.RemoveEmptyEntries);
+
+                int classroom = int.Parse(arr[0]);
+                int lesson = int.Parse(arr[1]);
+
+                var acceptingWindow = new AdminAccepting();
+                var acceptingDataContext = new AdminAcceptingViewModel
+                (
+                    date: this.CurrentDate,
+                    classroomNumber: classroom,
+                    lessonNumber: lesson
+                );
+
+                // Subscibe vm actions to the methods of AdminAccepting window
+                acceptingDataContext.ShowSuccessMsg += acceptingWindow.ShowSuccessMsg;
+                acceptingDataContext.ShowErrorMsg += acceptingWindow.ShowErrorMsg;
+
+                acceptingWindow.DataContext = acceptingDataContext;
+
+                // Show list of applications to apply or discard them
+                acceptingWindow.ShowDialog();
+            }
+        }
+
+        private void Window_Activated(object sender, EventArgs e)
+        {
+            GenerateWindowBody();
+        }
     }
 }

@@ -88,6 +88,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Helper\EnablingAcceptButtonConverter.cs" />
     <Compile Include="Model\Applications.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -118,12 +119,18 @@
     <Compile Include="Model\Users.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\AdminAcceptingViewModel.cs" />
+    <Compile Include="ViewModel\ReserveViewModel.cs" />
+    <Compile Include="View\AdminAccepting.xaml.cs">
+      <DependentUpon>AdminAccepting.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\ReserveWindow.xaml.cs">
       <DependentUpon>ReserveWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\SheduleWindow.xaml.cs">
-      <DependentUpon>SheduleWindow.xaml</DependentUpon>
-    </Compile>
+    <Page Include="View\AdminAccepting.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\AuthWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -148,10 +155,6 @@
     <Page Include="View\ReserveWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\SheduleWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>

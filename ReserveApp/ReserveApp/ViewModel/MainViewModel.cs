@@ -55,43 +55,9 @@ namespace ReserveApp.ViewModel
         private bool IsChanged(DateTime date)
         {
             var items = listApps.FirstOrDefault(a => a.Date == date && a.StatusId == 3);
-            if (items != null && user.Role == "admin")
-                return true;
-            else
-                return false;
+            return (items != null && user.Role == "admin");
         }
-        //private RelayCommand clickCommand;
-        //public RelayCommand ClickCommand
-        //{
-        //    get
-        //    {
-        //        return clickCommand ?? (clickCommand = new RelayCommand(() =>
-        //        {
-        //            // тело команды
 
-        //            var db = new ReserveClassroomDBEntities();
-
-        //            MessageBox.Show(db.Applications.FirstOrDefault(u => u.Id == 1).Lesson);
-        //            LabelTxt = "ok";
-        //        },
-        //        () =>
-        //        {
-        //            // условие выполнения команды
-
-        //            return true;
-        //        }));
-        //    }
-        //}
-
-        //private string labelTxt;
-
-        //public string LabelTxt
-        //{
-        //    get => labelTxt;
-        //    set => Set(ref labelTxt, value);
-
-        //    // метод Set устанавливает новое значение и вызывает PropertyChanged
-        //}
 
         private void DateButtonsSet()
         {
@@ -111,22 +77,21 @@ namespace ReserveApp.ViewModel
             set { Set(ref applications, value); }
         }
 
-
-
         public MainViewModel(Users user, MainWindow oldWindow)
         {
-            //labelTxt = "click btn before";
-            this.user = user;
-            this.window = oldWindow;
-            listApps = new ReserveClassroomDBEntities().Applications.ToList();
-            listClassrooms = new ReserveClassroomDBEntities().Classrooms.ToList();
-            window.classRoomNumber.ItemsSource = listClassrooms;
-            if (DatesDictionary.Count == 0)
-                DateButtonsSet();
+            using (var db = new ReserveClassroomDBEntities())
+            {
+                this.user = user;
+                this.window = oldWindow;
 
-           
-        }
-       
+                listApps = db.Applications.ToList();
+                listClassrooms = db.Classrooms.ToList();
+                window.classRoomNumber.ItemsSource = listClassrooms;
+
+                if (DatesDictionary.Count == 0)
+                    DateButtonsSet();
+            }        
+        }    
     }
     //public class DateTimeToColorConverter : IValueConverter
     //{
