@@ -84,11 +84,11 @@ namespace ReserveApp
                             if (app != null)
                             {
                                 // уродский linq, чтоб вытянуть количество заявок на одну ячейку пара-аудитория
-                                var countOfApplications = from a in applications
-                                                          where a.Classrooms.Number == classrooomNumber
-                                                          group a by new { a.ClassroomId, a.LessonNumber }
-                                                          into a
-                                                          select new { Count = a.Count() }; // вот его и берем
+                                var countOfApplications = 
+                                    from a in applications
+                                    where a.Classrooms.Number == classrooomNumber
+                                    group a by new { a.ClassroomId, a.LessonNumber } into a
+                                    select new { Count = a.Count() }; // вот его и берем
 
                                 var countOfStudents = applications
                                     .Where(a => a.Classrooms.Number == classrooomNumber)
@@ -104,6 +104,12 @@ namespace ReserveApp
                                     Height = 71,
                                     //Background = new SolidColorBrush(Color.FromRgb(255, 255, 255)),
                                     Background = GetBackgroundAccordingToStatus(app), // уставнавливаем bg в зависимости от статуса
+                                    Tag = "loh",
+                                };
+
+                                btn.Click += (sender, e) => 
+                                {
+                                    MessageBox.Show((sender as Button).Tag.ToString());
                                 };
 
                                 var label = new Label()
@@ -127,5 +133,6 @@ namespace ReserveApp
                 }
             }
         }
+
     }
 }
