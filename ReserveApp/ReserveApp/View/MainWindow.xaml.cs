@@ -131,7 +131,7 @@ namespace ReserveApp
 
                                 // Подписали метод на событие кнопки
                                 btn.MouseDoubleClick += BtnDoubleClickCallback;
-                                btn.Click += BtnClickCallback;
+                                btn.PreviewMouseLeftButtonDown += BtnClickCallback;
 
 
                                 var label = new Label()
@@ -141,8 +141,6 @@ namespace ReserveApp
                                     Margin = new Thickness(-20, -5, 0, 0),
                                     FontSize = 15,
                                 };
-
-                                btn.ContextMenu = new ContextMenu();
 
                                 // Добавили компоненты в MainWindow
                                 WrapApplicationsPanel.Children.Add(btn);
@@ -194,8 +192,24 @@ namespace ReserveApp
             return (classroom, lesson, type);
         }
 
+        private void Button_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+
+            if (e.ClickCount > 1)
+            {
+                BtnDoubleClickCallback(sender, e);
+            }
+
+            else
+            {
+                BtnClickCallback(sender, e);
+            }
+        }
+
+
         // Method called by the click on ceil button with applications
-        private void BtnClickCallback(object sender, RoutedEventArgs e)
+        private void BtnClickCallback(object sender, MouseButtonEventArgs e)
         {
             if (User.Role == "admin")
             {
@@ -211,7 +225,7 @@ namespace ReserveApp
                 );
 
                 // open the accepting window only if it is InProgress or Accepting application
-                if (appInfo.type != "Sheduled")
+                if (appInfo.type != "Sheduled" && appInfo.type != "none")
                 {
                     // Subscibe vm actions to the methods of AdminAccepting window
                     acceptingDataContext.ShowSuccessMsg += acceptingWindow.ShowSuccessMsg;
@@ -229,23 +243,27 @@ namespace ReserveApp
         {
             var appInfo = ParseButtonTag((sender as Button).Tag.ToString());
 
-            var reserveWindow = new ReserveWindow();
-            var reserveDataContext = new ReserveViewModel
-            (
-                date: this.CurrentDate,
-                classroomNumber: appInfo.classroom, 
-                lessonNumber: appInfo.lesson,
-                user: this.User
-            );
+            if (appInfo.type != "Sheduled")
+            {
+                var reserveWindow = new ReserveWindow();
+                var reserveDataContext = new ReserveViewModel
+                (
+                    date: this.CurrentDate,
+                    classroomNumber: appInfo.classroom,
+                    lessonNumber: appInfo.lesson,
+                    user: this.User
+                );
 
-            // set datacontext
-            reserveWindow.DataContext = reserveDataContext;
+                // set datacontext
+                reserveWindow.DataContext = reserveDataContext;
 
-            // Subscibe vm actions to the methods of ReserveWindow
-            reserveDataContext.CloseWindow += reserveWindow.CloseWindow;
-            reserveDataContext.ShowErrorMsg += reserveWindow.ShowErrorMsg;
+                // Subscibe vm actions to the methods of ReserveWindow
+                reserveDataContext.CloseWindow += reserveWindow.CloseWindow;
+                reserveDataContext.ShowErrorMsg += reserveWindow.ShowErrorMsg;
 
-            reserveWindow.ShowDialog();
+                reserveWindow.ShowDialog();
+            }
+
         }
 
         private void Window_Activated(object sender, EventArgs e)
