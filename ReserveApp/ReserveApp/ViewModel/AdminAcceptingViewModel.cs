@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Data.Entity.Migrations;
 using System.Windows.Threading;
+using ReserveApp.View;
 
 namespace ReserveApp.ViewModel
 {
@@ -45,15 +46,7 @@ namespace ReserveApp.ViewModel
                             catch { ShowErrorMsg("Что-то не так ;("); }
 
                             // then refresh local Applications collection which binded
-                            this.Applications = db.Applications.Include("Users").Include("Classrooms").Include("Groups")
-                             .Where(a => a.Date == CurrentDate
-                                 && a.Classrooms.Number == ClassroomNumber
-                                 && a.LessonNumber == LessonNumber).ToList();
-
-                            // update property after deleting application
-                            this.ApplicationView = CollectionViewSource.GetDefaultView(Applications
-                                .Where(a => (a.Status.Type == "InProgress" || a.Status.Type == "Accepted")).ToList());
-                            this.AvaliableSeatCount = getAvaliableSeatCount();
+                            RefreshLocalApplicationView();
 
                             ShowSuccessMsg("Заявка одобрена!");
 
@@ -89,15 +82,7 @@ namespace ReserveApp.ViewModel
                         }
                         catch { ShowErrorMsg("Что-то не так ;("); }
 
-                        this.Applications = db.Applications.Include("Users").Include("Classrooms").Include("Groups")
-                            .Where(a => a.Date == CurrentDate
-                                && a.Classrooms.Number == ClassroomNumber
-                                && a.LessonNumber == LessonNumber).ToList();
-
-                        // update properties after deleting application
-                        this.ApplicationView = CollectionViewSource.GetDefaultView(Applications
-                            .Where(a => (a.Status.Type == "InProgress" || a.Status.Type == "Accepted")).ToList());
-                        this.AvaliableSeatCount = getAvaliableSeatCount();
+                        RefreshLocalApplicationView();
 
                         ShowSuccessMsg("Заявка удалена");
                     }
@@ -105,13 +90,45 @@ namespace ReserveApp.ViewModel
             }
         }
 
-        public AdminAcceptingViewModel(DateTime date, int classroomNumber, int lessonNumber)
+        //
+
+        private RelayCommand<object> openReserveWindowCommand;
+
+        public RelayCommand<object> OpenReserveWindowCommand
+        {
+            get
+            {
+                return openReserveWindowCommand ?? (openReserveWindowCommand = new RelayCommand<object>(async (obj) =>
+                {
+                    var reserveWindow = new ReserveWindow();
+                    var reserveDataContext = new ReserveViewModel
+                    (
+                        date: this.CurrentDate,
+                        classroomNumber: this.ClassroomNumber,
+                        lessonNumber: this.LessonNumber,
+                        user: this.User
+                    );
+
+                    // set datacontext
+                    reserveWindow.DataContext = reserveDataContext;
+
+                    // Subscibe vm actions to the methods of ReserveWindow
+                    reserveDataContext.CloseWindow += reserveWindow.CloseWindow;
+                    reserveDataContext.ShowErrorMsg += reserveWindow.ShowErrorMsg;
+
+                    reserveWindow.ShowDialog();
+                }));
+            }
+        }
+
+        public AdminAcceptingViewModel(DateTime date, int classroomNumber, int lessonNumber, Users user)
         {
             using (var db = new ReserveClassroomDBEntities())
             {
                 this.CurrentDate = date;
                 this.LessonNumber = lessonNumber;
                 this.ClassroomNumber = classroomNumber;
+                this.User = user;
 
                 // Load applications from db
                 Applications = db.Applications.Include("Users").Include("Classrooms").Include("Groups")
@@ -130,6 +147,8 @@ namespace ReserveApp.ViewModel
 
 
         // Properties and Methods Helpers
+
+        public Users User { get; set; }
 
         public int? TakenSeatCount { get; private set; } = 0;
         public int FreeSeatCount { get; private set; } = 0;
@@ -163,7 +182,20 @@ namespace ReserveApp.ViewModel
                 return getFreeSeatCount();
         }
 
+        public void RefreshLocalApplicationView()
+        {
+            using (var db = new ReserveClassroomDBEntities())
+            {
+                this.Applications = db.Applications.Include("Users").Include("Classrooms").Include("Groups")
+                             .Where(a => a.Date == CurrentDate
+                                 && a.Classrooms.Number == ClassroomNumber
+                                 && a.LessonNumber == LessonNumber).ToList();
 
+                this.ApplicationView = CollectionViewSource.GetDefaultView(Applications
+                    .Where(a => (a.Status.Type == "InProgress" || a.Status.Type == "Accepted")).ToList());
+                this.AvaliableSeatCount = getAvaliableSeatCount();
+            }
+        }
    
 
         // Properties to Bind

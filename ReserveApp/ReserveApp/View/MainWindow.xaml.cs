@@ -63,7 +63,8 @@ namespace ReserveApp
             };
             var label = new Label() { Content = "", Margin = new Thickness(-20, -5, 0, 0), FontSize = 15, };
 
-            btn.MouseDoubleClick += BtnDoubleClickCallback;
+            btn.Click += BtnClickCallback;
+
             WrapApplicationsPanel.Children.Add(btn);
         }
 
@@ -130,8 +131,7 @@ namespace ReserveApp
                                 };
 
                                 // Подписали метод на событие кнопки
-                                btn.MouseDoubleClick += BtnDoubleClickCallback;
-                                btn.PreviewMouseLeftButtonDown += BtnClickCallback;
+                                btn.Click += BtnClickCallback;
 
 
                                 var label = new Label()
@@ -192,58 +192,35 @@ namespace ReserveApp
             return (classroom, lesson, type);
         }
 
-        private void Button_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            e.Handled = true;
-
-            if (e.ClickCount > 1)
-            {
-                BtnDoubleClickCallback(sender, e);
-            }
-
-            else
-            {
-                BtnClickCallback(sender, e);
-            }
-        }
-
 
         // Method called by the click on ceil button with applications
-        private void BtnClickCallback(object sender, MouseButtonEventArgs e)
+        private void BtnClickCallback(object sender, RoutedEventArgs e)
         {
-            if (User.Role == "admin")
-            {
-                // Button tag has a string with format "classroomNumber||lessonNumber||type"
-                var appInfo = ParseButtonTag((sender as Button).Tag.ToString());
+            // Button tag has a string with format "classroomNumber||lessonNumber||type"
+            var appInfo = ParseButtonTag((sender as Button).Tag.ToString());
 
+            // open the accepting window only if it is InProgress or Accepting application
+            if (User.Role == "admin" && appInfo.type != "Sheduled")
+            {
                 var acceptingWindow = new AdminAccepting();
                 var acceptingDataContext = new AdminAcceptingViewModel
                 (
                     date: this.CurrentDate,
                     classroomNumber: appInfo.classroom,
-                    lessonNumber: appInfo.lesson
+                    lessonNumber: appInfo.lesson,
+                    user: this.User
                 );
 
-                // open the accepting window only if it is InProgress or Accepting application
-                if (appInfo.type != "Sheduled" && appInfo.type != "none")
-                {
-                    // Subscibe vm actions to the methods of AdminAccepting window
-                    acceptingDataContext.ShowSuccessMsg += acceptingWindow.ShowSuccessMsg;
-                    acceptingDataContext.ShowErrorMsg += acceptingWindow.ShowErrorMsg;
+                // Subscibe vm actions to the methods of AdminAccepting window
+                acceptingDataContext.ShowSuccessMsg += acceptingWindow.ShowSuccessMsg;
+                acceptingDataContext.ShowErrorMsg += acceptingWindow.ShowErrorMsg;
 
-                    acceptingWindow.DataContext = acceptingDataContext;
+                acceptingWindow.DataContext = acceptingDataContext;
 
-                    // Show list of applications to apply or discard them
-                    acceptingWindow.ShowDialog();
-                }
+                // Show list of applications to apply or discard them
+                acceptingWindow.ShowDialog();
             }
-        }
-
-        private void BtnDoubleClickCallback(object sender, MouseButtonEventArgs e)
-        {
-            var appInfo = ParseButtonTag((sender as Button).Tag.ToString());
-
-            if (appInfo.type != "Sheduled")
+            else if (User.Role == "user" && appInfo.type != "Sheduled")
             {
                 var reserveWindow = new ReserveWindow();
                 var reserveDataContext = new ReserveViewModel
@@ -263,8 +240,8 @@ namespace ReserveApp
 
                 reserveWindow.ShowDialog();
             }
-
         }
+
 
         private void Window_Activated(object sender, EventArgs e)
         {

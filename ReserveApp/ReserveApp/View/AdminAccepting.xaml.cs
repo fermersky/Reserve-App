@@ -29,10 +29,6 @@ namespace ReserveApp.View
         public AdminAccepting()
         {
             InitializeComponent();
-            this.DataContext = new AdminAcceptingViewModel(date: new DateTime(2019, 6, 19), classroomNumber: 4, lessonNumber: 4);
-            var dc = this.DataContext as AdminAcceptingViewModel;
-            dc.ShowErrorMsg += ShowErrorMsg;
-            dc.ShowSuccessMsg += ShowSuccessMsg;
         }
 
         public void ShowErrorMsg(string msg) // maniulates with error msg label
@@ -70,6 +66,11 @@ namespace ReserveApp.View
 
                 errorTb.BeginAnimation(TextBlock.MarginProperty, anim);
             }
+        }
+
+        private void Window_Activated(object sender, EventArgs e)
+        {
+            (this.DataContext as AdminAcceptingViewModel).RefreshLocalApplicationView();
         }
     }
 }

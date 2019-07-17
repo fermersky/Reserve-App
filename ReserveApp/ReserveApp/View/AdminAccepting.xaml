@@ -8,14 +8,15 @@
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:local1="clr-namespace:ReserveApp.Helper"
         mc:Ignorable="d"
-        Title="Заявки" Height="568" Width="1171">
+        Activated="Window_Activated"
+        Title="Заявки" Height="668" Width="1171">
     <Window.Resources>
         <local1:EnablingAcceptButtonConverter x:Key="EnablingAcceptButtonConverter"></local1:EnablingAcceptButtonConverter>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="70"></RowDefinition>
-            <RowDefinition Height="120"></RowDefinition>
+            <RowDefinition Height="140"></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition Height="50"></RowDefinition>
         </Grid.RowDefinitions>
@@ -37,9 +38,11 @@
                 <Label FontSize="20">Свободных мест в аудитории:</Label>
                 <Label  FontSize="20"  Foreground="#673ab7" FontWeight="Bold" Content="{Binding AvaliableSeatCount, UpdateSourceTrigger=PropertyChanged}"></Label>
             </StackPanel>
+            <Button Command="{Binding OpenReserveWindowCommand}" Margin="70 10 0 0" HorizontalAlignment="Left">Забронировать аудиторию</Button>
+
         </StackPanel>
 
-        <ListView ItemsSource="{Binding ApplicationView, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" x:Name="ApplicationsList" Margin="0,105,0,0" Grid.RowSpan="2">
+        <ListView ItemsSource="{Binding ApplicationView, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" x:Name="ApplicationsList" Margin="0,145,0,0" Grid.RowSpan="2">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <WrapPanel>
