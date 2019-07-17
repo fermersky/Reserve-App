@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:ReserveApp"
         mc:Ignorable="d"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Activated="Window_Activated"
         Title="Окно бронирования" MinHeight="920" Width="1920">
     <Window.Resources>
@@ -203,7 +204,9 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Margin="0 0 5 0" TextAlignment="Center" Width="75" Foreground="Gray" FontSize="20" Text="{Binding Path=Number}" Padding="0 15 0 0"></TextBlock>
+                        <TextBlock MouseLeftButtonDown="ClassroomTextBlockClick" Margin="0 0 5 0" 
+                                   TextAlignment="Center" Width="75" Foreground="Gray" FontSize="20" 
+                                   Text="{Binding Path=Number}" Padding="0 15 0 0"></TextBlock>
                     </StackPanel>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

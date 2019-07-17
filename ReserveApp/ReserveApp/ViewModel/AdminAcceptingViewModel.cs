@@ -34,7 +34,7 @@ namespace ReserveApp.ViewModel
 
                         if (currentApp.StudentsCount <= AvaliableSeatCount)
                         {
-                            currentApp.StatusId = 2;
+                            currentApp.StatusId = db.Status.First(s => s.Type == "Accepted").Id;
 
                             // update record in Applications db table
 
@@ -176,7 +176,9 @@ namespace ReserveApp.ViewModel
                 var FreeSeatCount = getFreeSeatCount();
 
                 // TakenSeatCount may be null if we don't have Accepted applications
-                return (TakenSeatCount != null) ? FreeSeatCount - (int)TakenSeatCount : FreeSeatCount;
+                return (TakenSeatCount != null) 
+                    ? FreeSeatCount - (int)TakenSeatCount 
+                    : FreeSeatCount;
             }
             else
                 return getFreeSeatCount();

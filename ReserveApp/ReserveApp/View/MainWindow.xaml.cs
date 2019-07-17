@@ -260,5 +260,10 @@ namespace ReserveApp
             // update applications grid
             GenerateWindowBody();
         }
+
+        private void ClassroomTextBlockClick(object sender, MouseButtonEventArgs e)
+        {
+            MessageBox.Show((sender as TextBlock).Text);
+        }
     }
 }
