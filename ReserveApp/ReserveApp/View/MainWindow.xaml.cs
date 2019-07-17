@@ -28,7 +28,7 @@ namespace ReserveApp
     public partial class MainWindow : Window
     {
         public Users User { get; set; }
-        public DateTime CurrentDate { get; set; } = new DateTime(2019, 06, 19);
+        public DateTime CurrentDate { get; set; } = DateTime.Today;
         public int ClassroomsCount { get; private set; }
 
         public Brush GetBackgroundAccordingToStatus(Applications app, int? freeSeats)
@@ -37,32 +37,37 @@ namespace ReserveApp
 
             switch (app.Status.Type)
             {
-                case "Sheduled": color = Colors.Blue; break;
-                case "Accepted": color = Colors.Green; break;
-                case "InProgress": color = Color.FromRgb(255, 228, 0); break;
+                case "Sheduled": color = Color.FromRgb(98, 0, 234); break; // purple
+                case "Accepted": color = Color.FromRgb(100, 221, 23); break; // green
+                case "InProgress": color = Color.FromRgb(255, 171, 0); break; // yellow
 
                 default: color = Colors.White; break;
             }
 
             if ((app.Status.Type == "Accepted" || app.Status.Type == "InProgress") && freeSeats == 0)
-                color = Colors.Red;
+                color = Color.FromRgb(213, 0, 0); // red
 
             return new SolidColorBrush(color);
         }
 
-        public void SetEmptyButton()
+        public void SetEmptyButton(int classroomNumber, int lessonNumber)
         {
             var btn = new Button()
             {
                 Content = "-",
                 Width = 80,
                 Height = 71,
-                Background = new SolidColorBrush(Color.FromRgb(255, 255, 255))
+                VerticalAlignment = VerticalAlignment.Stretch,
+                Tag = $"{classroomNumber}||{lessonNumber}||none",
+                Background = new SolidColorBrush(Color.FromRgb(255, 255, 255)),
             };
             var label = new Label() { Content = "", Margin = new Thickness(-20, -5, 0, 0), FontSize = 15, };
 
+            btn.MouseDoubleClick += BtnDoubleClickCallback;
             WrapApplicationsPanel.Children.Add(btn);
         }
+
+
 
         public MainWindow(Users user) // user is a param which sended from AuthViewModel [User or Admin]
         {
@@ -118,14 +123,16 @@ namespace ReserveApp
                                     Content = freeSeats, // К-во свободных мест
                                     Width = 80,
                                     Height = 71,
-                                    Tag = $"{classroomNumber}||{lessonNumber}",
-
+                                    Tag = $"{classroomNumber}||{lessonNumber}||{app.Status.Type}",
+                                    FontSize = 16,
                                     // Уставнавливаем bg в зависимости от статуса и количества свободных мест
                                     Background = GetBackgroundAccordingToStatus(app, freeSeats),
                                 };
 
                                 // Подписали метод на событие кнопки
-                                btn.Click += BtnClickedCallback;
+                                btn.MouseDoubleClick += BtnDoubleClickCallback;
+                                btn.Click += BtnClickCallback;
+
 
                                 var label = new Label()
                                 {
@@ -135,17 +142,19 @@ namespace ReserveApp
                                     FontSize = 15,
                                 };
 
+                                btn.ContextMenu = new ContextMenu();
+
                                 // Добавили компоненты в MainWindow
                                 WrapApplicationsPanel.Children.Add(btn);
                                 WrapApplicationsPanel.Children.Add(label);
                             }
                             else
-                                SetEmptyButton();
+                                SetEmptyButton(classroomNumber, lessonNumber);
                         }
                     }
                     else // Если нет записей - ряд из пустых кнопкок
                         for (int i = 1; i <= this.ClassroomsCount; i++)
-                            SetEmptyButton();
+                            SetEmptyButton(i, lessonNumber);
                 }
             }
         }
@@ -173,39 +182,87 @@ namespace ReserveApp
             return app.FirstOrDefault().Count;
         }
 
+        // Method returns couple with parsed info about application from button tag
+        (int classroom, int lesson, string type) ParseButtonTag(string tag)
+        {
+            string[] arr = tag.Split(new string[] { "||" }, StringSplitOptions.RemoveEmptyEntries);
+
+            int classroom = int.Parse(arr[0]);
+            int lesson = int.Parse(arr[1]);
+            string type = arr[2];
+
+            return (classroom, lesson, type);
+        }
+
         // Method called by the click on ceil button with applications
-        private void BtnClickedCallback(object sender, RoutedEventArgs e)
+        private void BtnClickCallback(object sender, RoutedEventArgs e)
         {
             if (User.Role == "admin")
             {
-                // Button tag has a string with format "classroomNumber||lessonNumber"
-                string[] arr = (sender as Button).Tag.ToString()
-                    .Split(new string[] { "||" }, StringSplitOptions.RemoveEmptyEntries);
-
-                int classroom = int.Parse(arr[0]);
-                int lesson = int.Parse(arr[1]);
+                // Button tag has a string with format "classroomNumber||lessonNumber||type"
+                var appInfo = ParseButtonTag((sender as Button).Tag.ToString());
 
                 var acceptingWindow = new AdminAccepting();
                 var acceptingDataContext = new AdminAcceptingViewModel
                 (
                     date: this.CurrentDate,
-                    classroomNumber: classroom,
-                    lessonNumber: lesson
+                    classroomNumber: appInfo.classroom,
+                    lessonNumber: appInfo.lesson
                 );
 
-                // Subscibe vm actions to the methods of AdminAccepting window
-                acceptingDataContext.ShowSuccessMsg += acceptingWindow.ShowSuccessMsg;
-                acceptingDataContext.ShowErrorMsg += acceptingWindow.ShowErrorMsg;
+                // open the accepting window only if it is InProgress or Accepting application
+                if (appInfo.type != "Sheduled")
+                {
+                    // Subscibe vm actions to the methods of AdminAccepting window
+                    acceptingDataContext.ShowSuccessMsg += acceptingWindow.ShowSuccessMsg;
+                    acceptingDataContext.ShowErrorMsg += acceptingWindow.ShowErrorMsg;
 
-                acceptingWindow.DataContext = acceptingDataContext;
+                    acceptingWindow.DataContext = acceptingDataContext;
 
-                // Show list of applications to apply or discard them
-                acceptingWindow.ShowDialog();
+                    // Show list of applications to apply or discard them
+                    acceptingWindow.ShowDialog();
+                }
             }
+        }
+
+        private void BtnDoubleClickCallback(object sender, MouseButtonEventArgs e)
+        {
+            var appInfo = ParseButtonTag((sender as Button).Tag.ToString());
+
+            var reserveWindow = new ReserveWindow();
+            var reserveDataContext = new ReserveViewModel
+            (
+                date: this.CurrentDate,
+                classroomNumber: appInfo.classroom, 
+                lessonNumber: appInfo.lesson,
+                user: this.User
+            );
+
+            // set datacontext
+            reserveWindow.DataContext = reserveDataContext;
+
+            // Subscibe vm actions to the methods of ReserveWindow
+            reserveDataContext.CloseWindow += reserveWindow.CloseWindow;
+            reserveDataContext.ShowErrorMsg += reserveWindow.ShowErrorMsg;
+
+            reserveWindow.ShowDialog();
         }
 
         private void Window_Activated(object sender, EventArgs e)
         {
+            GenerateWindowBody();
+        }
+
+        private void DateChanged(object sender, RoutedEventArgs e)
+        {
+            // get date from button content property
+            var dateStr = (sender as Button).Content.ToString();
+
+            // set datetime variable from a string
+            var newDate = DateTime.Parse(dateStr);
+            this.CurrentDate = newDate;
+
+            // update applications grid
             GenerateWindowBody();
         }
     }

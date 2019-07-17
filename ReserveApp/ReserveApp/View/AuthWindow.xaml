@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:ReserveApp.View"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="AuthWindow" Height="341" Width="559">
+        ResizeMode="NoResize"
+        Title="Окно авторизации" Height="341" Width="559">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"></RowDefinition>

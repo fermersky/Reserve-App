@@ -39,39 +39,56 @@ namespace ReserveApp.ViewModel
             {
                 return addApplicationCommand ?? (addApplicationCommand = new RelayCommand<object>(async (obj) =>
                 {
-                    StudentsCount = Convert.ToInt32(obj);
 
-                    var application = new Applications()
+                    if (IsAllAreaAreField())
                     {
-                        ClassroomId   = this.ClassroomNumber,
-                        UserId        = this.SelectedUser.Id,
-                        Date          = this.CurrentDate,
-                        LessonNumber  = this.LessonNumber,
-                        GroupId       = this.SelectedGroup.Id,
-                        StatusId      = this.isSheduled ? 1 : 3, // this is "Sheduled" lesson if checkbox is active. else - "InProgress"
-                        Lesson        = this.Lesson,
-                        StudentsCount = this.StudentsCount, // command recievs as param Students Count
-                        Comment       = this.Comment,
-                    };
-
-                    using (var db = new ReserveClassroomDBEntities())
-                    {
-                        db.Applications.Add(application);
-
-                        try
+                        using (var db = new ReserveClassroomDBEntities())
                         {
-                            await db.SaveChangesAsync();
-                            CloseWindow?.Invoke();
-                        }
-                        catch { MessageBox.Show("Что-то пошло не так :("); }
-                    }
+                            StudentsCount = Convert.ToInt32(obj);
 
-                }, IsAllAreaAreField));
+
+                            var application = new Applications()
+                            {
+                                ClassroomId = this.ClassroomNumber,
+                                UserId = this.SelectedUser.Id,
+                                Date = this.CurrentDate,
+                                LessonNumber = this.LessonNumber,
+                                GroupId = this.SelectedGroup.Id,
+
+                                // this is "Sheduled" lesson if checkbox is active. else - "InProgress"
+                                StatusId = this.isSheduled 
+                                    ? db.Status.FirstOrDefault(s => s.Type == "Sheduled").Id 
+                                    : db.Status.FirstOrDefault(s => s.Type == "InProgress").Id, 
+
+                                // command recievs as param Students Count
+                                StudentsCount = this.StudentsCount ?? 0,
+                                
+                                // unrequired fields
+                                Comment = this.Comment ?? "null",
+                                Lesson = this.Lesson ?? "null",
+                            };
+
+                            db.Applications.Add(application);
+
+                            try
+                            {
+                                await db.SaveChangesAsync();
+                                CloseWindow?.Invoke();
+                            }
+                            catch { MessageBox.Show("Что-то пошло не так :("); }
+                        }
+                    }
+                    else
+                        ShowErrorMsg("Заполните все поля!");
+
+                }));
             }
         }
 
-        private bool IsAllAreaAreField(object obj)
+        private bool IsAllAreaAreField()
         {
+            if (SelectedGroup == null)
+                return false;
             return true;
         }
 

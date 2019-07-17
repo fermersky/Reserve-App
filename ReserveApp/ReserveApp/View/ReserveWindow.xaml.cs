@@ -31,15 +31,7 @@ namespace ReserveApp.View
 
         public ReserveWindow()
         {
-            InitializeComponent();
-
-            this.DataContext = new ReserveViewModel(date: new DateTime(2019, 6, 19), 
-                classroomNumber: 4, lessonNumber: 4, 
-                user: new ReserveClassroomDBEntities().Users.FirstOrDefault(u => u.Id == 2));
-
-            var dc = this.DataContext as ReserveViewModel;
-            dc.CloseWindow += CloseWindow;
-            dc.ShowErrorMsg += ShowErrorMsg;
+            InitializeComponent();   
         }
 
         public void CloseWindow()

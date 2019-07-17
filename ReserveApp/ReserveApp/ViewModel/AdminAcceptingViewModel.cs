@@ -109,24 +109,21 @@ namespace ReserveApp.ViewModel
         {
             using (var db = new ReserveClassroomDBEntities())
             {
-                try
-                {
-                    this.CurrentDate = date;
-                    this.LessonNumber = lessonNumber;
-                    this.ClassroomNumber = classroomNumber;
+                this.CurrentDate = date;
+                this.LessonNumber = lessonNumber;
+                this.ClassroomNumber = classroomNumber;
 
-                    // Load applications from db
-                    Applications = db.Applications.Include("Users").Include("Classrooms").Include("Groups")
-                        .Where(a => a.Date == CurrentDate
-                            && a.Classrooms.Number == ClassroomNumber
-                            && a.LessonNumber == LessonNumber).ToList();
+                // Load applications from db
+                Applications = db.Applications.Include("Users").Include("Classrooms").Include("Groups")
+                    .Where(a => a.Date == CurrentDate
+                        && a.Classrooms.Number == ClassroomNumber
+                        && a.LessonNumber == LessonNumber).ToList();
 
-                    // Display only "Accepted" and "InProgress" Applications
-                    ApplicationView = CollectionViewSource.GetDefaultView(Applications
-                        .Where(a => a.Status.Type == "InProgress" || a.Status.Type == "Accepted").ToList()); 
-                    AvaliableSeatCount = getAvaliableSeatCount();
-                }
-                catch { }
+                // Display only "Accepted" and "InProgress" Applications
+                ApplicationView = CollectionViewSource.GetDefaultView(Applications
+                    .Where(a => a.Status.Type == "InProgress" || a.Status.Type == "Accepted").ToList());
+                AvaliableSeatCount = getAvaliableSeatCount();
+
             }
         }
 

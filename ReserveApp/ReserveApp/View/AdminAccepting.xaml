@@ -8,7 +8,7 @@
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:local1="clr-namespace:ReserveApp.Helper"
         mc:Ignorable="d"
-        Title="Заявки" Height="568" Width="771">
+        Title="Заявки" Height="568" Width="1171">
     <Window.Resources>
         <local1:EnablingAcceptButtonConverter x:Key="EnablingAcceptButtonConverter"></local1:EnablingAcceptButtonConverter>
     </Window.Resources>

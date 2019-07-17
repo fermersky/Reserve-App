@@ -16,7 +16,7 @@ using System.Globalization;
 
 namespace ReserveApp.ViewModel
 {
-    public class MainViewModel : ViewModelBase // класс, в котором уже реализованы RelayCommand и INotifyPropertyChanged
+    public class MainViewModel : ViewModelBase
     {
         private MainWindow window;
         private Users user;
@@ -25,40 +25,18 @@ namespace ReserveApp.ViewModel
         List<Classrooms> listClassrooms;
 
         Dictionary<DateTime, bool> DatesDictionary { set; get; } = new Dictionary<DateTime, bool>();
-        //private DateTime date { set; get; } = DateTime.Today; /*new DateTime(2019, 06, 01);*/
-        private DateTime date { set; get; } = new DateTime(2019, 06, 19); 
+        private DateTime date { set; get; } = DateTime.Today; 
+        
 
-
-
-        //private bool isChanged;
-        //public bool IsChanged
-        //{
-        //    get
-        //    {
-        //        var items = listApps.FirstOrDefault(a => a.Date == date && a.StatusId == 3);
-        //        if (items != null && user.Role == "admin")
-        //            return true;
-        //        else
-        //            return false;
-        //    }
-        //    set
-        //    {
-        //        var items = listApps.FirstOrDefault(a => a.Date == date && a.StatusId == 3);
-        //        if (items != null && user.Role == "admin")
-        //            isChanged = true;
-        //        else
-        //            isChanged = false;
-        //        RaisePropertyChanged("IsChanged");
-        //    }
-        //}
-
+        // method returns true if there are "InProgress" applications on Date
         private bool IsChanged(DateTime date)
         {
-            var items = listApps.FirstOrDefault(a => a.Date == date && a.StatusId == 3);
+            var items = listApps.FirstOrDefault(a => a.Date == date && a.Status.Type == "InProgress");
             return (items != null && user.Role == "admin");
         }
 
 
+        // method adds buttons with date in top of MainWindow
         private void DateButtonsSet()
         {
             for (int i = 0; i < 31; i++)
@@ -69,14 +47,6 @@ namespace ReserveApp.ViewModel
             window.dates.ItemsSource = DatesDictionary;
         }
 
-        private List<Applications> applications;
-
-        public List<Applications> Applications
-        {
-            get { return applications; }
-            set { Set(ref applications, value); }
-        }
-
         public MainViewModel(Users user, MainWindow oldWindow)
         {
             using (var db = new ReserveClassroomDBEntities())
@@ -84,32 +54,13 @@ namespace ReserveApp.ViewModel
                 this.user = user;
                 this.window = oldWindow;
 
-                listApps = db.Applications.ToList();
-                listClassrooms = db.Classrooms.ToList();
-                window.classRoomNumber.ItemsSource = listClassrooms;
+                listApps = db.Applications.ToList(); // load applications
+                listClassrooms = db.Classrooms.ToList(); // load classrooms
+                window.classRoomNumber.ItemsSource = listClassrooms; // bind MainWindow container to local collection
 
                 if (DatesDictionary.Count == 0)
                     DateButtonsSet();
             }        
         }    
     }
-    //public class DateTimeToColorConverter : IValueConverter
-    //{
-    //    List<Applications> listApps = new ReserveClassroomDBEntities().Applications.ToList();
-    //    public BrushConverter bc = new BrushConverter(); 
-    //    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-    //    {
-    //        var items = listApps.FirstOrDefault(a => a.Date == (DateTime)value && a.StatusId == 3);
-    //        if (items != null && MainWindow.userWindow.Role == "admin")
-    //            return (Brush)bc.ConvertFrom("LightYellow"); 
-    //        else
-    //            return (Brush)bc.ConvertFrom("#673AB7");
-    //    }
-
-    //    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    //    {
-    //        return (Brush)bc.ConvertFrom("#673AB7");
-    //    }
-    //}
-
 }

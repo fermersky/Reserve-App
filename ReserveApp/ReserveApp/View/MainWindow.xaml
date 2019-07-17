@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         Activated="Window_Activated"
-        Title="MainWindow" Height="1080" Width="1920">
+        Title="Окно бронирования" MinHeight="920" Width="1920">
     <Window.Resources>
         <!--xmlns:databinding="clr-namespace:ReserveApp.ViewModel"-->
         <!--<databinding:DateTimeToColorConverter x:Key="ColorConverter"></databinding:DateTimeToColorConverter>-->
@@ -79,7 +79,7 @@
         </Grid.RowDefinitions>
 
         <!--Кнопки ТЕКСТ вокруг сетки - НАЧАЛО-->
-        <TextBlock Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="16" Style="{StaticResource titleStyle}">А У Д И Т О Р И Я</TextBlock>
+        <TextBlock Grid.Row="3" Grid.Column="0" Margin="-140 0 0 0" Grid.ColumnSpan="16" Style="{StaticResource titleStyle}">А У Д И Т О Р И Я</TextBlock>
         <TextBlock Grid.Row="10" Grid.RowSpan="2" Grid.Column="1" Grid.ColumnSpan="5" Style="{StaticResource titlesStyle}">
             <TextBlock.RenderTransform>
                 <RotateTransform Angle="-90"/>
@@ -88,18 +88,18 @@
         <!--Кнопки ТЕКСТ вокруг сетки - НАЧАЛО-->
 
         <!--Кнопки ДАТЫ - НАЧАЛО-->
-        <ItemsControl Padding="0" Margin="0" Name="dates" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" >
+        <ItemsControl Padding="0" Margin="0" Name="dates" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="4" >
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <Button Height="30" Width="38" FontSize="12" Margin="1" Padding="0" ContentStringFormat="{}{0:dd.MM}" Content="{Binding Path=Key, UpdateSourceTrigger=PropertyChanged}">
+                        <Button Click="DateChanged" Height="30" Width="38" FontSize="12" Margin="1" Padding="0" ContentStringFormat="{}{0:dd.MM}" Content="{Binding Path=Key, UpdateSourceTrigger=PropertyChanged}">
                             <!--Background="{Binding Key, Converter={StaticResource ColorConverter}}"-->
                             <Button.Resources>
                                 <Style TargetType="Button">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}" Value="True">
-                                            <Setter Property="Background" Value="LightYellow"/>
-                                            <Setter Property="Foreground" Value="Gray"/>
+                                            <Setter Property="Background" Value="#FFAB00"/>
+                                            <Setter Property="Foreground" Value="White"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}" Value="False">
                                             <Setter Property="Background" Value="#673AB7"/>
@@ -146,19 +146,19 @@
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <TextBlock Background="Blue"></TextBlock>
+            <TextBlock Width="60" MinHeight="60" VerticalAlignment="Center" Background="#6200EA"></TextBlock>
             <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource TextBlockLegend}">Пара по расписанию</TextBlock>
 
-            <TextBlock Grid.Column="3" Background="#FFE400"></TextBlock>
+            <TextBlock Width="60" MinHeight="60" VerticalAlignment="Center" Grid.Column="3" Background="#FFAB00"></TextBlock>
             <!--Для сетки Админа-->
             <TextBlock Grid.Column="4" Grid.ColumnSpan="2" Style="{StaticResource TextBlockLegend}">Есть новые заявки</TextBlock>
             <!--Для сетки юзера-->
             <!--<TextBlock Grid.Column="4" Grid.ColumnSpan="2" Style="{StaticResource TextBlockLegend}">Заявка на рассморении</TextBlock>-->
 
-            <TextBlock Grid.Column="6" Background="Red"></TextBlock>
+            <TextBlock  Width="60" MinHeight="60" VerticalAlignment="Center" Grid.Column="6" Background="#d50000"></TextBlock>
             <TextBlock Grid.Column="7" Grid.ColumnSpan="2" Style="{StaticResource TextBlockLegend}">Аудитория полностью заполнена</TextBlock>
 
-            <TextBlock Grid.Column="9" Background="Green"></TextBlock>
+            <TextBlock  Width="60" MinHeight="60" VerticalAlignment="Center" Grid.Column="9" Background="#64DD17"></TextBlock>
             <TextBlock Grid.Column="10" Grid.ColumnSpan="2" Style="{StaticResource TextBlockLegend}">Аудитория заполнена не полностью</TextBlock>
 
             <Border Grid.Column="12" Style="{StaticResource BorderStyle}">
