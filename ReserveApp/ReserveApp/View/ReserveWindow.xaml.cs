@@ -57,5 +57,10 @@ namespace ReserveApp.View
                 errorTb.BeginAnimation(TextBlock.MarginProperty, anim);
             }
         }
+
+        public void UpdateMainWindowBody()
+        {
+            (this.Owner as MainWindow).GenerateWindowBody();
+        }
     }
 }

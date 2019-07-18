@@ -45,8 +45,9 @@ namespace ReserveApp.ViewModel
                                 if (user.Password == userPwd) // success login
                                 { 
                                     var mp = new MainWindow(user);
-                                     //MainWindow startup Location = Center
                                     mp.Show();
+
+                                    this.CloseWindow?.Invoke();
                                 }
                                 else
                                     ShowErrorMsg?.Invoke($"Uncorrect password for login \"{userLgn}\"");
@@ -60,6 +61,7 @@ namespace ReserveApp.ViewModel
         }
 
         public Action<string> ShowErrorMsg { get; internal set; } // this delegate recieves the method from view code behind which showes Error Message
+        public Action CloseWindow { get; internal set; }
 
         public AuthViewModel()
         {

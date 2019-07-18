@@ -50,6 +50,8 @@ namespace ReserveApp.ViewModel
 
                             ShowSuccessMsg("Заявка одобрена!");
 
+                            // then refresh Applications table in MainWindow
+                            UpdateMainWindowBody();
                         }
 
                         else
@@ -85,6 +87,10 @@ namespace ReserveApp.ViewModel
                         RefreshLocalApplicationView();
 
                         ShowSuccessMsg("Заявка удалена");
+
+                        // then refresh Applications table in MainWindow
+                        UpdateMainWindowBody();
+
                     }
                 }));
             }
@@ -98,7 +104,7 @@ namespace ReserveApp.ViewModel
         {
             get
             {
-                return openReserveWindowCommand ?? (openReserveWindowCommand = new RelayCommand<object>(async (obj) =>
+                return openReserveWindowCommand ?? (openReserveWindowCommand = new RelayCommand<object>((obj) =>
                 {
                     var reserveWindow = new ReserveWindow();
                     var reserveDataContext = new ReserveViewModel
@@ -109,19 +115,24 @@ namespace ReserveApp.ViewModel
                         user: this.User
                     );
 
+                    // set owner of ReserveWindow - MainWindow
+                    // to update MainWindow grid after reserved application
+                    reserveWindow.Owner = this.OwnedWindow.Owner;
+
                     // set datacontext
                     reserveWindow.DataContext = reserveDataContext;
 
                     // Subscibe vm actions to the methods of ReserveWindow
                     reserveDataContext.CloseWindow += reserveWindow.CloseWindow;
                     reserveDataContext.ShowErrorMsg += reserveWindow.ShowErrorMsg;
+                    reserveDataContext.UpdateMainWindowBody += reserveWindow.UpdateMainWindowBody;
 
                     reserveWindow.ShowDialog();
                 }));
             }
         }
 
-        public AdminAcceptingViewModel(DateTime date, int classroomNumber, int lessonNumber, Users user)
+        public AdminAcceptingViewModel(DateTime date, int classroomNumber, int lessonNumber, Users user, AdminAccepting ownedWindow)
         {
             using (var db = new ReserveClassroomDBEntities())
             {
@@ -129,6 +140,7 @@ namespace ReserveApp.ViewModel
                 this.LessonNumber = lessonNumber;
                 this.ClassroomNumber = classroomNumber;
                 this.User = user;
+                this.OwnedWindow = ownedWindow;
 
                 // Load applications from db
                 Applications = db.Applications.Include("Users").Include("Classrooms").Include("Groups")
@@ -149,7 +161,7 @@ namespace ReserveApp.ViewModel
         // Properties and Methods Helpers
 
         public Users User { get; set; }
-
+        public AdminAccepting OwnedWindow { get; set; }
         public int? TakenSeatCount { get; private set; } = 0;
         public int FreeSeatCount { get; private set; } = 0;
 
@@ -273,5 +285,6 @@ namespace ReserveApp.ViewModel
 
         public Action<string> ShowErrorMsg { get; internal set; }
         public Action<string> ShowSuccessMsg { get; internal set; }
+        public Action UpdateMainWindowBody { get; internal set; }
     }
 }

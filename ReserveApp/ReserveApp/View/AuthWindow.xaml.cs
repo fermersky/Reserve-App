@@ -28,6 +28,7 @@ namespace ReserveApp.View
 
             var dc = (AuthViewModel)this.DataContext;
             dc.ShowErrorMsg += ShowErrorMsg;
+            dc.CloseWindow += CloseWindow;
         }
 
         public void ShowErrorMsg(string msg) // maniulates with error msg label
@@ -44,5 +45,9 @@ namespace ReserveApp.View
             errorTb.BeginAnimation(TextBlock.MarginProperty, anim);
         }
 
+        public void CloseWindow()
+        {
+            this.Close();
+        }
     }
 }

@@ -9,7 +9,7 @@
         xmlns:local1="clr-namespace:ReserveApp.Helper"
         mc:Ignorable="d"
         Activated="Window_Activated"
-        Title="Заявки" Height="668" Width="1171">
+        Title="Заявки" Height="668" Width="1111">
     <Window.Resources>
         <local1:EnablingAcceptButtonConverter x:Key="EnablingAcceptButtonConverter"></local1:EnablingAcceptButtonConverter>
     </Window.Resources>

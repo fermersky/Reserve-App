@@ -84,7 +84,7 @@ namespace ReserveApp
             GenerateWindowBody();
         }
 
-        private void GenerateWindowBody()
+        public void GenerateWindowBody()
         {
             WrapApplicationsPanel.Children.Clear();
 
@@ -208,17 +208,24 @@ namespace ReserveApp
                     date: this.CurrentDate,
                     classroomNumber: appInfo.classroom,
                     lessonNumber: appInfo.lesson,
-                    user: this.User
+                    user: this.User,
+                    ownedWindow: acceptingWindow
                 );
+
+                acceptingWindow.Owner = this;
 
                 // Subscibe vm actions to the methods of AdminAccepting window
                 acceptingDataContext.ShowSuccessMsg += acceptingWindow.ShowSuccessMsg;
                 acceptingDataContext.ShowErrorMsg += acceptingWindow.ShowErrorMsg;
+                acceptingDataContext.UpdateMainWindowBody += acceptingWindow.UpdateMainWindowBody;
 
                 acceptingWindow.DataContext = acceptingDataContext;
 
                 // Show list of applications to apply or discard them
                 acceptingWindow.ShowDialog();
+
+                // update buttons with date on top of window
+                //UpdateDateButtons();
             }
             else if (User.Role == "user" && appInfo.type != "Sheduled")
             {
@@ -231,12 +238,15 @@ namespace ReserveApp
                     user: this.User
                 );
 
+                reserveWindow.Owner = this;
+
                 // set datacontext
                 reserveWindow.DataContext = reserveDataContext;
 
                 // Subscibe vm actions to the methods of ReserveWindow
                 reserveDataContext.CloseWindow += reserveWindow.CloseWindow;
                 reserveDataContext.ShowErrorMsg += reserveWindow.ShowErrorMsg;
+                reserveDataContext.UpdateMainWindowBody += reserveWindow.UpdateMainWindowBody;
 
                 reserveWindow.ShowDialog();
             }
@@ -245,7 +255,7 @@ namespace ReserveApp
 
         private void Window_Activated(object sender, EventArgs e)
         {
-            GenerateWindowBody();
+            // GenerateWindowBody();
         }
 
         private void DateChanged(object sender, RoutedEventArgs e)
@@ -264,6 +274,11 @@ namespace ReserveApp
         private void ClassroomTextBlockClick(object sender, MouseButtonEventArgs e)
         {
             MessageBox.Show((sender as TextBlock).Text);
+        }
+
+        public void UpdateDateButtons()
+        {
+            (this.DataContext as MainViewModel).DateButtonsSet();
         }
     }
 }

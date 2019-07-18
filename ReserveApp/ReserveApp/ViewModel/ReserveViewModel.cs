@@ -74,6 +74,7 @@ namespace ReserveApp.ViewModel
                             {
                                 await db.SaveChangesAsync();
                                 CloseWindow?.Invoke();
+                                this.UpdateMainWindowBody();
                             }
                             catch { MessageBox.Show("Что-то пошло не так :("); }
                         }
@@ -210,5 +211,6 @@ namespace ReserveApp.ViewModel
 
         public Action CloseWindow { get; internal set; }
         public Action<string> ShowErrorMsg { get; internal set; }
+        public Action UpdateMainWindowBody { get; internal set; }
     }
 }

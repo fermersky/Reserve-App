@@ -25,8 +25,9 @@ namespace ReserveApp.ViewModel
         List<Classrooms> listClassrooms;
 
         Dictionary<DateTime, bool> DatesDictionary { set; get; } = new Dictionary<DateTime, bool>();
-        private DateTime date { set; get; } = DateTime.Today; 
-        
+        //private DateTime date { set; get; } = DateTime.Today; 
+        private DateTime date { set; get; } = new DateTime(2019, 7, 17); 
+
 
         // method returns true if there are "InProgress" applications on Date
         private bool IsChanged(DateTime date)
@@ -37,8 +38,13 @@ namespace ReserveApp.ViewModel
 
 
         // method adds buttons with date in top of MainWindow
-        private void DateButtonsSet()
+        public void DateButtonsSet()
         {
+            //using (var db = new ReserveClassroomDBEntities())
+            //    listApps = db.Applications.ToList(); // load applications
+
+            //DatesDictionary = new Dictionary<DateTime, bool>();
+
             for (int i = 0; i < 31; i++)
             {
                 DatesDictionary.Add(date, IsChanged(date));
@@ -58,8 +64,7 @@ namespace ReserveApp.ViewModel
                 listClassrooms = db.Classrooms.ToList(); // load classrooms
                 window.classRoomNumber.ItemsSource = listClassrooms; // bind MainWindow container to local collection
 
-                if (DatesDictionary.Count == 0)
-                    DateButtonsSet();
+                DateButtonsSet();
             }        
         }    
     }

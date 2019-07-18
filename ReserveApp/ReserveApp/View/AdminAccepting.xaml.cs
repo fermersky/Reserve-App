@@ -72,5 +72,10 @@ namespace ReserveApp.View
         {
             (this.DataContext as AdminAcceptingViewModel).RefreshLocalApplicationView();
         }
+
+        public void UpdateMainWindowBody()
+        {
+            (this.Owner as MainWindow).GenerateWindowBody();
+        }
     }
 }
