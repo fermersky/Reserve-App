@@ -4,6 +4,8 @@
 
 Особо важный ресурс:  <b>время</b>
 
+[![1.png](https://i.postimg.cc/W1CPGT2P/1.png)](https://postimg.cc/dh2XvMkW)
+
 ## Шпаргалка по основным командам GIT<br>
 ### Установить глобальные конфиги
 ```$ git config --global user.name "John Doe"```<br>
