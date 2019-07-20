@@ -12,7 +12,7 @@ namespace ReserveApp.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Applications
+    public partial class Application
     {
         public int Id { get; set; }
         public int ClassroomId { get; set; }
@@ -25,9 +25,9 @@ namespace ReserveApp.Model
         public string Lesson { get; set; }
         public string Comment { get; set; }
     
-        public virtual Classrooms Classrooms { get; set; }
-        public virtual Groups Groups { get; set; }
+        public virtual Classroom Classroom { get; set; }
+        public virtual Group Group { get; set; }
         public virtual Status Status { get; set; }
-        public virtual Users Users { get; set; }
+        public virtual User User { get; set; }
     }
 }

@@ -10,9 +10,8 @@
 namespace ReserveApp.Model
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class Applications
+    public partial class getApplicationsList_Result
     {
         public int Id { get; set; }
         public int ClassroomId { get; set; }
@@ -24,10 +23,18 @@ namespace ReserveApp.Model
         public int StatusId { get; set; }
         public string Lesson { get; set; }
         public string Comment { get; set; }
-    
-        public virtual Classrooms Classrooms { get; set; }
-        public virtual Groups Groups { get; set; }
-        public virtual Status Status { get; set; }
-        public virtual Users Users { get; set; }
+        public int Id1 { get; set; }
+        public string Name { get; set; }
+        public int StudentsCount1 { get; set; }
+        public int Id2 { get; set; }
+        public int Number { get; set; }
+        public int MaxPersonCount { get; set; }
+        public int Id3 { get; set; }
+        public string Login { get; set; }
+        public string Password { get; set; }
+        public string Role { get; set; }
+        public string Fullname { get; set; }
+        public int Id4 { get; set; }
+        public string Type { get; set; }
     }
 }

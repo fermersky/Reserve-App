@@ -12,12 +12,12 @@ namespace ReserveApp.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Users
+    public partial class User
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Users()
+        public User()
         {
-            this.Applications = new HashSet<Applications>();
+            this.Applications = new HashSet<Application>();
         }
     
         public int Id { get; set; }
@@ -27,6 +27,6 @@ namespace ReserveApp.Model
         public string Fullname { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Applications> Applications { get; set; }
+        public virtual ICollection<Application> Applications { get; set; }
     }
 }

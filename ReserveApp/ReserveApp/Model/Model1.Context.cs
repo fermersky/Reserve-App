@@ -28,7 +28,7 @@ namespace ReserveApp.Model
         public virtual DbSet<Applications> Applications { get; set; }
         public virtual DbSet<Classrooms> Classrooms { get; set; }
         public virtual DbSet<Groups> Groups { get; set; }
-        public virtual DbSet<Lessons> Lessons { get; set; }
+        public virtual DbSet<Status> Status { get; set; }
         public virtual DbSet<Users> Users { get; set; }
     }
 }

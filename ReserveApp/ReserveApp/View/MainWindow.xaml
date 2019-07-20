@@ -5,19 +5,245 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ReserveApp"
         mc:Ignorable="d"
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-        Title="MainWindow" Height="450" Width="800">
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Activated="Window_Activated"
+        Title="Окно бронирования" MinHeight="920" Width="1920">
+    <Window.Resources>
+        <!--xmlns:databinding="clr-namespace:ReserveApp.ViewModel"-->
+        <!--<databinding:DateTimeToColorConverter x:Key="ColorConverter"></databinding:DateTimeToColorConverter>-->
+        <Style x:Key="titlesStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="TextAlignment" Value="Justify"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Foreground" Value="MediumVioletRed"/>
+        </Style>
+        <Style x:Key="titleStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Foreground" Value="MediumVioletRed"/>
+        </Style>
+        <Style x:Key="TextBlockLegend" TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Padding" Value="7 0 7 0"/>
+        </Style>
+        <Style x:Key="numberOfApplications" TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Padding" Value="0 0 5 0"/>
+            <Setter Property="Background" Value="Transparent"/>
+        </Style> 
+        <Style x:Key="BorderStyle" TargetType="{x:Type Border}">
+            <Setter Property="BorderBrush" Value="Gray"/>
+            <Setter Property="BorderThickness" Value="0.5"/>
+        </Style> 
+        <Style x:Key="numbersTextStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Foreground" Value="Gray"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+    </Window.Resources>
     <Grid>
-        <StackPanel VerticalAlignment="Center">
-            <Label Content="{Binding LabelTxt}" HorizontalAlignment="Center"></Label>
-            <Button
-                Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                Width="100"
-                Content="Click me"
-                Command="{Binding ClickCommand}"
-                ToolTip="Resource name: MaterialDesignRaisedAccentButton">
-            </Button>
-        </StackPanel>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.2*"></ColumnDefinition>
+            <ColumnDefinition Width="0.4*"></ColumnDefinition>
+            <ColumnDefinition Width="0.5*"></ColumnDefinition>
+            <ColumnDefinition Width="14*"></ColumnDefinition>
+            <ColumnDefinition Width="0.2*"></ColumnDefinition>
+            <ColumnDefinition Width="0.2*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.25*"></RowDefinition>
+            <RowDefinition Height="0.7*"></RowDefinition>
+            <RowDefinition Height="0.1*"></RowDefinition>
+            <RowDefinition Height="0.6*"></RowDefinition>
+            <RowDefinition Height="0.7*"></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="0.25*"></RowDefinition>
+            <RowDefinition Height="0.25*"></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="0.25*"></RowDefinition>
+            <RowDefinition Height="0.25*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <!--Кнопки ТЕКСТ вокруг сетки - НАЧАЛО-->
+        <TextBlock Grid.Row="3" Grid.Column="0" Margin="-140 0 0 0" Grid.ColumnSpan="16" Style="{StaticResource titleStyle}">А У Д И Т О Р И Я</TextBlock>
+        <TextBlock Grid.Row="10" Grid.RowSpan="2" Grid.Column="1" Grid.ColumnSpan="5" Style="{StaticResource titlesStyle}">
+            <TextBlock.RenderTransform>
+                <RotateTransform Angle="-90"/>
+            </TextBlock.RenderTransform>П А Р А
+        </TextBlock>
+        <!--Кнопки ТЕКСТ вокруг сетки - НАЧАЛО-->
+
+        <!--Кнопки ДАТЫ - НАЧАЛО-->
+        <ItemsControl Padding="0" Margin="0" Name="dates" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="4" >
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Click="DateChanged" Height="30" Width="38" FontSize="12" Margin="1" Padding="0" ContentStringFormat="{}{0:dd.MM}" Content="{Binding Path=Key, UpdateSourceTrigger=PropertyChanged}">
+                            <!--Background="{Binding Key, Converter={StaticResource ColorConverter}}"-->
+                            <Button.Resources>
+                                <Style TargetType="Button">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                            <Setter Property="Background" Value="#FFAB00"/>
+                                            <Setter Property="Foreground" Value="White"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}" Value="False">
+                                            <Setter Property="Background" Value="#673AB7"/>
+                                            <Setter Property="Foreground" Value="White"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+        <!--Кнопки ДАТЫ - КОНЕЦ-->
+
+        <!--ЛЕГЕНДА - НАЧАЛО -->
+
+        <Grid Grid.Column="2" Grid.Row="15" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBlock Width="60" MinHeight="60" VerticalAlignment="Center" Background="#6200EA"></TextBlock>
+            <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource TextBlockLegend}">Пара по расписанию</TextBlock>
+
+            <TextBlock Width="60" MinHeight="60" VerticalAlignment="Center" Grid.Column="3" Background="#FFAB00"></TextBlock>
+            <!--Для сетки Админа-->
+            <TextBlock Grid.Column="4" Grid.ColumnSpan="2" Style="{StaticResource TextBlockLegend}">Есть новые заявки</TextBlock>
+            <!--Для сетки юзера-->
+            <!--<TextBlock Grid.Column="4" Grid.ColumnSpan="2" Style="{StaticResource TextBlockLegend}">Заявка на рассморении</TextBlock>-->
+
+            <TextBlock  Width="60" MinHeight="60" VerticalAlignment="Center" Grid.Column="6" Background="#d50000"></TextBlock>
+            <TextBlock Grid.Column="7" Grid.ColumnSpan="2" Style="{StaticResource TextBlockLegend}">Аудитория полностью заполнена</TextBlock>
+
+            <TextBlock  Width="60" MinHeight="60" VerticalAlignment="Center" Grid.Column="9" Background="#64DD17"></TextBlock>
+            <TextBlock Grid.Column="10" Grid.ColumnSpan="2" Style="{StaticResource TextBlockLegend}">Аудитория заполнена не полностью</TextBlock>
+
+            <Border Grid.Column="12" Style="{StaticResource BorderStyle}">
+                <TextBlock Background="White"></TextBlock>
+            </Border>
+            <TextBlock Grid.Column="13" Grid.ColumnSpan="2" Style="{StaticResource TextBlockLegend}">Аудитория свободна</TextBlock>
+
+            <Border Grid.Column="15" Style="{StaticResource BorderStyle}">
+                <TextBlock FontSize="17" VerticalAlignment="Center" HorizontalAlignment="Center">5</TextBlock>
+            </Border>
+            <TextBlock Grid.Column="16" Grid.ColumnSpan="2" Style="{StaticResource TextBlockLegend}">Количество свободных мест</TextBlock>
+
+            <Border Grid.Column="18" Style="{StaticResource BorderStyle}">
+                <!--Для сетки Админа-->
+                <TextBlock FontSize="17" Style="{StaticResource numberOfApplications}">7</TextBlock>
+                <!--Для сетки Юзера-->
+                <!--<TextBlock FontSize="17" Style="{StaticResource numberOfApplications}">+</TextBlock>-->
+            </Border>
+            <!--Для сетки Админа-->
+            <TextBlock Grid.Column="19" Grid.ColumnSpan="2" Style="{StaticResource TextBlockLegend}">Количество заявок</TextBlock>
+            <!--Для сетки юзера-->
+            <!--<TextBlock Grid.Column="19" Grid.ColumnSpan="2" Style="{StaticResource TextBlockLegend}">Заявка одобрена</TextBlock>-->
+
+        </Grid>
+
+        <!--ЛЕГЕНДА - КОНЕЦ -->
+
+        <!--Пары и Аудитории рамка - НАЧАЛО -->
+        <!--Вертикаль-->
+        <TextBlock Grid.Row="5" Grid.Column="2" Style="{StaticResource numbersTextStyle}">1</TextBlock>
+        <TextBlock Grid.Row="6" Grid.Column="2" Style="{StaticResource numbersTextStyle}">2</TextBlock>
+        <TextBlock Grid.Row="7" Grid.Column="2" Style="{StaticResource numbersTextStyle}">3</TextBlock>
+        <TextBlock Grid.Row="8" Grid.Column="2" Style="{StaticResource numbersTextStyle}">4</TextBlock>
+        <TextBlock Grid.Row="9" Grid.Column="2" Style="{StaticResource numbersTextStyle}">5</TextBlock>
+        <TextBlock Grid.Row="10" Grid.Column="2" Style="{StaticResource numbersTextStyle}">6</TextBlock>
+        <TextBlock Grid.Row="11" Grid.Column="2" Style="{StaticResource numbersTextStyle}">7</TextBlock>
+        <TextBlock Grid.Row="12" Grid.Column="2" Style="{StaticResource numbersTextStyle}">8</TextBlock>
+
+        <!--Горизонталь-->
+        <!--text blocks Разметка количество аудиторий - НАЧАЛО-->
+        <ItemsControl Padding="0" Margin="0" Name="classRoomNumber" Grid.Row="4" Grid.Column="3">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock MouseLeftButtonDown="ClassroomTextBlockClick" Margin="0 0 5 0" 
+                                   TextAlignment="Center" Width="75" Foreground="Gray" FontSize="20" 
+                                   Text="{Binding Path=Number}" Padding="0 15 0 0"></TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+        
+        <!--text blocks Разметка количество аудиторий - КОНЕЦ-->
+        <!--Пары и Аудитории рамка - КОНЕЦ -->
+
+        <!--Кнопки ПАРА 1 - НАЧАЛО -->
+
+        <ItemsControl ItemsSource="{Binding Applications}" Padding="0" Margin="0" Name="class1Rooms" >
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <!--<StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding ClassroomId}" Width="75" Foreground="Gray" FontSize="11"  Padding="55 0 0 0"></TextBlock>    --><!--заявки  {Binding Path=Number}"--><!--
+                        <TextBlock TextAlignment="Center" Width="75" Foreground="Gray" FontSize="15" Text="35" Padding="55 0 0 0"></TextBlock>   --><!--кол-во мест в аудитории--><!--
+                    </StackPanel>-->
+                    
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+
+        <WrapPanel HorizontalAlignment="Left" Orientation="Horizontal" x:Name="WrapApplicationsPanel" 
+                   Grid.Row="5" Grid.RowSpan="8" Grid.Column="3" Width="1220">
+
+        </WrapPanel>
+
+
     </Grid>
 </Window>

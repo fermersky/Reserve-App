@@ -1,0 +1,1 @@
+insert into Applications values (4, 1, '20190619', 4, 12, 1, 2, N'Net programming', N'Comment')

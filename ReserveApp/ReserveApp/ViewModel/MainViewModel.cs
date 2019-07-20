@@ -8,48 +8,64 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Data.Entity;
 using ReserveApp.Model;
+using System.Windows.Media;
+using System.Collections.ObjectModel;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Globalization;
 
 namespace ReserveApp.ViewModel
 {
-    public class MainViewModel : ViewModelBase // класс, в котором уже реализованы RelayCommand и INotifyPropertyChanged
+    public class MainViewModel : ViewModelBase
     {
-        private RelayCommand clickCommand;
+        private MainWindow window;
+        private Users user;
 
-        public RelayCommand ClickCommand
+        List<Applications> listApps;
+        List<Classrooms> listClassrooms;
+
+        Dictionary<DateTime, bool> DatesDictionary { set; get; } = new Dictionary<DateTime, bool>();
+        //private DateTime date { set; get; } = DateTime.Today; 
+        private DateTime date { set; get; } = new DateTime(2019, 7, 17); 
+
+
+        // method returns true if there are "InProgress" applications on Date
+        private bool IsChanged(DateTime date)
         {
-            get
+            var items = listApps.FirstOrDefault(a => a.Date == date && a.Status.Type == "InProgress");
+            return (items != null && user.Role == "admin");
+        }
+
+
+        // method adds buttons with date in top of MainWindow
+        public void DateButtonsSet()
+        {
+            //using (var db = new ReserveClassroomDBEntities())
+            //    listApps = db.Applications.ToList(); // load applications
+
+            //DatesDictionary = new Dictionary<DateTime, bool>();
+
+            for (int i = 0; i < 31; i++)
             {
-                return clickCommand ?? (clickCommand = new RelayCommand(() =>
-                {
-                    // тело команды
-
-                    var db = new ReserveClassroomDBEntities();
-
-                    MessageBox.Show(db.Lessons.FirstOrDefault(u => u.Id == 1).Lesson);
-                    LabelTxt = "ok";
-                }, 
-                () => 
-                {
-                    // условие выполнения команды
-
-                    return true;
-                }));
+                DatesDictionary.Add(date, IsChanged(date));
+                date = date.AddDays(1);
             }
+            window.dates.ItemsSource = DatesDictionary;
         }
 
-        private string labelTxt;
-
-        public string LabelTxt
+        public MainViewModel(Users user, MainWindow oldWindow)
         {
-            get => labelTxt;
-            set => Set(ref labelTxt, value);
+            using (var db = new ReserveClassroomDBEntities())
+            {
+                this.user = user;
+                this.window = oldWindow;
 
-            // метод Set устанавливает новое значение и вызывает PropertyChanged
-        }
+                listApps = db.Applications.ToList(); // load applications
+                listClassrooms = db.Classrooms.ToList(); // load classrooms
+                window.classRoomNumber.ItemsSource = listClassrooms; // bind MainWindow container to local collection
 
-        public MainViewModel()
-        {
-            labelTxt = "click btn before";
-        }
+                DateButtonsSet();
+            }        
+        }    
     }
 }

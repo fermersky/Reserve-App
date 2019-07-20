@@ -18,7 +18,6 @@ namespace ReserveApp.Model
         public Classrooms()
         {
             this.Applications = new HashSet<Applications>();
-            this.Lessons = new HashSet<Lessons>();
         }
     
         public int Id { get; set; }
@@ -27,7 +26,5 @@ namespace ReserveApp.Model
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Applications> Applications { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Lessons> Lessons { get; set; }
     }
 }
