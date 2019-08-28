@@ -26,7 +26,7 @@ namespace ReserveApp.ViewModel
 
         Dictionary<DateTime, bool> DatesDictionary { set; get; } = new Dictionary<DateTime, bool>();
         //private DateTime date { set; get; } = DateTime.Today; 
-        private DateTime date { set; get; } = new DateTime(2019, 7, 17); 
+        private DateTime date { set; get; } = DateTime.Today; 
 
 
         // method returns true if there are "InProgress" applications on Date
